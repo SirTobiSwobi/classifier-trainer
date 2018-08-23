@@ -1,0 +1,1 @@
+Common microservice sidecar for services implementing the classifier trainer API of the athlete/trainer pattern
