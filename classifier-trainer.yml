@@ -1,0 +1,15 @@
+name: C3 classifier trainer API
+calls: ['GET /documents', 'GET /documents/$x', 'POST /documents', 'PUT /documents/$x', 'DELETE /documents/$x', 'DELETE /documents', 
+'GET /targetfunction', 'GET /targetfunction/$x', 'PUT /targetfunction/$x', 'DELETE /targetfunction/$x', 'GET /targetfunction/documents/$x', 
+'GET /targetfunction/categories/$x', 'POST /targetfunction', 
+'GET /categories', 'POST /categories', 'DELETE /categories/$x', 'PUT /categories/$x', 
+'GET /relationships', 'POST /relationships', 'DELETE /relationships/$x', 'PUT /relationships/$x', 
+'GET /retraining', 'GET /categorization', 'GET /categorization/$x', 'POST /categorization', 
+'GET /model', 'GET /configuration', 'POST /configuration', 'PUT /configuration', 
+'GET /models', 'GET /models/$x', 'POST /models', 'DELETE /models/$x', 'GET /evaluations/$x' ]
+algorithm: No actual algorithm implemented. This is an implementation of the abstract API
+phases: 1 to 3
+outputFormat: Document to category likelihoods 
+configuration: Will be the concatenation of other actual config parameters.
+configOptions: Depend on the algorithm. This includes all hyperparameters of the service.
+archetype: Classifier Trainer
