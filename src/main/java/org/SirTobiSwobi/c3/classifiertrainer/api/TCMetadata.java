@@ -1,7 +1,6 @@
 package org.SirTobiSwobi.c3.classifiertrainer.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import org.hibernate.validator.constraints.Length;
 
 public class TCMetadata {
 	private String name;
@@ -75,9 +74,6 @@ public class TCMetadata {
 	public String getArchetype() {
 		return archetype;
 	}
-	
-	
-	
-	
+
 	
 }

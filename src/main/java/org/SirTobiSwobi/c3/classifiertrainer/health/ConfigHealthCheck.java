@@ -16,7 +16,6 @@ public class ConfigHealthCheck extends HealthCheck {
 
 	@Override
 	protected Result check() throws Exception {
-		// TODO Auto-generated method stub
 		
 		if(config.getCalls().length==0){
 			 return Result.unhealthy("According to configuration metadata, this service doesn't include any calls");

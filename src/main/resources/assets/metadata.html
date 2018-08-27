@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>metadata</title>
+	<script src="jquery-3.3.1.min.js"></script>
+</head>
+<body>
+	<h1>metadata</h1>
+	<div class="mypanel"></div>
+	<script>
+    $.getJSON('../metadata', function(data) {      
+        var text = `Name: ${data.name}<br>
+        			Calls: ${data.calls}`
+                         
+        $(".mypanel").html(text);
+    });
+    </script>	
+</body>
+</html>
