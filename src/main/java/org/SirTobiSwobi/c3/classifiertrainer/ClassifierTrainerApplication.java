@@ -1,6 +1,10 @@
 package org.SirTobiSwobi.c3.classifiertrainer;
 
+import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
+import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 import org.SirTobiSwobi.c3.classifiertrainer.health.ConfigHealthCheck;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
 
 import io.dropwizard.Application;
@@ -26,11 +30,21 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 
 	@Override
 	public void run(ClassifierTrainerConfiguration configuration, Environment environment){
+		DocumentManager docMan =  new DocumentManager();
+		
+		docMan.addDocument(new Document(0,"first label","first content"));
+		docMan.addDocument(new Document(1,"second label","second content"));
+		docMan.addDocument(new Document(2,"third label","third content"));
 	
+		
 		final MetadataResource metadata = new MetadataResource(configuration);
+		final DocumentsResource documents = new DocumentsResource(docMan);
+		final DocumentResource document = new DocumentResource(docMan);
 		final ConfigHealthCheck configHealth = new ConfigHealthCheck(configuration);
 		environment.healthChecks().register("config", configHealth);
 		environment.jersey().register(metadata);
+		environment.jersey().register(documents);
+		environment.jersey().register(document);
 		
 		
 	}
