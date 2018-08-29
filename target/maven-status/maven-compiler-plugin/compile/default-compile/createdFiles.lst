@@ -5,6 +5,7 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentWithoutId.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentCollection.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/health/ConfigHealthCheck.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadata.class

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -19,6 +20,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 
 @Path("/documents/{doc}")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class DocumentResource {
 	
 	private DocumentManager manager;

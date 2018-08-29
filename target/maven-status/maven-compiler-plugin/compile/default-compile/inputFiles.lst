@@ -10,5 +10,6 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/health/ConfigHealthCheck.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerApplication.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Document.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentCollection.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerConfiguration.java

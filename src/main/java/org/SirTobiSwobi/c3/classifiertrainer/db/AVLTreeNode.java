@@ -1,5 +1,6 @@
 package org.SirTobiSwobi.c3.classifiertrainer.db;
 
+import java.util.ArrayList;
 
 public class AVLTreeNode<T> {
 	private AVLTreeNode<T> left, right, parent;
@@ -48,6 +49,16 @@ public class AVLTreeNode<T> {
 	
 	public long getIndex() {
 		return index;
+	}
+	
+	protected void getAllContent(ArrayList<T> allContent){
+		if(left!=null){
+			left.getAllContent(allContent);
+		}
+		allContent.add(content);
+		if(right!=null){
+			right.getAllContent(allContent);
+		}
 	}
 
 	public synchronized void setContent(long id, T content){

@@ -1,5 +1,7 @@
 package org.SirTobiSwobi.c3.classifiertrainer.db;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class AVLTree<T> {
 	
@@ -18,6 +20,16 @@ public class AVLTree<T> {
 		}else{
 			root.setContent(id, content);
 		}
+	}
+	
+	public ArrayList<T> toArrayList(){
+		
+		ArrayList<T> allContent= new ArrayList<T>();
+		if(size>0){
+			root.getAllContent(allContent);
+		}
+		return allContent;
+		
 	}
 	
 	public void incrementSize(){

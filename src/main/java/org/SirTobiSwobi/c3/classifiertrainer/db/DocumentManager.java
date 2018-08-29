@@ -1,5 +1,7 @@
 package org.SirTobiSwobi.c3.classifiertrainer.db;
 
+import java.util.ArrayList;
+
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 
 public class DocumentManager {
@@ -31,6 +33,12 @@ public class DocumentManager {
 	
 	public void deleteDocument(long id){
 		documents.deleteNode(id);
+	}
+	
+	public Document[] getDocumentArray(){
+		ArrayList<Document> allContent = documents.toArrayList();
+		Document[] docArray = allContent.toArray(new Document[0]);
+		return docArray;
 	}
 
 }

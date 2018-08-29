@@ -1,0 +1,18 @@
+{
+	"documents":[
+		{
+			"id":0,
+			"label":"first label",
+			"content":"first content"
+		},
+		{
+			"id":1,
+			"label":"second label",
+			"content":"second content"
+		},
+		{
+			"id":2,
+			"label":"third label",
+			"content":"third content"
+		}]
+}
