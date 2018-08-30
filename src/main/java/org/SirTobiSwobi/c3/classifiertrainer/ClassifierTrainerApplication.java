@@ -2,8 +2,11 @@ package org.SirTobiSwobi.c3.classifiertrainer;
 
 import javax.ws.rs.client.Client;
 
+import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 import org.SirTobiSwobi.c3.classifiertrainer.health.ConfigHealthCheck;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.CategoriesResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.CategoryResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
@@ -35,7 +38,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		/*
 		 * Initializing data structures
 		 */
-		DocumentManager docMan =  new DocumentManager();
+		DocumentManager docMan = new DocumentManager();
+		CategoryManager catMan = new CategoryManager(); 
 		
 		/*
 		 * Initializing HTTP client
@@ -50,6 +54,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final MetadataResource metadata = new MetadataResource(configuration);
 		final DocumentsResource documents = new DocumentsResource(docMan,client);
 		final DocumentResource document = new DocumentResource(docMan,client);
+		final CategoriesResource categories = new CategoriesResource(catMan);
+		final CategoryResource category = new CategoryResource(catMan);
 		
 		/*
 		 * Initializing health checks
@@ -65,6 +71,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(metadata);
 		environment.jersey().register(documents);
 		environment.jersey().register(document);
+		environment.jersey().register(categories);
+		environment.jersey().register(category);
 		
 		
 	}

@@ -15,3 +15,4 @@ Version change log:
 - 0.1.4: implementing GET /documents to get all documents. 
 - 0.2.0: finished implementing all /documents/$x and /documents operations. /categories/$x under development.
 - 0.3.0: Found missing feature to download document from online source. Breaking API compability to add URL. Therefore new version for categories/$x
+- 0.3.1: /categories and /categories/$x working including unit tests. WEB GUI under development.
