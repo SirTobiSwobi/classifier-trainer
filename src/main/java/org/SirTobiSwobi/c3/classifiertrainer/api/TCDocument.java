@@ -8,16 +8,18 @@ public class TCDocument {
 	private long id;
 	private String label;
 	private String content;
+	private String url;
 	
 	public TCDocument(){
 		//Jackson deserialization
 	}
 	
 	
-	public TCDocument(long id, String label, String content) {
+	public TCDocument(long id, String label, String content, String url) {
 		this.content = content;
 		this.label = label;
 		this.id = id;
+		this.url = url;
 	}
 	
 	@JsonProperty
@@ -34,5 +36,10 @@ public class TCDocument {
 	public String getContent() {
 		return content;
 	}
+
+	@JsonProperty
+	public String getUrl() {
+		return url;
+	}	
 
 }

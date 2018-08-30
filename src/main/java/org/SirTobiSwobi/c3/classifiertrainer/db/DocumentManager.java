@@ -31,6 +31,12 @@ public class DocumentManager {
 		documents.setContent(doc,id);
 	}
 	
+	public synchronized void addDocumentWithoutId(String label, String content, String url){
+		long id = documents.getMaxId()+1;
+		Document doc = new Document(id,label,content,url);
+		documents.setContent(doc,id);
+	}
+	
 	public void deleteDocument(long id){
 		documents.deleteNode(id);
 	}

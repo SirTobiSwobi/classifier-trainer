@@ -13,3 +13,9 @@ outputFormat: Document to category likelihoods
 configuration: Will be the concatenation of other actual config parameters.
 configOptions: Depend on the algorithm. This includes all hyperparameters of the service.
 archetype: Classifier Trainer
+#Jersey client settings
+jerseyClient:
+  #The maximum idle time for a connection
+  timeout: 512 ms
+  #Work queue size for each client thread. Additional threads only spawn if the queue exceeds this.
+  workQueueSize: 16

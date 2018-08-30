@@ -26,7 +26,7 @@ public class TCDocumentsTest {
 		TCDocument[] TCdocumentArray = new TCDocument[documents.length];
 		for(int i=0; i<documents.length;i++){
 			Document doc = documents[i];
-			TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent());
+			TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent(),doc.getURL());
 			TCdocumentArray[i]=TCdoc;
 		}
 		TCDocuments TCdocuments = new TCDocuments(TCdocumentArray);

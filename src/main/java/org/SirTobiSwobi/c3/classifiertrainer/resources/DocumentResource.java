@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,9 +25,11 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 public class DocumentResource {
 	
 	private DocumentManager manager;
+	private Client client;
 	
-	public DocumentResource(DocumentManager manager){
+	public DocumentResource(DocumentManager manager, Client client){
 		this.manager=manager;
+		this.client=client;
 	}
 	
 	@GET
@@ -34,7 +37,8 @@ public class DocumentResource {
 	public TCDocument getDocument(@PathParam("doc") long doc){
 		TCDocument output = new TCDocument(manager.getByAddress(doc).getId(),
 				manager.getByAddress(doc).getLabel(),
-				manager.getByAddress(doc).getContent());
+				manager.getByAddress(doc).getContent(),
+				manager.getByAddress(doc).getURL());
 		return output;
 		
 	}
@@ -45,7 +49,14 @@ public class DocumentResource {
 			Response response = Response.status(400).build();
 			return response;
 		}
-		manager.addDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
+		if(document.getUrl().length()>0&&document.getUrl().startsWith("http")){
+			//downloading content from URL
+			String content = client.target(document.getUrl()).request().get(String.class);
+			Document newDoc = new Document(document.getId(),document.getLabel(),content,document.getUrl());
+			manager.addDocument(newDoc);
+		}else{
+			manager.addDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
+		}
 		Response response = Response.ok().build();
 		return response;
 	}

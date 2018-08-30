@@ -16,7 +16,7 @@ public class TCDocumentTest {
 	public void serializesToJSON() throws Exception {
 		
 		
-		final TCDocument generated = new TCDocument(0,"first label","first content");
+		final TCDocument generated = new TCDocument(0,"first label","first content","");
 		final String expected = MAPPER.writeValueAsString(MAPPER.readValue(fixture("fixtures/TCDocument.json"), TCDocument.class));
 		
 		assertThat(MAPPER.writeValueAsString(generated)).isEqualTo(expected);

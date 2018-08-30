@@ -150,7 +150,12 @@ public class AVLTree<T> {
 	}
 	
 	public long getMaxId(){
-		return root.getMaxId();
+		if(root==null){
+			return 0;
+		}else{
+			return root.getMaxId();
+		}
+		
 	}
 	
 	public synchronized void deleteNode(long id){

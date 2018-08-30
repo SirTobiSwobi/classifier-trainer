@@ -1,7 +1,13 @@
 package org.SirTobiSwobi.c3.classifiertrainer;
 
 import io.dropwizard.Configuration;
+import io.dropwizard.client.JerseyClientConfiguration;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class ClassifierTrainerConfiguration extends Configuration {
@@ -22,6 +28,11 @@ public class ClassifierTrainerConfiguration extends Configuration {
 	private String configOptions;
 	@NotEmpty
 	private String archetype;
+	
+	@Valid
+	@NotNull
+	private JerseyClientConfiguration jerseyClientConfiguration = new JerseyClientConfiguration();
+	
 
 	@JsonProperty
 	public String getName() {
@@ -102,5 +113,10 @@ public class ClassifierTrainerConfiguration extends Configuration {
 	public void setArchetype(String archetype) {
 		this.archetype = archetype;
 	}
+	
+	 @JsonProperty("jerseyClient")
+	    public JerseyClientConfiguration getJerseyClientConfiguration() {
+	        return jerseyClientConfiguration;
+	    }
 	
 }

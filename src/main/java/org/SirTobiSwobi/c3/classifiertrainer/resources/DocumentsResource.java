@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,29 +23,52 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 public class DocumentsResource {
 	
 	private DocumentManager manager;
+	private Client client;
 
-	public DocumentsResource(DocumentManager manager) {
+	public DocumentsResource(DocumentManager manager, Client client) {
 		super();
 		this.manager = manager;
+		this.client = client;
 	}
 	
 	@POST
 	public Response addDocument(@NotNull @Valid TCDocuments documents){
-		if(documents.getDocuments().length==1){
-			TCDocument doc=documents.getDocuments()[0];
-			if(doc.getId()>0){
-				manager.addDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
-			}else{
-				manager.addDocumentWithoutId(doc.getLabel(), doc.getContent());
-			}
-		}else if(documents.getDocuments().length>=1){
+		if(documents.getDocuments().length==0){
+			Response response = Response.status(400).build();
+			return response;
+		}
+		else if(documents.getDocuments().length>0){
 			for(int i=0; i<documents.getDocuments().length; i++){
-				manager.addDocument(new Document(documents.getDocuments()[i].getId(),documents.getDocuments()[i].getLabel(),documents.getDocuments()[i].getContent()));
+				TCDocument doc=documents.getDocuments()[i];
+				add(doc);
 			}
 		}
 		
 		Response response = Response.ok().build();
 		return response;
+	}
+	
+	
+	private void add(TCDocument doc){
+		if(doc.getId()>=0){
+			if(doc.getUrl().length()>0&&doc.getUrl().startsWith("http")){
+				//downloading content from URL
+				String content = client.target(doc.getUrl()).request().get(String.class);
+				Document newDoc = new Document(doc.getId(),doc.getLabel(),content,doc.getUrl());
+				manager.addDocument(newDoc);
+			}else{
+				manager.addDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
+			}
+		}else{
+			if(doc.getUrl().length()>0&&doc.getUrl().startsWith("http")){
+				//downloading content from URL
+				String content = client.target(doc.getUrl()).request().get(String.class);
+				manager.addDocumentWithoutId(doc.getLabel(), content, doc.getUrl());
+			}else{
+				manager.addDocumentWithoutId(doc.getLabel(), doc.getContent());
+			}
+			
+		}
 	}
 	
 	@GET
@@ -53,7 +77,7 @@ public class DocumentsResource {
 		TCDocument[] TCdocumentArray = new TCDocument[documents.length];
 		for(int i=0; i<documents.length;i++){
 			Document doc = documents[i];
-			TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent());
+			TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent(),doc.getURL());
 			TCdocumentArray[i]=TCdoc;
 		}
 		TCDocuments TCdocuments;
