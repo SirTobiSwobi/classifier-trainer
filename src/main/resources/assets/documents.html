@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/documents</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script>
+			
+			$(document).ready(function(){
+				$("#createForm").hide();
+				$("#uploadForm").hide();
+				$("#deleteConfirm").hide();
+				$.getJSON("../documents",function(json){
+					//console.log(json.documents[0].label);
+					if(json.documents==null){
+						$("#docList").append("<h3>There are currently no documents in this microservice. You can add one</h3>");
+					}else{
+						for (var i=0; i< json.documents.length; i++){
+							$("#docList").append("<li><a href=\"document.html?id="+json.documents[i].id+"\">/documents/"+json.documents[i].id+" - "+json.documents[i].label+"</a></li>");
+						}
+					}
+				});
+				
+				$("#read").click(function() {
+					$("#result").empty()
+					$("#createForm").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#docList").empty();
+					$("#docList").append("<h2>Available documents:</h2>");
+					$.getJSON("../documents",function(json){	
+						if(json.documents==null){
+							$("#docList").append("<h3>There are currently no documents in this microservice. You can add one</h3>");
+						}else{
+							for (var i=0; i< json.documents.length; i++){
+								$("#docList").append("<li><a href=\"document.html?id="+json.documents[i].id+"\">/documents/"+json.documents[i].id+" - "+json.documents[i].label+"</a></li>");
+							}
+						}
+					});
+					$("#docList").show("fast");
+				});
+			
+				$("#create").click(function() {
+					$("#result").empty()
+					$("#docList").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#createForm").show("fast");
+				});
+				
+				$("#upload").click(function() {
+					$("#result").empty()
+					$("#docList").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#uploadForm").show("fast");
+				});
+				
+				$("#delete").click(function() {
+					$("#result").empty()
+					$("#docList").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").show("fast");
+				});
+				
+				
+				$("#createF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#createF").serializeArray();
+					//console.log(form);
+					var json = "{ \"documents\":[{\"id\":"+form[0].value+
+						",\"label\":\""+form[1].value+
+						"\",\"content\":\""+form[2].value+
+						"\",\"url\":\""+form[3].value+"\"}]}";
+					//console.log(json);
+					
+					var url="../documents";
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'POST',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#uploadF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#uploadF").serializeArray();
+					//console.log(form);
+					var json = form[0].value;
+					//console.log(json);
+					
+					var url="../documents";
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'POST',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#deleteF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Deleting data");
+					var form = $("#deleteF").serializeArray();
+					//console.log(form);
+					var json="";
+					if(form[0].value=="delete"){
+						var url="../documents";
+					
+					
+						$.ajax({
+	    					url: url,
+	    					headers: {
+	    					    'Accept': 'application/json',
+						        'Content-Type':'application/json'
+						    },
+						    method: 'DELETE',
+						    dataType: 'json',
+						    data: json,
+						    success: function(data){
+						    	console.log('something worked');
+	     					 	console.log('succes: '+data);
+	    					}
+	 					 });
+					}
+					
+					
+					
+				});
+				
+			
+			});
+			
+		</script>
+	</head>
+<body>
+	<h1>Manage documents:</h1>
+	<button id="read">Read documents</button>
+	<button id="create">Create document</button>
+	<button id="upload">Upload document collection JSON</button>
+	<button id="delete">Delete all documents</button>
+	<div id="docList"><h2>Available documents:</h2></div>
+	<div id="createForm">
+		<h2>Create a document</h2>
+		<p>Note: The URL and the textarea are mutually exclusive. If there is a URL, the content from that URL will be added. This overwrites anything in the textarea.</p>
+		<form action="/" id="createF">
+			<input type="text" name="id" placeholder="-1 if you don't know the ID"><br>
+			<input type="text" name="label" placeholder="Label of the text document"><br>
+			<textarea name="content" cols="35" rows="4">Your Text</textarea><br>
+			<input type="url" name="url" placeholder="http://here.is.your.text.com/text"><br>
+			<input type="submit" value="Upload document">
+		</form>	
+	</div>
+	<div id="uploadForm">
+		<h2>Upload multiple documents using a JSON file</h2>
+		<form action="/" id="uploadF">
+			<textarea name="content" cols="70" rows="20">
+{
+	"documents":[
+		{
+			"id":0,
+			"label":"first label",
+			"content":"first content",
+			"url":""
+		},
+		{
+			"id":1,
+			"label":"second label",
+			"content":"second content",
+			"url":""
+		},
+		{
+			"id":2,
+			"label":"third label",
+			"content":"third content",
+			"url":""
+		}]
+}
+			</textarea><br>
+			<input type="submit" value="Upload documents">
+		</form>	
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete all documents in this microservice</h2>
+		<p>Note: To delete everything, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete all documents">
+		</form>	
+	</div>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package org.SirTobiSwobi.c3.classifiertrainer.resources;
 
+//import java.net.URI;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -11,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.UriBuilder;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocument;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocuments;
@@ -43,8 +46,8 @@ public class DocumentsResource {
 				add(doc);
 			}
 		}
-		
-		Response response = Response.ok().build();
+		//URI location = UriBuilder.fromPath("/documents").build();
+		Response response = Response.status(201).build();
 		return response;
 	}
 	

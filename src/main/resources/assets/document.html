@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/documents</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script>
+
+			$(document).ready(function(){
+				var pageURL = window.location.search.substring(1);
+				var urlVariables = pageURL.split('&');
+				var docId;
+				for(var i=0; i< urlVariables.length; i++){
+					var paramName = urlVariables[i].split('=');
+					if(paramName[0] == "id"){
+						docId = paramName[1];
+					}
+				}
+				$("#header").append(docId);
+				$("#createForm").hide();
+				$("#deleteConfirm").hide();
+				$.getJSON("../documents/"+docId,function(json){
+					//console.log("accessing ../documents/"+docId);
+					//console.log(json);
+					if(json==null){
+						$("#docList").append("<h3>The document with id "+docId+" does not exist. You can create it</h3>");
+					}else{
+						$("#docList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
+						$("#docList").append("<p>URL: "+json.url+"</p>");
+						$("#docList").append("<p>");
+						$("#docList").append(json.content);
+						$("#docList").append("</p>");
+					}
+				});
+				
+				$("#read").click(function() {
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#docList").empty();
+					$("#docList").append("<h2>Available document:</h2>");
+					$.getJSON("../documents/"+docId,function(json){
+						if(json==null){
+							$("#docList").append("<h3>The document with id "+docId+" does not exist. You can create it</h3>");
+						}else{
+							$("#docList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
+							$("#docList").append("<p>URL: "+json.url+"</p>");
+							$("#docList").append("<p>");
+							$("#docList").append(json.content);
+							$("#docList").append("</p>");
+						}
+					});
+					$("#docList").show("fast");
+				});
+			
+				$("#create").click(function() {
+					console.log("loading form");
+					$.getJSON("../documents/"+docId,function(json){
+						if(json==null){
+							//nothing but empty fields
+						}else{
+							$("#id").val(json.id);
+							$("#label").val(json.label);
+							$("#content").empty();
+							$("#content").append(json.content);
+							$("#url").val(json.url);
+						}
+					});
+				
+				
+					$("#result").empty()
+					$("#docList").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#createForm").show("fast");
+				});
+				
+				
+				
+				$("#delete").click(function() {
+					$("#result").empty()
+					$("#docList").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").show("fast");
+				});
+				
+				
+				$("#createF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#createF").serializeArray();
+					//console.log(form);
+					var json = "{\"id\":"+form[0].value+
+						",\"label\":\""+form[1].value+
+						"\",\"content\":\""+form[2].value+
+						"\",\"url\":\""+form[3].value+"\"}";
+					console.log(json);
+					
+					var url="../documents/"+docId;
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'PUT',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#uploadF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#uploadF").serializeArray();
+					//console.log(form);
+					var json = form[0].value;
+					//console.log(json);
+					
+					var url="../documents";
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'POST',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#deleteF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Deleting data");
+					var form = $("#deleteF").serializeArray();
+					//console.log(form);
+					var json="";
+					if(form[0].value=="delete"){
+						var url="../documents/"+docId;
+					
+					
+						$.ajax({
+	    					url: url,
+	    					headers: {
+	    					    'Accept': 'application/json',
+						        'Content-Type':'application/json'
+						    },
+						    method: 'DELETE',
+						    dataType: 'json',
+						    data: json,
+						    success: function(data){
+						    	console.log('something worked');
+	     					 	console.log('succes: '+data);
+	    					}
+	 					 });
+					}
+					
+					
+					
+				});
+				
+			
+			});
+			
+		</script>
+	</head>
+<body>
+	<h1 id="header">Manage document </h1>
+	<button id="read">Read document</button>
+	<button id="create">Create or update document</button>
+	<button id="delete">Delete document</button>
+	<a href="documents.html"><button>Back to /documents</button></a>
+	<div id="docList">
+		<h2>Available document:</h2>
+	</div>
+	<div id="createForm">
+		<h2>Create a document</h2>
+		<p>Note: The URL and the textarea are mutually exclusive. If there is a URL, the content from that URL will be added. This overwrites anything in the textarea.</p>
+		<form action="/" id="createF">
+			<input type="text" name="id" id="id" placeholder="-1 if you don't know the ID"><br>
+			<input type="text" name="label" id="label" placeholder="Label of the text document"><br>
+			<textarea name="content" id="content" cols="35" rows="4">Your Text</textarea><br>
+			<input type="url" name="url" id="url" placeholder="http://here.is.your.text.com/text"><br>
+			<input type="submit" value="Upload document">
+		</form>	
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete this document</h2>
+		<p>Note: To delete the document, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete all documents">
+		</form>	
+	</div>
+</body>
+</html>
