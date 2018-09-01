@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/categories</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script>
+			
+			$(document).ready(function(){
+				$("#createForm").hide();
+				$("#uploadForm").hide();
+				$("#deleteConfirm").hide();
+				$.getJSON("../categories",function(json){
+					
+					if(json.categories==null){
+						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
+					}else{
+						for (var i=0; i< json.categories.length; i++){
+							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+"</a></li>");
+						}
+					}
+				});
+				
+				$("#read").click(function() {
+					$("#result").empty()
+					$("#createForm").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#catList").empty();
+					$("#catList").append("<h2>Available categories:</h2>");
+					$.getJSON("../categories",function(json){
+					
+					if(json.categories==null){
+						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
+					}else{
+						for (var i=0; i< json.categories.length; i++){
+							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+"</a></li>");
+							}
+						}
+					});
+					$("#catList").show("fast");
+				});
+			
+				$("#create").click(function() {
+					$("#result").empty()
+					$("#catList").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#createForm").show("fast");
+				});
+				
+				$("#upload").click(function() {
+					$("#result").empty()
+					$("#catList").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#uploadForm").show("fast");
+				});
+				
+				$("#delete").click(function() {
+					$("#result").empty()
+					$("#catList").hide("slow");
+					$("#uploadForm").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").show("fast");
+				});
+				
+				
+				$("#createF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#createF").serializeArray();
+					//console.log(form);
+					var json = "{ \"categories\":[{\"id\":"+form[0].value+
+						",\"label\":\""+form[1].value;
+					json = json+"\",\"description\":\"";
+					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ")+"\"}]}";
+					console.log(json);
+					
+					var url="../categories";
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'POST',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#uploadF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#uploadF").serializeArray();
+					//console.log(form);
+					var json = form[0].value;
+					//console.log(json);
+					
+					var url="../categories";
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'POST',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#deleteF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Deleting data");
+					var form = $("#deleteF").serializeArray();
+					//console.log(form);
+					var json="";
+					if(form[0].value=="delete"){
+						var url="../categories";
+					
+					
+						$.ajax({
+	    					url: url,
+	    					headers: {
+	    					    'Accept': 'application/json',
+						        'Content-Type':'application/json'
+						    },
+						    method: 'DELETE',
+						    dataType: 'json',
+						    data: json,
+						    success: function(data){
+						    	console.log('something worked');
+	     					 	console.log('succes: '+data);
+	    					}
+	 					 });
+					}
+					
+					
+					
+				});
+				
+			
+			});
+			
+		</script>
+	</head>
+<body>
+	<h1>Manage categories:</h1>
+	<button id="read">Read categories</button>
+	<button id="create">Create category</button>
+	<button id="upload">Upload category collection JSON</button>
+	<button id="delete">Delete all categories</button>
+	<a href="index.html"><button>Back to overview</button></a>
+	<div id="catList"><h2>Available categories:</h2></div>
+	<div id="createForm">
+		<h2>Create a category</h2>
+		<form action="/" id="createF">
+			<input type="text" name="id" placeholder="-1 if you don't know the ID"><br>
+			<input type="text" name="label" placeholder="Label of the text document"><br>
+			<input type="text" name="description" placeholder="Description of the category"><br>
+			<input type="submit" value="Upload category">
+		</form>	
+	</div>
+	<div id="uploadForm">
+		<h2>Upload multiple categories using a JSON file</h2>
+		<form action="/" id="uploadF">
+			<textarea name="content" cols="70" rows="20">
+{
+	"categories":[
+		{
+			"id":0,
+			"label":"first label",
+			"description":"first description"
+		},
+		{
+			"id":1,
+			"label":"second label",
+			"description":"second description"
+		},
+		{
+			"id":2,
+			"label":"third label",
+			"description":"third description"
+		}]
+}
+			</textarea><br>
+			<input type="submit" value="Upload categories">
+		</form>	
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete all categories in this microservice</h2>
+		<p>Note: To delete everything, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete all categories">
+		</form>	
+	</div>
+</body>
+</html>

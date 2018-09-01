@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/category</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script>
+
+			$(document).ready(function(){
+				var pageURL = window.location.search.substring(1);
+				var urlVariables = pageURL.split('&');
+				var catId;
+				for(var i=0; i< urlVariables.length; i++){
+					var paramName = urlVariables[i].split('=');
+					if(paramName[0] == "id"){
+						catId = paramName[1];
+					}
+				}
+				$("#header").append(catId);
+				$("#createForm").hide();
+				$("#deleteConfirm").hide();
+				$.getJSON("../categories/"+catId,function(json){
+					//console.log("accessing ../categories/"+catId);
+					//console.log(json);
+					if(json==null){
+						$("#catList").append("<h3>The category with id "+catId+" does not exist. You can create it</h3>");
+					}else{
+						$("#catList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
+						$("#catList").append("<p>Description: "+json.description+"</p>");
+						
+					}
+				});
+				
+				$("#read").click(function() {
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#catList").empty();
+					$("#catList").append("<h2>Available document:</h2>");
+					$.getJSON("../categories/"+catId,function(json){
+					//console.log("accessing ../categories/"+catId);
+						//console.log(json);
+						if(json==null){
+							$("#catList").append("<h3>The category with id "+catId+" does not exist. You can create it</h3>");
+						}else{
+							$("#catList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
+							$("#catList").append("<p>Description: "+json.description+"</p>");
+							
+						}
+					});
+					$("#catList").show("fast");
+				});
+			
+				$("#create").click(function() {
+					console.log("loading form");
+					$.getJSON("../categories/"+catId,function(json){
+						console.log(json);
+						if(json==null){
+							//nothing but empty fields
+						}else{
+							$("#id").val(json.id);
+							$("#label").val(json.label);
+							$("#description").val(json.description);
+						}
+					});
+				
+				
+					$("#result").empty()
+					$("#catList").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#createForm").show("fast");
+				});
+				
+				
+				
+				$("#delete").click(function() {
+					$("#result").empty()
+					$("#catList").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").show("fast");
+				});
+				
+				
+				$("#createF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Uploading data");
+					var form = $("#createF").serializeArray();
+					//console.log(form);
+					var json = "{ {\"id\":"+form[0].value+
+						",\"label\":\""+form[1].value;
+					json = json+"\",\"description\":\"";
+					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ");;
+					json = json+"\"}";
+					console.log(json);
+					
+					var url="../categories/"+catId;
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'PUT',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#deleteF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Deleting data");
+					var form = $("#deleteF").serializeArray();
+					//console.log(form);
+					var json="";
+					if(form[0].value=="delete"){
+						var url="../categories/"+catId;
+					
+					
+						$.ajax({
+	    					url: url,
+	    					headers: {
+	    					    'Accept': 'application/json',
+						        'Content-Type':'application/json'
+						    },
+						    method: 'DELETE',
+						    dataType: 'json',
+						    data: json,
+						    success: function(data){
+						    	console.log('something worked');
+	     					 	console.log('succes: '+data);
+	    					}
+	 					 });
+					}
+					
+					
+					
+				});
+				
+			
+			});
+			
+		</script>
+	</head>
+<body>
+	<h1 id="header">Manage category </h1>
+	<button id="read">Read category</button>
+	<button id="create">Create or update category</button>
+	<button id="delete">Delete category</button>
+	<a href="categories.html"><button>Back to /categories</button></a>
+	<div id="catList">
+		<h2>Available category:</h2>
+	</div>
+	<div id="createForm">
+		<h2>Create a category</h2>
+		<form action="/" id="createF">
+			<input type="text" name="id" id="id" placeholder="-1 if you don't know the ID"><br>
+			<input type="text" name="label" id="label" placeholder="Label of the text document"><br>
+			<input type="text" name="description" id="description" placeholder="Description of the category"><br>
+			<input type="submit" value="Upload category">
+		</form>	
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete this document</h2>
+		<p>Note: To delete the category, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete category">
+		</form>	
+	</div>
+</body>
+</html>

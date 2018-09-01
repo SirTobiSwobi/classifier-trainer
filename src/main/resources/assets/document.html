@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>/documents</title>
+		<title>/document</title>
 		<script src="jquery-3.3.1.min.js"></script>
 		<script>
 
@@ -87,11 +87,11 @@
 					//console.log("Uploading data");
 					var form = $("#createF").serializeArray();
 					//console.log(form);
-					var json = "{ \"documents\":[{\"id\":"+form[0].value+
+					var json = "{{\"id\":"+form[0].value+
 						",\"label\":\""+form[1].value;
 					json = json+"\",\"content\":\"";
 					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ");;
-					json = json+"\",\"url\":\""+form[3].value+"\"}]}";
+					json = json+"\",\"url\":\""+form[3].value+"\"}";
 					console.log(json);
 					
 					var url="../documents/"+docId;
@@ -104,34 +104,6 @@
 					        'Content-Type':'application/json'
 					    },
 					    method: 'PUT',
-					    dataType: 'json',
-					    data: json,
-					    success: function(data){
-					    	console.log('something worked');
-     					 	console.log('succes: '+data);
-    					}
- 					 });
-					
-				});
-				
-				$("#uploadF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Uploading data");
-					var form = $("#uploadF").serializeArray();
-					//console.log(form);
-					var json = form[0].value;
-					//console.log(json);
-					
-					var url="../documents";
-					
-					
-					$.ajax({
-    					url: url,
-    					headers: {
-    					    'Accept': 'application/json',
-					        'Content-Type':'application/json'
-					    },
-					    method: 'POST',
 					    dataType: 'json',
 					    data: json,
 					    success: function(data){
@@ -202,7 +174,7 @@
 		<p>Note: To delete the document, type delete into the field and press the delete button.</p>
 		<form action="/" id="deleteF">
 			<input type="text" name="delete" placeholder="delete"><br>
-			<input type="submit" value="Delete all documents">
+			<input type="submit" value="Delete document">
 		</form>	
 	</div>
 </body>
