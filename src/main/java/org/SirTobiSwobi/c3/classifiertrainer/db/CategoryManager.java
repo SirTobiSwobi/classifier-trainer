@@ -5,7 +5,18 @@ import java.util.ArrayList;
 public class CategoryManager {
 	
 	AVLTree<Category> categories;
+	RelationshipManager relationshipManager;
 	
+	
+
+	public RelationshipManager getRelationshipManager() {
+		return relationshipManager;
+	}
+
+	public void setRelationshipManager(RelationshipManager relationshipManager) {
+		this.relationshipManager = relationshipManager;
+	}
+
 	public CategoryManager(){
 		categories = new AVLTree<Category>();
 	}
@@ -18,7 +29,7 @@ public class CategoryManager {
 		return categories.getContent(address);
 	}
 	
-	public void addCategory(Category category){
+	public void setCategory(Category category){
 		categories.setContent(category, category.getId());
 	}
 
@@ -30,6 +41,9 @@ public class CategoryManager {
 	
 	public void deleteCategory(long id){
 		categories.deleteNode(id);
+		if(relationshipManager!=null){
+			//toDo: Implement automated deleting of all relationships containing this category
+		}
 	}
 	
 	public Category[] getCategoryArray(){

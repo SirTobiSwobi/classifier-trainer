@@ -9,13 +9,13 @@ public class DocumentManagerTest {
 	@Test
 	public void test() {
 		DocumentManager manager = new DocumentManager();
-		manager.addDocument(new Document(0,"first label","first content"));
-		manager.addDocument(new Document(1,"second label","second content"));
-		manager.addDocument(new Document(2,"third label","third content"));
+		manager.setDocument(new Document(0,"first label","first content"));
+		manager.setDocument(new Document(1,"second label","second content"));
+		manager.setDocument(new Document(2,"third label","third content"));
 		manager.addDocumentWithoutId("fourth label", "fourth content");
-		manager.addDocument(new Document(200,"200th label","200th content"));
-		manager.addDocument(new Document(199,"199th label","199th content"));
-		manager.addDocument(new Document(198,"198th label","198th content"));
+		manager.setDocument(new Document(200,"200th label","200th content"));
+		manager.setDocument(new Document(199,"199th label","199th content"));
+		manager.setDocument(new Document(198,"198th label","198th content"));
 		manager.addDocumentWithoutId("201st label", "201st content");
 		
 		assertTrue("Document amount should be 3",manager.getSize()==8);

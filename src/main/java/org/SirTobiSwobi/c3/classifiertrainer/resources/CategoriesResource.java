@@ -37,7 +37,7 @@ public class CategoriesResource {
 			for(int i=0; i<categories.getCategories().length; i++){
 				TCCategory cat=categories.getCategories()[i];
 				if(cat.getId()>=0){
-					manager.addCategory(new Category(cat.getId(),cat.getLabel(),cat.getDescription()));
+					manager.setCategory(new Category(cat.getId(),cat.getLabel(),cat.getDescription()));
 				}else{			
 					manager.addCategoryWithoutId(cat.getLabel(), cat.getDescription());
 				}

@@ -63,6 +63,16 @@ public class AVLTreeTest {
 			tree.setContent(""+i, i);
 		}
 		assertTrue("tree height should be 11 but is "+tree.getHeight()+" root: "+tree.getRoot().getIndex(),tree.getHeight()==11);
+		
+		tree = new AVLTree<String>();
+		tree.setContent("2", 2);
+		tree.setContent("4",4);
+		tree.setContent("1", 1);
+		assertTrue("tree should not contain 3 but it does.", !tree.containsId(3));
+		assertTrue("tree should contain 2 but it doesn't.", tree.containsId(2));
+		assertTrue("tree should contain 4 but it doesn't.", tree.containsId(4));
+		assertTrue("tree should contain 1 but it doesn't.", tree.containsId(1));
+		assertTrue("tree should not contain 5 but it does.", !tree.containsId(5));
 	}
 	
 	private void testDelete(AVLTree<String> tree, long id){

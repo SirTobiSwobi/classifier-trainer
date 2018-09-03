@@ -5,6 +5,7 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/MetadataResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/CategoriesResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/RelationShipType.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTree.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/CategoryManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.java
@@ -12,8 +13,10 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Category.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/health/ConfigHealthCheck.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerApplication.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategories.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Document.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Relationship.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategory.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerConfiguration.java

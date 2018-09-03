@@ -53,9 +53,9 @@ public class DocumentResource {
 			//downloading content from URL
 			String content = client.target(document.getUrl()).request().get(String.class);
 			Document newDoc = new Document(document.getId(),document.getLabel(),content,document.getUrl());
-			manager.addDocument(newDoc);
+			manager.setDocument(newDoc);
 		}else{
-			manager.addDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
+			manager.setDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
 		}
 		Response response = Response.ok().build();
 		return response;

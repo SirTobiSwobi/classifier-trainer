@@ -18,3 +18,4 @@ Version change log:
 - 0.3.1: /categories and /categories/$x working including unit tests. WEB GUI under development.
 - 0.3.2: JSON doesn't work when one value field has multiple lines. WEB GUI preventing this finished.
 - 0.3.3: finished WEB GUI for /categories and /categoires/$x
+- 0.3.4: implementing /relationships and /relationships/$x 

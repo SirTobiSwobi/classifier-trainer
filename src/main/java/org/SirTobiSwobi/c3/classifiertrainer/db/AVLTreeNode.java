@@ -51,6 +51,18 @@ public class AVLTreeNode<T> {
 		return index;
 	}
 	
+	public boolean containsId(long id){
+		boolean contains = false;
+		if(this.index==id){
+			return true;
+		}else if(id < this.index && left!=null){
+			contains=left.containsId(id);
+		}else if(id > this.index && right!=null){
+			contains=right.containsId(id);
+		}	
+		return contains;
+	}
+	
 	protected void getAllContent(ArrayList<T> allContent){
 		if(left!=null){
 			left.getAllContent(allContent);

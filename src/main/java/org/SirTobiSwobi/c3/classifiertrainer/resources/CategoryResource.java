@@ -45,14 +45,14 @@ public class CategoryResource {
 			return response;
 		}
 		
-		manager.addCategory(new Category(category.getId(),category.getLabel(),category.getDescription()));
+		manager.setCategory(new Category(category.getId(),category.getLabel(),category.getDescription()));
 
 		Response response = Response.ok().build();
 		return response;
 	}
 	
 	@DELETE
-	public Response deleteDocument(@PathParam("cat") long cat){
+	public Response deleteCategory(@PathParam("cat") long cat){
 		manager.deleteCategory(cat);
 		Response response = Response.ok().build();
 		return response;

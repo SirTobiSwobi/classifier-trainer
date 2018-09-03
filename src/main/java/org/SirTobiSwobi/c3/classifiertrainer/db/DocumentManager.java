@@ -21,7 +21,7 @@ public class DocumentManager {
 		return documents.getContent(address);
 	}
 	
-	public void addDocument(Document document){
+	public void setDocument(Document document){
 		documents.setContent(document, document.getId());
 	}
 

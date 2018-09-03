@@ -19,9 +19,9 @@ public class TCCategoriesTest {
 	public void serializesToJSON() throws Exception {
 		
 		CategoryManager catMan =  new CategoryManager();
-		catMan.addCategory(new Category(0,"first category","first description"));
-		catMan.addCategory(new Category(1,"second category","second description"));
-		catMan.addCategory(new Category(2,"third category","third description"));
+		catMan.setCategory(new Category(0,"first category","first description"));
+		catMan.setCategory(new Category(1,"second category","second description"));
+		catMan.setCategory(new Category(2,"third category","third description"));
 		Category[] categories = catMan.getCategoryArray();
 		TCCategory[] TCcategoryArray = new TCCategory[categories.length];
 		for(int i=0; i<categories.length;i++){

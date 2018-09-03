@@ -19,9 +19,9 @@ public class TCDocumentsTest {
 	public void serializesToJSON() throws Exception {
 		
 		DocumentManager docMan =  new DocumentManager();
-		docMan.addDocument(new Document(0,"first label","first content"));
-		docMan.addDocument(new Document(1,"second label","second content"));
-		docMan.addDocument(new Document(2,"third label","third content"));
+		docMan.setDocument(new Document(0,"first label","first content"));
+		docMan.setDocument(new Document(1,"second label","second content"));
+		docMan.setDocument(new Document(2,"third label","third content"));
 		Document[] documents = docMan.getDocumentArray();
 		TCDocument[] TCdocumentArray = new TCDocument[documents.length];
 		for(int i=0; i<documents.length;i++){

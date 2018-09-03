@@ -158,6 +158,10 @@ public class AVLTree<T> {
 		
 	}
 	
+	public boolean containsId(long id){
+		return root.containsId(id);
+	}
+	
 	public synchronized void deleteNode(long id){
 		root.deleteNode(id);
 		size--;

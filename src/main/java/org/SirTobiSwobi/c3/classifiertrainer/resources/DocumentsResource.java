@@ -58,9 +58,9 @@ public class DocumentsResource {
 				//downloading content from URL
 				String content = client.target(doc.getUrl()).request().get(String.class);
 				Document newDoc = new Document(doc.getId(),doc.getLabel(),content,doc.getUrl());
-				manager.addDocument(newDoc);
+				manager.setDocument(newDoc);
 			}else{
-				manager.addDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
+				manager.setDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
 			}
 		}else{
 			if(doc.getUrl().length()>0&&doc.getUrl().startsWith("http")){

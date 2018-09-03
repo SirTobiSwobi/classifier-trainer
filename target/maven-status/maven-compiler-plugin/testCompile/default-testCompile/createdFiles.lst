@@ -1,7 +1,8 @@
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoriesTest.class
-org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeTest.class
-org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadataTest.class
-org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoryTest.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentsTest.class
 org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManagerTest.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentTest.class
+org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeTest.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadataTest.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoryTest.class
+org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipManagerTest.class
