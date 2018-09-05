@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
-import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 
 import com.codahale.metrics.annotation.Timed;
@@ -26,20 +25,21 @@ import com.codahale.metrics.annotation.Timed;
 public class RelationshipResource {
 	
 	private CategoryManager catMan;
-	private RelationshipManager relMan;
-	public RelationshipResource(CategoryManager catMan, RelationshipManager relMan) {
-		super();
+	public RelationshipResource(CategoryManager catMan) {
 		this.catMan = catMan;
-		this.relMan = relMan;
 	}
 	
 	@GET
     @Timed
-	public TCRelationship getRelationship(@PathParam("rel") long rel){
-		Relationship relationship = relMan.getByAddress(rel);
-		TCRelationship tcRelationship = new TCRelationship(relationship.getId(),
+	public Response getRelationship(@PathParam("rel") long rel){
+		if(!catMan.containsRelationship(rel)){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		Relationship relationship = catMan.getRelationshipByAddress(rel);
+		TCRelationship output = new TCRelationship(relationship.getId(),
 				relationship.getFrom().getId(), relationship.getTo().getId(), relationship.getType().toString());
-		return tcRelationship;
+		return Response.ok(output).build();
 	}
 	
 	@PUT
@@ -59,7 +59,7 @@ public class RelationshipResource {
 			return response;
 		}
 		
-		relMan.setRelationship(relationship.getId(), relationship.getFromId(), relationship.getToId(), type);
+		catMan.setRelationship(relationship.getId(), relationship.getFromId(), relationship.getToId(), type);
 
 		Response response = Response.ok().build();
 		return response;
@@ -67,7 +67,7 @@ public class RelationshipResource {
 	
 	@DELETE
 	public Response deleteRelationship(@PathParam("rel") long rel){
-		relMan.deleteRelationship(rel);
+		catMan.deleteRelationship(rel);
 		Response response = Response.ok().build();
 		return response;
 	}

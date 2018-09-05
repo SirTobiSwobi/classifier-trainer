@@ -4,21 +4,16 @@ import java.util.ArrayList;
 
 public class CategoryManager {
 	
-	AVLTree<Category> categories;
-	RelationshipManager relationshipManager;
-	
-	
-
-	public RelationshipManager getRelationshipManager() {
-		return relationshipManager;
-	}
-
-	public void setRelationshipManager(RelationshipManager relationshipManager) {
-		this.relationshipManager = relationshipManager;
-	}
+	private AVLTree<Category> categories;
+	private AVLTree<Relationship> relationships;
+	private AVLTree<ArrayList<Relationship>> fromIndex;
+	private AVLTree<ArrayList<Relationship>> toIndex;
 
 	public CategoryManager(){
-		categories = new AVLTree<Category>();
+		this.categories = new AVLTree<Category>();
+		this.relationships = new AVLTree<Relationship>();
+		this.fromIndex = new AVLTree<ArrayList<Relationship>>();
+		this.toIndex = new AVLTree<ArrayList<Relationship>>();
 	}
 	
 	public long getSize(){
@@ -39,11 +34,10 @@ public class CategoryManager {
 		categories.setContent(cat,id);
 	}
 	
-	public void deleteCategory(long id){
+	public synchronized void deleteCategory(long id){
+		long toDelete = categories.getContent(id).getId();
+		deleteAllRelationshipsContaining(toDelete);
 		categories.deleteNode(id);
-		if(relationshipManager!=null){
-			//toDo: Implement automated deleting of all relationships containing this category
-		}
 	}
 	
 	public Category[] getCategoryArray(){
@@ -51,5 +45,135 @@ public class CategoryManager {
 		Category[] catArray = allContent.toArray(new Category[0]);
 		return catArray;
 	}
+	
+	public synchronized void setRelationship(long id, long fromId, long toId, RelationshipType type){
+		assert(categories.containsId(fromId)&&categories.containsId(toId));
+		Relationship relationship = new Relationship(id, categories.getContent(fromId), categories.getContent(toId), type);
+		relationships.setContent(relationship, id);
+		if(fromIndex.getSize()==0){
+			ArrayList<Relationship> newList = new ArrayList<Relationship>();
+			newList.add(relationship);
+			fromIndex.setContent(newList, fromId);
+		}else if(fromIndex.containsId(fromId)){
+			fromIndex.getContent(fromId).add(relationship);
+		}else{
+			ArrayList<Relationship> newList = new ArrayList<Relationship>();
+			newList.add(relationship);
+			fromIndex.setContent(newList, fromId);
+		}
+		if(toIndex.getSize()==0){
+			ArrayList<Relationship> newList = new ArrayList<Relationship>();
+			newList.add(relationship);
+			toIndex.setContent(newList, toId);
+		}else if(toIndex.containsId(toId)&&toIndex.getSize()>0){
+			toIndex.getContent(toId).add(relationship);
+		}else{
+			ArrayList<Relationship> newList = new ArrayList<Relationship>();
+			newList.add(relationship);
+			toIndex.setContent(newList, toId);
+		}
+	};
+	
+	public synchronized void deleteRelationship(long id){
+		Relationship rel = relationships.getContent(id);
+		fromIndex.getContent(rel.getFrom().getId()).remove(rel);
+		if(fromIndex.getContent(rel.getFrom().getId()).isEmpty()){
+			fromIndex.deleteNode(rel.getFrom().getId());
+		}
+		toIndex.getContent(rel.getTo().getId()).remove(rel);
+		if(toIndex.getContent(rel.getTo().getId()).isEmpty()){
+			toIndex.deleteNode(rel.getTo().getId());
+		}
+		relationships.deleteNode(id);
+	}
+	
+	public Relationship getRelationshipByAddress(long relationshipAddress){
+		
+		return relationships.getContent(relationshipAddress);
+	}
+	
+	public synchronized void addRelatonshipWithoutId(long fromId, long toId, RelationshipType type){
+		assert(categories.containsId(fromId)&&categories.containsId(toId));
+		long id = relationships.getMaxId()+1;
+		setRelationship(id, fromId, toId, type);
+	}
+	
+	public long getRelationshipSize(){
+		return relationships.getSize();
+	}
+	
+	public Relationship[] getRelationshipArray(){
+		ArrayList<Relationship> allContent = relationships.toArrayList();
+		Relationship[] relArray = allContent.toArray(new Relationship[0]);
+		return relArray;
+	}
+	
+	public Relationship[] getAllRelationshipsFrom(long fromId){
+		ArrayList<Relationship> allContent = fromIndex.getContent(fromId);
+		Relationship[] relArray;
+		if(allContent!=null){
+			relArray = allContent.toArray(new Relationship[0]);
+		}else {
+			relArray = new Relationship[0];
+		}
+		return relArray;
+	}
+	
+	public Relationship[] getAllRelationshipsTo(long toId){
+		ArrayList<Relationship> allContent = toIndex.getContent(toId);
+		Relationship[] relArray;
+		if(allContent!=null){
+			relArray = allContent.toArray(new Relationship[0]);
+		}else {
+			relArray = new Relationship[0];
+		}
+		
+		return relArray;
+	}
+	
+	public synchronized void deleteAllRelationshipsContaining(long cat){
+		if(toIndex.getContent(cat)!=null){
+			long[] toDelete = new long[toIndex.getContent(cat).size()];
+			for(int i=0;i<toDelete.length;i++){
+				toDelete[i]=toIndex.getContent(cat).get(i).getId();
+			}
+			toIndex.deleteNode(cat);
+			for(int i=0;i<toDelete.length;i++){
+				relationships.deleteNode(toDelete[i]);
+			}
+		}
+		if(fromIndex.getContent(cat)!=null){
+			long[] fromDelete = new long[fromIndex.getContent(cat).size()];
+			for(int i=0;i<fromDelete.length;i++){
+				fromDelete[i]=fromIndex.getContent(cat).get(i).getId();
+			}		
+			fromIndex.deleteNode(cat);
+			for(int i=0;i<fromDelete.length;i++){
+				relationships.deleteNode(fromDelete[i]);
+			}
+		}		
+	}
+	
+	public synchronized void deleteAllCategories(){
+		this.categories = new AVLTree<Category>();
+		this.relationships = new AVLTree<Relationship>();
+		this.fromIndex = new AVLTree<ArrayList<Relationship>>();
+		this.toIndex = new AVLTree<ArrayList<Relationship>>();
+	}
+	
+	public synchronized void deleteAllRelationships(){
+		this.relationships = new AVLTree<Relationship>();
+		this.fromIndex = new AVLTree<ArrayList<Relationship>>();
+		this.toIndex = new AVLTree<ArrayList<Relationship>>();
+	}
+	
+	public boolean containsCategory(long id){
+		return categories.containsId(id);
+	}
+	
+	public boolean containsRelationship(long id){
+		return relationships.containsId(id);
+	}
+
 
 }

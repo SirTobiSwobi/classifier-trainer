@@ -30,11 +30,16 @@ public class CategoryResource {
 	
 	@GET
     @Timed
-	public TCCategory getCategory(@PathParam("cat") long cat){
+	public Response getCategory(@PathParam("cat") long cat){
+		if(!manager.containsCategory(cat)){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
 		TCCategory output = new TCCategory(manager.getByAddress(cat).getId(),
 				manager.getByAddress(cat).getLabel(),
 				manager.getByAddress(cat).getDescription());
-		return output;
+		
+		return Response.ok(output).build();
 		
 	}
 

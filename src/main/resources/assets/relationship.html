@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/relationship</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script>
+
+			$(document).ready(function(){
+				var pageURL = window.location.search.substring(1);
+				var urlVariables = pageURL.split('&');
+				var relId;
+				for(var i=0; i< urlVariables.length; i++){
+					var paramName = urlVariables[i].split('=');
+					if(paramName[0] == "id"){
+						relId = paramName[1];
+					}
+				}
+				$("#header").append(relId);
+				$("#createForm").hide();
+				$("#deleteConfirm").hide();
+				
+				
+				var categoryJSON;
+				
+				$.getJSON("../categories",function(json){
+						categoryJSON = json;
+					}).done(function(){
+						$.getJSON("../relationships/"+relId,function(json){
+							console.log(json);					
+							var fromLabel;
+							var toLabel;
+							for(var j=0; j< categoryJSON.categories.length; j++){
+								if(json.fromId==categoryJSON.categories[j].id){
+									fromLabel = categoryJSON.categories[j].label;
+								}
+								if(json.toId==categoryJSON.categories[j].id){
+									toLabel = categoryJSON.categories[j].label;									}
+							}
+							var appendString = "<table>";
+							appendString = appendString+"<tr><td>Id:</td><td>"+json.id+"</td></tr>";
+							appendString = appendString+"<tr><td>From:</td><td>"+json.fromId+" ("+fromLabel+")</td></tr>";
+							appendString = appendString+"<tr><td>To:</td><td>"+json.toId+" ("+toLabel+")</td></tr>";
+							appendString = appendString+"<tr><td>Type:</td><td>"+json.type+"</td></tr>";
+							appendString = appendString+"</table>";
+							$("#relList").append(appendString);		
+							
+						}).fail(function(){
+							$("#relList").empty();
+							$("#relList").append("<h3>There is currently no category with id "+relId+". You can create it</h3>");
+						})
+				});
+				
+				$("#read").click(function() {
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#relList").empty();
+					$("#relList").append("<h2>Available relationship:</h2>");
+					$.getJSON("../categories",function(json){
+							categoryJSON = json;
+						}).done(function(){
+							$.getJSON("../relationships/"+relId,function(json){
+								console.log(json);					
+								var fromLabel;
+								var toLabel;
+								for(var j=0; j< categoryJSON.categories.length; j++){
+									if(json.fromId==categoryJSON.categories[j].id){
+										fromLabel = categoryJSON.categories[j].label;
+									}
+									if(json.toId==categoryJSON.categories[j].id){
+										toLabel = categoryJSON.categories[j].label;									}
+								}
+								var appendString = "<table>";
+								appendString = appendString+"<tr><td>Id:</td><td>"+json.id+"</td></tr>";
+								appendString = appendString+"<tr><td>From:</td><td>"+json.fromId+" ("+fromLabel+")</td></tr>";
+								appendString = appendString+"<tr><td>To:</td><td>"+json.toId+" ("+toLabel+")</td></tr>";
+								appendString = appendString+"<tr><td>Type:</td><td>"+json.type+"</td></tr>";
+								appendString = appendString+"</table>";
+								$("#relList").append(appendString);		
+								
+							}).fail(function(){
+								$("#relList").empty();
+								$("#relList").append("<h3>There is currently no category with id "+relId+". You can create it</h3>");
+							})
+					});
+					$("#relList").show("fast");
+				});
+			
+				$("#create").click(function() {
+					console.log("loading form");
+					$.getJSON("../categories",function(json){
+							categoryJSON = json;
+						}).done(function(){
+							$.getJSON("../relationships/"+relId,function(json){
+								//console.log(json);
+								//console.log(categoryJSON);
+								var appendFrom="";
+								var appendTo="";
+								for(var j=0; j< categoryJSON.categories.length; j++){
+									appendFrom = appendFrom +"<option value=\""+categoryJSON.categories[j].id+"\"";
+									if(json.fromId==categoryJSON.categories[j].id){
+										appendFrom = appendFrom+" selected";
+									}
+									appendFrom = appendFrom +">"+categoryJSON.categories[j].id+" (";
+									appendFrom = appendFrom +categoryJSON.categories[j].label+")</option>";	
+										
+									appendTo = appendTo +"<option value=\""+categoryJSON.categories[j].id+"\"";
+									if(json.toId==categoryJSON.categories[j].id){
+										appendTo = appendTo+" selected";
+									}
+									appendTo = appendTo +">"+categoryJSON.categories[j].id+" (";
+									appendTo = appendTo +categoryJSON.categories[j].label+")</option>";	
+								}
+								$("#fromId").append(appendFrom);
+								$("#toId").append(appendTo);
+								$("#id").val(json.id);
+								$("#type").val(json.type);
+						})
+					});
+				
+					$("#result").empty()
+					$("#relList").hide("slow");
+					$("#deleteConfirm").hide("slow");
+					$("#createForm").show("fast");
+				});
+				
+				
+				
+				$("#delete").click(function() {
+					$("#result").empty()
+					$("#relList").hide("slow");
+					$("#createForm").hide("slow");
+					$("#deleteConfirm").show("fast");
+				});
+				
+				
+				$("#createF").submit(function( event ) {
+					event.preventDefault();
+					console.log("Uploading data");
+					
+					
+					var form = $("#createF").serializeArray();
+					console.log(form);
+					var json = "{\"id\":"+form[0].value;
+					json = json + ", \"fromId\":"+form[1].value;
+					json = json + ", \"toId\":"+form[2].value;
+					json = json + ", \"type\": \""+form[3].value+"\"";
+					json = json + "}";
+					console.log(json);
+					
+					var url="../relationships/"+form[0].value;
+					
+					
+					$.ajax({
+    					url: url,
+    					headers: {
+    					    'Accept': 'application/json',
+					        'Content-Type':'application/json'
+					    },
+					    method: 'PUT',
+					    dataType: 'json',
+					    data: json,
+					    success: function(data){
+					    	console.log('something worked');
+     					 	console.log('succes: '+data);
+    					}
+ 					 });
+					
+				});
+				
+				$("#deleteF").submit(function( event ) {
+					event.preventDefault();
+					//console.log("Deleting data");
+					var form = $("#deleteF").serializeArray();
+					//console.log(form);
+					var json="";
+					if(form[0].value=="delete"){
+						var url="../relationships/"+relId;
+					
+					
+						$.ajax({
+	    					url: url,
+	    					headers: {
+	    					    'Accept': 'application/json',
+						        'Content-Type':'application/json'
+						    },
+						    method: 'DELETE',
+						    dataType: 'json',
+						    data: json,
+						    success: function(data){
+						    	console.log('something worked');
+	     					 	console.log('succes: '+data);
+	    					}
+	 					 });
+					}
+					
+					
+					
+				});
+				
+			
+			});
+			
+		</script>
+	</head>
+<body>
+	<h1 id="header">Manage category </h1>
+	<button id="read">Read relationship</button>
+	<button id="create">Create or update relationship</button>
+	<button id="delete">Delete relationships</button>
+	<a href="relationships.html"><button>Back to /relationships</button></a>
+	<div id="relList">
+		<h2>Available relationship:</h2>
+	</div>
+	<div id="createForm">
+		<h2>Create or update a relationship</h2>
+			<form action="/" id="createF">
+				<table>
+					<tr><td>Id:</td><td><input type="text" name="id" id="id" placeholder="-1 if you don't know"></td></tr>
+					<tr><td>From:</td><td><select name="fromId" id="fromId"></select></td></tr>
+					<tr><td>To:</td><td><select name="toId" id="toId"></select></td></tr>
+					<tr><td>Type:</td><td><select name="type" id="type">
+						<option value="Sub">Sub</option>
+						<option value="Equality">Equality</option>
+					</select></td></tr>
+					<tr><td></td><td><input type="submit" value="Upload Relationship"></form>
+				</table>
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete this document</h2>
+		<p>Note: To delete the category, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete category">
+		</form>	
+	</div>
+</body>
+</html>

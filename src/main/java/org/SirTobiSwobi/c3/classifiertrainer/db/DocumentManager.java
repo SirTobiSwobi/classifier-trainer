@@ -46,5 +46,9 @@ public class DocumentManager {
 		Document[] docArray = allContent.toArray(new Document[0]);
 		return docArray;
 	}
+	
+	public boolean containsDocument(long id){
+		return documents.containsId(id);
+	}
 
 }

@@ -70,7 +70,7 @@ public class CategoriesResource {
 	
 	@DELETE
 	public Response deleteAllCategories(){
-		manager=new CategoryManager();
+		manager.deleteAllCategories();;
 		Response response = Response.ok().build();
 		return response;
 	}

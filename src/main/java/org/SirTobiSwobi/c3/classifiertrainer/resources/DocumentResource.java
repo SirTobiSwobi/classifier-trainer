@@ -34,12 +34,15 @@ public class DocumentResource {
 	
 	@GET
     @Timed
-	public TCDocument getDocument(@PathParam("doc") long doc){
+	public Response getDocument(@PathParam("doc") long doc){
+		if(!manager.containsDocument(doc)){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 		TCDocument output = new TCDocument(manager.getByAddress(doc).getId(),
 				manager.getByAddress(doc).getLabel(),
 				manager.getByAddress(doc).getContent(),
 				manager.getByAddress(doc).getURL());
-		return output;
+		return Response.ok(output).build();
 		
 	}
 	
