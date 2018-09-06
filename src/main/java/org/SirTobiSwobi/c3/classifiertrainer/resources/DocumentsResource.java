@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocument;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocuments;
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
 
@@ -75,22 +77,27 @@ public class DocumentsResource {
 	}
 	
 	@GET
-	public TCDocuments getDocuments(){
-		Document[] documents = manager.getDocumentArray();
-		TCDocument[] TCdocumentArray = new TCDocument[documents.length];
-		for(int i=0; i<documents.length;i++){
-			Document doc = documents[i];
-			TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent(),doc.getURL());
-			TCdocumentArray[i]=TCdoc;
-		}
-		TCDocuments TCdocuments;
-		if(documents.length>0){
-			TCdocuments = new TCDocuments(TCdocumentArray);
+	public Response getDocuments(@QueryParam("hash") String hash){
+		if(hash!=null&&hash.equals("1")){
+			TCHash h = new TCHash("documents",manager.getDocumentHash());
+			return Response.ok(h).build();
 		}else{
-			TCdocuments = new TCDocuments();
+			Document[] documents = manager.getDocumentArray();
+			TCDocument[] TCdocumentArray = new TCDocument[documents.length];
+			for(int i=0; i<documents.length;i++){
+				Document doc = documents[i];
+				TCDocument TCdoc = new TCDocument(doc.getId(),doc.getLabel(),doc.getContent(),doc.getURL());
+				TCdocumentArray[i]=TCdoc;
+			}
+			TCDocuments TCdocuments;
+			if(documents.length>0){
+				TCdocuments = new TCDocuments(TCdocumentArray);
+			}else{
+				TCdocuments = new TCDocuments();
+			}
+			return Response.ok(TCdocuments).build();
 		}
 		
-		return TCdocuments;
 	}
 	
 	@DELETE

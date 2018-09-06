@@ -7,6 +7,7 @@ public class AVLTree<T> {
 	
 	private AVLTreeNode<T> root;
 	private long size;
+	private int contentHash;
 
 	public AVLTree() {
 		super();
@@ -20,6 +21,7 @@ public class AVLTree<T> {
 		}else{
 			root.setContent(id, content);
 		}
+		contentHash = contentHash + content.hashCode();
 	}
 	
 	public ArrayList<T> toArrayList(){
@@ -163,6 +165,7 @@ public class AVLTree<T> {
 	}
 	
 	public synchronized void deleteNode(long id){
+		contentHash = contentHash - root.getById(id).hashCode();
 		root.deleteNode(id);
 		size--;
 	}
@@ -182,6 +185,10 @@ public class AVLTree<T> {
 	
 	public int getHeight(){
 		return root.getHeight();
+	}
+	
+	public int getContentHash(){
+		return contentHash;
 	}
 	
 	

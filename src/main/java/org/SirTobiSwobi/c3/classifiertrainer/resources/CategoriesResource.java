@@ -8,11 +8,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategories;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategory;
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 
@@ -50,22 +52,27 @@ public class CategoriesResource {
 
 	
 	@GET
-	public TCCategories getCategories(){
-		Category[] categories = manager.getCategoryArray();
-		TCCategory[] TCcategoryArray = new TCCategory[categories.length];
-		for(int i=0; i<categories.length;i++){
-			Category cat = categories[i];
-			TCCategory TCcat = new TCCategory(cat.getId(),cat.getLabel(),cat.getDescription());
-			TCcategoryArray[i]=TCcat;
-		}
-		TCCategories TCcategories;
-		if(categories.length>0){
-			TCcategories = new TCCategories(TCcategoryArray);
+	public Response getCategories(@QueryParam("hash") String hash){
+		if(hash!=null&&hash.equals("1")){
+			TCHash h = new TCHash("categories",manager.getCategoryHash());
+			return Response.ok(h).build();
 		}else{
-			TCcategories = new TCCategories();
+			Category[] categories = manager.getCategoryArray();
+			TCCategory[] TCcategoryArray = new TCCategory[categories.length];
+			for(int i=0; i<categories.length;i++){
+				Category cat = categories[i];
+				TCCategory TCcat = new TCCategory(cat.getId(),cat.getLabel(),cat.getDescription());
+				TCcategoryArray[i]=TCcat;
+			}
+			TCCategories TCcategories;
+			if(categories.length>0){
+				TCcategories = new TCCategories(TCcategoryArray);
+			}else{
+				TCcategories = new TCCategories();
+			}
+			
+			return Response.ok(TCcategories).build();
 		}
-		
-		return TCcategories;
 	}
 	
 	@DELETE

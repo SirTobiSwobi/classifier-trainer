@@ -58,6 +58,9 @@ public class CategoryResource {
 	
 	@DELETE
 	public Response deleteCategory(@PathParam("cat") long cat){
+		if(!manager.containsCategory(cat)){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 		manager.deleteCategory(cat);
 		Response response = Response.ok().build();
 		return response;

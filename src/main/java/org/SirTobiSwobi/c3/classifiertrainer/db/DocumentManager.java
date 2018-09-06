@@ -51,4 +51,7 @@ public class DocumentManager {
 		return documents.containsId(id);
 	}
 
+	public int getDocumentHash(){
+		return documents.getContentHash();
+	}
 }

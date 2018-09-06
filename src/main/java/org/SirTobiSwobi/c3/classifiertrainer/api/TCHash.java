@@ -4,39 +4,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TCHash {
 	
-	private long id, fromId, toId;
-	private String type;
+	
+	private String endPoint;
+	private int hash;
 	
 	public TCHash(){
 		//Jackson deserialization
 	}
-	
-	public TCHash(long id, long fromId, long toId, String type) {
+
+	public TCHash(String endPoint, int hash) {
 		super();
-		this.id = id;
-		this.fromId = fromId;
-		this.toId = toId;
-		this.type = type;
+		this.endPoint = endPoint;
+		this.hash = hash;
 	}
 
 	@JsonProperty
-	public long getId() {
-		return id;
+	public String getEndPoint() {
+		return endPoint;
 	}
 
 	@JsonProperty
-	public long getFromId() {
-		return fromId;
+	public int getHash() {
+		return hash;
 	}
-
-	@JsonProperty
-	public long getToId() {
-		return toId;
-	}
-
-	@JsonProperty
-	public String getType() {
-		return type;
-	}	
+	
+	
 
 }

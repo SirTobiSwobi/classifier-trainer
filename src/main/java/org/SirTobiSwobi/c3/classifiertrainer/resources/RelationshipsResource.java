@@ -9,14 +9,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationship;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationships;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
+
 
 @Path("/relationships")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,10 +32,15 @@ public class RelationshipsResource {
 	}
 	
 	@GET
-	public TCRelationships getRelationships(){
-		Relationship[] relationships = catMan.getRelationshipArray();
+	public Response getRelationships(@QueryParam("hash") String hash){
+		if(hash!=null&&hash.equals("1")){
+			TCHash h = new TCHash("relationships",catMan.getRelationshipHash());
+			return Response.ok(h).build();
+		}else{
 		
-		return buildRelationships(relationships);
+			TCRelationships output = buildRelationships(catMan.getRelationshipArray());
+			return Response.ok(output).build();
+		}	
 	}
 	
 	@GET
@@ -50,6 +58,7 @@ public class RelationshipsResource {
 		Relationship[] relationships = catMan.getAllRelationshipsTo(toId);
 		return buildRelationships(relationships);
 	}
+	
 	
 	private TCRelationships buildRelationships(Relationship[] relationships){
 		TCRelationship[] TCrelationshipArray = new TCRelationship[relationships.length];

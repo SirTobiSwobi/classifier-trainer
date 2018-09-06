@@ -35,8 +35,10 @@ public class CategoryManager {
 	}
 	
 	public synchronized void deleteCategory(long id){
-		long toDelete = categories.getContent(id).getId();
-		deleteAllRelationshipsContaining(toDelete);
+		if(this.relationships.getSize()>0){ //Otherwise null point exceptions can occur if there are categories but no relationships.
+			long toDelete = categories.getContent(id).getId();
+			deleteAllRelationshipsContaining(toDelete);
+		}		
 		categories.deleteNode(id);
 	}
 	
@@ -173,6 +175,18 @@ public class CategoryManager {
 	
 	public boolean containsRelationship(long id){
 		return relationships.containsId(id);
+	}
+	
+	public int getRelationshipHash(){
+		int hash=1;
+		hash = hash * 17 + relationships.getContentHash();
+		hash = hash * 31 + fromIndex.getContentHash();
+		hash = hash * 13 + toIndex.getContentHash();
+		return hash;
+	}
+	
+	public int getCategoryHash(){
+		return categories.getContentHash();
 	}
 
 
