@@ -20,3 +20,4 @@ Version change log:
 - 0.3.3: finished WEB GUI for /categories and /categoires/$x
 - 0.3.4: implementing /relationships and /relationships/$x including WEB GUI
 - 0.3.5: implementing endpoint hash function
+- 0.3.6: implementing /targetfunction and /targetfunction/$x endpoints

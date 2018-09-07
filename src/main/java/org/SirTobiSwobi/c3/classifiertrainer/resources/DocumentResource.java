@@ -17,31 +17,32 @@ import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocument;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
-import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 
 @Path("/documents/{doc}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DocumentResource {
 	
-	private DocumentManager manager;
+
+	private ReferenceHub refHub;
 	private Client client;
 	
-	public DocumentResource(DocumentManager manager, Client client){
-		this.manager=manager;
+	public DocumentResource(ReferenceHub refHub, Client client){
+		this.refHub=refHub;
 		this.client=client;
 	}
 	
 	@GET
     @Timed
 	public Response getDocument(@PathParam("doc") long doc){
-		if(!manager.containsDocument(doc)){
+		if(!refHub.getDocumentManager().containsDocument(doc)){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		TCDocument output = new TCDocument(manager.getByAddress(doc).getId(),
-				manager.getByAddress(doc).getLabel(),
-				manager.getByAddress(doc).getContent(),
-				manager.getByAddress(doc).getURL());
+		TCDocument output = new TCDocument(refHub.getDocumentManager().getByAddress(doc).getId(),
+				refHub.getDocumentManager().getByAddress(doc).getLabel(),
+				refHub.getDocumentManager().getByAddress(doc).getContent(),
+				refHub.getDocumentManager().getByAddress(doc).getURL());
 		return Response.ok(output).build();
 		
 	}
@@ -56,9 +57,9 @@ public class DocumentResource {
 			//downloading content from URL
 			String content = client.target(document.getUrl()).request().get(String.class);
 			Document newDoc = new Document(document.getId(),document.getLabel(),content,document.getUrl());
-			manager.setDocument(newDoc);
+			refHub.getDocumentManager().setDocument(newDoc);
 		}else{
-			manager.setDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
+			refHub.getDocumentManager().setDocument(new Document(document.getId(),document.getLabel(),document.getContent()));
 		}
 		Response response = Response.ok().build();
 		return response;
@@ -66,7 +67,7 @@ public class DocumentResource {
 	
 	@DELETE
 	public Response deleteDocument(@PathParam("doc") long doc){
-		manager.deleteDocument(doc);
+		refHub.getDocumentManager().deleteDocument(doc);
 		Response response = Response.ok().build();
 		return response;
 	}

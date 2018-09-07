@@ -35,7 +35,7 @@ public class CategoryManager {
 	}
 	
 	public synchronized void deleteCategory(long id){
-		if(this.relationships.getSize()>0){ //Otherwise null point exceptions can occur if there are categories but no relationships.
+		if(this.relationships.getSize()>0){ //Otherwise null pointer exceptions can occur if there are categories but no relationships.
 			long toDelete = categories.getContent(id).getId();
 			deleteAllRelationshipsContaining(toDelete);
 		}		

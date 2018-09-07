@@ -87,7 +87,7 @@
 					//console.log("Uploading data");
 					var form = $("#createF").serializeArray();
 					//console.log(form);
-					var json = "{{\"id\":"+form[0].value+
+					var json = "{\"id\":"+form[0].value+
 						",\"label\":\""+form[1].value;
 					json = json+"\",\"content\":\"";
 					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ");;

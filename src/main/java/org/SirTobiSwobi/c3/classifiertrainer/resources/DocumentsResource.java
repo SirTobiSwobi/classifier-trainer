@@ -21,19 +21,20 @@ import org.SirTobiSwobi.c3.classifiertrainer.api.TCDocuments;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 
 @Path("/documents")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class DocumentsResource {
 	
-	private DocumentManager manager;
+	private ReferenceHub refHub;
 	private Client client;
 
-	public DocumentsResource(DocumentManager manager, Client client) {
+	public DocumentsResource(ReferenceHub refHub, Client client) {
 		super();
-		this.manager = manager;
 		this.client = client;
+		this.refHub = refHub;
 	}
 	
 	@POST
@@ -60,17 +61,17 @@ public class DocumentsResource {
 				//downloading content from URL
 				String content = client.target(doc.getUrl()).request().get(String.class);
 				Document newDoc = new Document(doc.getId(),doc.getLabel(),content,doc.getUrl());
-				manager.setDocument(newDoc);
+				refHub.getDocumentManager().setDocument(newDoc);
 			}else{
-				manager.setDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
+				refHub.getDocumentManager().setDocument(new Document(doc.getId(),doc.getLabel(),doc.getContent()));
 			}
 		}else{
 			if(doc.getUrl().length()>0&&doc.getUrl().startsWith("http")){
 				//downloading content from URL
 				String content = client.target(doc.getUrl()).request().get(String.class);
-				manager.addDocumentWithoutId(doc.getLabel(), content, doc.getUrl());
+				refHub.getDocumentManager().addDocumentWithoutId(doc.getLabel(), content, doc.getUrl());
 			}else{
-				manager.addDocumentWithoutId(doc.getLabel(), doc.getContent());
+				refHub.getDocumentManager().addDocumentWithoutId(doc.getLabel(), doc.getContent());
 			}
 			
 		}
@@ -79,10 +80,10 @@ public class DocumentsResource {
 	@GET
 	public Response getDocuments(@QueryParam("hash") String hash){
 		if(hash!=null&&hash.equals("1")){
-			TCHash h = new TCHash("documents",manager.getDocumentHash());
+			TCHash h = new TCHash("documents",refHub.getDocumentManager().getDocumentHash());
 			return Response.ok(h).build();
 		}else{
-			Document[] documents = manager.getDocumentArray();
+			Document[] documents = refHub.getDocumentManager().getDocumentArray();
 			TCDocument[] TCdocumentArray = new TCDocument[documents.length];
 			for(int i=0; i<documents.length;i++){
 				Document doc = documents[i];
@@ -102,7 +103,7 @@ public class DocumentsResource {
 	
 	@DELETE
 	public Response deleteAllDocuments(){
-		manager=new DocumentManager();
+		refHub.setDocumentManager(new DocumentManager());
 		Response response = Response.ok().build();
 		return response;
 	}

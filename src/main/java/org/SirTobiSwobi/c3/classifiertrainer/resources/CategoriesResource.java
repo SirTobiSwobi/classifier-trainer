@@ -16,17 +16,18 @@ import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategories;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategory;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
-import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 
 @Path("/categories")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CategoriesResource {
 	
-	CategoryManager manager;
 
-	public CategoriesResource(CategoryManager manager) {
-		this.manager = manager;
+	ReferenceHub refHub;
+
+	public CategoriesResource(ReferenceHub refHub) {
+		this.refHub=refHub;
 	}
 	
 	@POST
@@ -39,9 +40,9 @@ public class CategoriesResource {
 			for(int i=0; i<categories.getCategories().length; i++){
 				TCCategory cat=categories.getCategories()[i];
 				if(cat.getId()>=0){
-					manager.setCategory(new Category(cat.getId(),cat.getLabel(),cat.getDescription()));
+					refHub.getCategoryManager().setCategory(new Category(cat.getId(),cat.getLabel(),cat.getDescription()));
 				}else{			
-					manager.addCategoryWithoutId(cat.getLabel(), cat.getDescription());
+					refHub.getCategoryManager().addCategoryWithoutId(cat.getLabel(), cat.getDescription());
 				}
 			}
 		}
@@ -54,10 +55,10 @@ public class CategoriesResource {
 	@GET
 	public Response getCategories(@QueryParam("hash") String hash){
 		if(hash!=null&&hash.equals("1")){
-			TCHash h = new TCHash("categories",manager.getCategoryHash());
+			TCHash h = new TCHash("categories",refHub.getCategoryManager().getCategoryHash());
 			return Response.ok(h).build();
 		}else{
-			Category[] categories = manager.getCategoryArray();
+			Category[] categories = refHub.getCategoryManager().getCategoryArray();
 			TCCategory[] TCcategoryArray = new TCCategory[categories.length];
 			for(int i=0; i<categories.length;i++){
 				Category cat = categories[i];
@@ -77,7 +78,7 @@ public class CategoriesResource {
 	
 	@DELETE
 	public Response deleteAllCategories(){
-		manager.deleteAllCategories();;
+		refHub.getCategoryManager().deleteAllCategories();;
 		Response response = Response.ok().build();
 		return response;
 	}

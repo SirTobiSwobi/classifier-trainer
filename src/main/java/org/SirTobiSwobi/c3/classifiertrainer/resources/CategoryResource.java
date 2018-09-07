@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategory;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
-import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -22,22 +22,22 @@ import com.codahale.metrics.annotation.Timed;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CategoryResource {
-	private CategoryManager manager;
+	private ReferenceHub refHub;
 
-	public CategoryResource(CategoryManager manager) {
-		this.manager = manager;
+	public CategoryResource(ReferenceHub refHub) {
+		this.refHub = refHub;
 	}
 	
 	@GET
     @Timed
 	public Response getCategory(@PathParam("cat") long cat){
-		if(!manager.containsCategory(cat)){
+		if(!refHub.getCategoryManager().containsCategory(cat)){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		
-		TCCategory output = new TCCategory(manager.getByAddress(cat).getId(),
-				manager.getByAddress(cat).getLabel(),
-				manager.getByAddress(cat).getDescription());
+		TCCategory output = new TCCategory(refHub.getCategoryManager().getByAddress(cat).getId(),
+				refHub.getCategoryManager().getByAddress(cat).getLabel(),
+				refHub.getCategoryManager().getByAddress(cat).getDescription());
 		
 		return Response.ok(output).build();
 		
@@ -50,7 +50,7 @@ public class CategoryResource {
 			return response;
 		}
 		
-		manager.setCategory(new Category(category.getId(),category.getLabel(),category.getDescription()));
+		refHub.getCategoryManager().setCategory(new Category(category.getId(),category.getLabel(),category.getDescription()));
 
 		Response response = Response.ok().build();
 		return response;
@@ -58,10 +58,10 @@ public class CategoryResource {
 	
 	@DELETE
 	public Response deleteCategory(@PathParam("cat") long cat){
-		if(!manager.containsCategory(cat)){
+		if(!refHub.getCategoryManager().containsCategory(cat)){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		manager.deleteCategory(cat);
+		refHub.getCategoryManager().deleteCategory(cat);
 		Response response = Response.ok().build();
 		return response;
 	}

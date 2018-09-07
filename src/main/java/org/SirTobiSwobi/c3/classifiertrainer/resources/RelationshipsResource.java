@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationship;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationships;
-import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 
@@ -25,20 +25,20 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RelationshipsResource {
-	private CategoryManager catMan;
+	private ReferenceHub refHub;
 	
-	public RelationshipsResource(CategoryManager catMan) {
-		this.catMan = catMan;
+	public RelationshipsResource(ReferenceHub refHub) {
+		this.refHub = refHub;
 	}
 	
 	@GET
 	public Response getRelationships(@QueryParam("hash") String hash){
 		if(hash!=null&&hash.equals("1")){
-			TCHash h = new TCHash("relationships",catMan.getRelationshipHash());
+			TCHash h = new TCHash("relationships",refHub.getCategoryManager().getRelationshipHash());
 			return Response.ok(h).build();
 		}else{
 		
-			TCRelationships output = buildRelationships(catMan.getRelationshipArray());
+			TCRelationships output = buildRelationships(refHub.getCategoryManager().getRelationshipArray());
 			return Response.ok(output).build();
 		}	
 	}
@@ -47,7 +47,7 @@ public class RelationshipsResource {
 	@Path("/from/{fromId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public TCRelationships getRelationshipsFrom(@PathParam("fromId") long fromId){
-		Relationship[] relationships = catMan.getAllRelationshipsFrom(fromId);
+		Relationship[] relationships = refHub.getCategoryManager().getAllRelationshipsFrom(fromId);
 		return buildRelationships(relationships);
 	}
 	
@@ -55,7 +55,7 @@ public class RelationshipsResource {
 	@Path("/to/{toId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public TCRelationships getRelationshipsTo(@PathParam("toId") long toId){
-		Relationship[] relationships = catMan.getAllRelationshipsTo(toId);
+		Relationship[] relationships = refHub.getCategoryManager().getAllRelationshipsTo(toId);
 		return buildRelationships(relationships);
 	}
 	
@@ -80,7 +80,7 @@ public class RelationshipsResource {
 	
 	@DELETE
 	public Response deleteAllRelationships(){
-		catMan.deleteAllRelationships();
+		refHub.getCategoryManager().deleteAllRelationships();
 		Response response = Response.ok().build();
 		return response;
 	}
@@ -105,9 +105,9 @@ public class RelationshipsResource {
 					return response;
 				}
 				if(rel.getId()>=0){
-					catMan.setRelationship(rel.getId(), rel.getFromId(), rel.getToId(), type);
+					refHub.getCategoryManager().setRelationship(rel.getId(), rel.getFromId(), rel.getToId(), type);
 				}else{			
-					catMan.addRelatonshipWithoutId(rel.getFromId(), rel.getToId(), type);
+					refHub.getCategoryManager().addRelatonshipWithoutId(rel.getFromId(), rel.getToId(), type);
 				}
 			}
 		}

@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationship;
-import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 
@@ -24,19 +24,19 @@ import com.codahale.metrics.annotation.Timed;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RelationshipResource {
 	
-	private CategoryManager catMan;
-	public RelationshipResource(CategoryManager catMan) {
-		this.catMan = catMan;
+	private ReferenceHub refHub;
+	public RelationshipResource(ReferenceHub refHub) {
+		this.refHub = refHub;
 	}
 	
 	@GET
     @Timed
 	public Response getRelationship(@PathParam("rel") long rel){
-		if(!catMan.containsRelationship(rel)){
+		if(!refHub.getCategoryManager().containsRelationship(rel)){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		
-		Relationship relationship = catMan.getRelationshipByAddress(rel);
+		Relationship relationship = refHub.getCategoryManager().getRelationshipByAddress(rel);
 		TCRelationship output = new TCRelationship(relationship.getId(),
 				relationship.getFrom().getId(), relationship.getTo().getId(), relationship.getType().toString());
 		return Response.ok(output).build();
@@ -59,7 +59,7 @@ public class RelationshipResource {
 			return response;
 		}
 		
-		catMan.setRelationship(relationship.getId(), relationship.getFromId(), relationship.getToId(), type);
+		refHub.getCategoryManager().setRelationship(relationship.getId(), relationship.getFromId(), relationship.getToId(), type);
 
 		Response response = Response.ok().build();
 		return response;
@@ -67,7 +67,7 @@ public class RelationshipResource {
 	
 	@DELETE
 	public Response deleteRelationship(@PathParam("rel") long rel){
-		catMan.deleteRelationship(rel);
+		refHub.getCategoryManager().deleteRelationship(rel);
 		Response response = Response.ok().build();
 		return response;
 	}
