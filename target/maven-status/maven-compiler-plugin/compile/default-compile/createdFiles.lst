@@ -4,6 +4,7 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.class
+org/SirTobiSwobi/c3/classifiertrainer/resources/TargetFunctionResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/RelationshipsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/core/Utilities.class

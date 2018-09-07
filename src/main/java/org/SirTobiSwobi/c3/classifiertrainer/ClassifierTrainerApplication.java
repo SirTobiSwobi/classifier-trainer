@@ -18,6 +18,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipsResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.TargetFunctionResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -71,6 +72,7 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final CategoryResource category = new CategoryResource(refHub);
 		final RelationshipsResource relationships = new RelationshipsResource(refHub);
 		final RelationshipResource relationship = new RelationshipResource(refHub);
+		final TargetFunctionResource targetFunction = new TargetFunctionResource(refHub);
 		final AssignmentResource assignment = new AssignmentResource(refHub);
 		
 		/*
@@ -91,6 +93,7 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(category);
 		environment.jersey().register(relationships);
 		environment.jersey().register(relationship);
+		environment.jersey().register(targetFunction);
 		environment.jersey().register(assignment);
 		
 		/*
