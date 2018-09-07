@@ -177,16 +177,27 @@ public class CategoryManager {
 		return relationships.containsId(id);
 	}
 	
-	public int getRelationshipHash(){
-		int hash=1;
-		hash = hash * 17 + relationships.getContentHash();
-		hash = hash * 31 + fromIndex.getContentHash();
-		hash = hash * 13 + toIndex.getContentHash();
-		return hash;
+	public String getRelationshipHash(){
+		String result="";
+		byte[] relationshipHash = relationships.getContentHash();
+		byte[] toHash = toIndex.getContentHash();
+		byte[] fromHash = fromIndex.getContentHash();
+		for(int i=0; i<relationshipHash.length;i++){
+			byte contentHash;
+			contentHash = (byte)(relationshipHash[i]+toHash[i]+fromHash[i]);
+			result = result + Integer.toHexString(contentHash & 255);
+		}
+		
+		return result;
 	}
 	
-	public int getCategoryHash(){
-		return categories.getContentHash();
+	public String getCategoryHash(){
+		byte[] contentHash = categories.getContentHash();
+		String result="";
+		for(int i=0; i<contentHash.length;i++){
+			result = result + Integer.toHexString(contentHash[i] & 255);
+		}
+		return result;
 	}
 
 

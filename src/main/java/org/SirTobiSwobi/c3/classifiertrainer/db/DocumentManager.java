@@ -51,7 +51,12 @@ public class DocumentManager {
 		return documents.containsId(id);
 	}
 
-	public int getDocumentHash(){
-		return documents.getContentHash();
+	public String getDocumentHash(){
+		byte[] contentHash = documents.getContentHash();
+		String result="";
+		for(int i=0; i<contentHash.length;i++){
+			result = result + Integer.toHexString(contentHash[i] & 255);
+		}
+		return result;
 	}
 }

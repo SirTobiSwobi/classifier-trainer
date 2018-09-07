@@ -6,13 +6,13 @@ public class TCHash {
 	
 	
 	private String endPoint;
-	private int hash;
+	private String hash;
 	
 	public TCHash(){
 		//Jackson deserialization
 	}
 
-	public TCHash(String endPoint, int hash) {
+	public TCHash(String endPoint, String hash) {
 		super();
 		this.endPoint = endPoint;
 		this.hash = hash;
@@ -24,7 +24,7 @@ public class TCHash {
 	}
 
 	@JsonProperty
-	public int getHash() {
+	public String getHash() {
 		return hash;
 	}
 	

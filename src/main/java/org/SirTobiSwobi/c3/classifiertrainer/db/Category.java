@@ -36,4 +36,8 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String toString(){
+		return ""+id+" "+label+" "+description;
+	}
 }

@@ -39,6 +39,10 @@ public class Relationship {
 		this.type = type;
 	}
 	
+	public String toString(){
+		return ""+id+" "+from.toString()+" "+to.toString()+" "+type.toString();
+	}
+	
 	
 
 }

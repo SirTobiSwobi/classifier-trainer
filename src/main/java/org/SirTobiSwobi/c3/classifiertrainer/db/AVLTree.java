@@ -1,17 +1,22 @@
 package org.SirTobiSwobi.c3.classifiertrainer.db;
 
-import java.lang.reflect.Array;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AVLTree<T> {
 	
 	private AVLTreeNode<T> root;
 	private long size;
-	private int contentHash;
+	private byte[] contentHash;
+	final static Logger logger = LoggerFactory.getLogger(AVLTree.class);
 
 	public AVLTree() {
 		super();
 		this.size=0;
+		this.contentHash = new byte[32]; //SHA-256 produces 256 bit digests, what equals 32 bytes. 
 	}
 	
 	public synchronized void setContent(T content, long id){
@@ -21,7 +26,17 @@ public class AVLTree<T> {
 		}else{
 			root.setContent(id, content);
 		}
-		contentHash = contentHash + content.hashCode();
+		try{
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		byte[] key = content.toString().getBytes();
+		byte[] hash = md.digest(key);
+		for(int i=0;i<hash.length;i++){
+			this.contentHash[i]=(byte) (this.contentHash[i]+hash[i]);
+		}
+		
+		}catch(Exception cnse){
+			logger.error("Failed to create content hash. Message: "+cnse.getLocalizedMessage());
+		}
 	}
 	
 	public ArrayList<T> toArrayList(){
@@ -165,9 +180,22 @@ public class AVLTree<T> {
 	}
 	
 	public synchronized void deleteNode(long id){
-		contentHash = contentHash - root.getById(id).hashCode();
-		root.deleteNode(id);
-		size--;
+		if(size>0){
+			try{
+				T content = root.getContent(id);
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				byte[] key = content.toString().getBytes();
+				byte[] hash = md.digest(key);
+				for(int i=0;i<hash.length;i++){
+					this.contentHash[i]=(byte) (this.contentHash[i]-hash[i]);
+				}
+				
+				}catch(Exception cnse){
+					logger.error("Failed to create content hash. Message: "+cnse.getLocalizedMessage());
+				}
+			root.deleteNode(id);
+			size--;
+		}	
 	}
 	
 	protected AVLTreeNode<T> getRoot(){
@@ -187,7 +215,8 @@ public class AVLTree<T> {
 		return root.getHeight();
 	}
 	
-	public int getContentHash(){
+	public byte[] getContentHash(){
+		
 		return contentHash;
 	}
 	

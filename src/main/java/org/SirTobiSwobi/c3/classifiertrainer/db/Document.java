@@ -48,6 +48,9 @@ public class Document {
 		URL = uRL;
 	}
 	
+	public String toString(){
+		return ""+id+" "+label+" "+content+" "+URL;
+	}
 	
 	
 
