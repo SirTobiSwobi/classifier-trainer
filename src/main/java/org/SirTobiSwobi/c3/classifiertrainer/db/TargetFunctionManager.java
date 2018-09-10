@@ -165,19 +165,24 @@ public class TargetFunctionManager {
 		
 		long[] allCatIds = explicitCatIds.clone();
 		for(int i=0; i<explicitCatIds.length;i++){
-			allCatIds = Utilities.arrayUnionWithoutDuplicates(allCatIds, findAllImplicitCatIds(explicitCatIds[i]));
+			allCatIds = Utilities.arrayUnionWithoutDuplicates(allCatIds, findAllImplicitCatIds(explicitCatIds[i],SearchDirection.Ascending));
 		}	
 		return allCatIds;
 	}
 	
-	public long[] findAllImplicitCatIds(long catId){
+	public long[] findAllImplicitCatIds(long catId, SearchDirection direction){
 		Relationship[] relationships = refHub.getCategoryManager().getRelationshipArray();
 		ArrayList<long[]> edges = new ArrayList<long[]>();
 		for(int i=0; i<relationships.length; i++){
 			if(relationships[i].getType().equals(RelationshipType.Sub)){
 				long[] edge = new long[2];
-				edge[0] = relationships[i].getTo().getId();
-				edge[1] = relationships[i].getFrom().getId();
+				if(direction.equals(SearchDirection.Ascending)){
+					edge[0] = relationships[i].getTo().getId();
+					edge[1] = relationships[i].getFrom().getId();
+				}else if(direction.equals(SearchDirection.Descending)){
+					edge[0] = relationships[i].getFrom().getId();
+					edge[1] = relationships[i].getTo().getId();
+				}
 				edges.add(edge);
 			}else if(relationships[i].getType().equals(RelationshipType.Equality)){
 				long[] edge = new long[2];
@@ -195,6 +200,30 @@ public class TargetFunctionManager {
 			edgeArray[i][1]=edges.get(i)[1];
 		}
 		return Utilities.BFSreachable(edgeArray, catId);
+	}
+	
+	public synchronized long[] getImplicitDocIdsForCategory(long catId){
+		//find all descendant categories. Add their assignments to the result set. 
+		long[] allCatIds = findAllImplicitCatIds(catId, SearchDirection.Descending);
+		long[] allDocIds = null;
+		Assignment[] explicitAssignments = this.getCategoryAssignments(catId);
+		for(int i=0; i<explicitAssignments.length; i++){
+			allDocIds = Utilities.increaseAndAddValueIfNotIn(explicitAssignments[i].getDocumentId(), allDocIds);
+		}
+		for(int i=0; i<allCatIds.length; i++){
+			Assignment[] assignments = this.getCategoryAssignments(allCatIds[i]);
+			long[] docIds = null;
+			for(int j=0; j<assignments.length;j++){
+				docIds = Utilities.increaseAndAddValueIfNotIn(assignments[j].getDocumentId(), docIds);
+			}
+			if(allDocIds==null&&docIds!=null){
+				allDocIds=docIds;
+			}else if(allDocIds!=null&&docIds!=null){
+				allDocIds = Utilities.arrayUnionWithoutDuplicates(allDocIds, docIds);
+			}
+		}
+		return allDocIds;
+		
 	}
 	
 	

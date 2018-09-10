@@ -75,7 +75,7 @@ public class TargetFunctionManagerTest {
 		assertTrue("Category 2 contains document 2",tfMan.getCategoryAssignments(2)[0].getDocumentId()==2);
 		assertTrue("Document 3 is assigned to category 450",tfMan.getDocumentAssignments(3)[0].getCategoryId()==450);
 		String foundCatIdsString="";
-		long[] foundCatIds = tfMan.findAllImplicitCatIds(525);
+		long[] foundCatIds = tfMan.findAllImplicitCatIds(525,SearchDirection.Ascending);
 		for(int i=0;i<foundCatIds.length;i++){
 			foundCatIdsString=foundCatIdsString+" "+foundCatIds[i];
 		}
@@ -118,7 +118,26 @@ public class TargetFunctionManagerTest {
 		assertTrue("Found cat ids: "+foundCatIdsString,Utilities.isIn(foundCatIds, 450));
 		assertTrue("Found cat ids: "+foundCatIdsString,!Utilities.isIn(foundCatIds, 510));
 		
+		long[] foundDocIds = tfMan.getImplicitDocIdsForCategory(0); //category 0 should implicitly contain all documents because it is a root
+		String foundDocIdsString="";
+		for(int i=0;i<foundDocIds.length;i++){
+			foundDocIdsString=foundDocIdsString+" "+foundDocIds[i];
+		}
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 0));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 1));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 2));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 3));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 4));
 		
+		foundDocIds = tfMan.getImplicitDocIdsForCategory(510); //category 510 should implicitly contain documents 1, 3 and 4
+		foundDocIdsString="";
+		for(int i=0;i<foundDocIds.length;i++){
+			foundDocIdsString=foundDocIdsString+" "+foundDocIds[i];
+		}
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 1));
+		assertTrue("Found docs are: "+foundDocIdsString,!Utilities.isIn(foundDocIds, 2));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 3));
+		assertTrue("Found docs are: "+foundDocIdsString,Utilities.isIn(foundDocIds, 4));
 	}
 
 }

@@ -9,6 +9,7 @@ org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/RelationshipsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/core/Utilities.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.class
+org/SirTobiSwobi/c3/classifiertrainer/db/SearchDirection.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategories.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationship.class
 org/SirTobiSwobi/c3/classifiertrainer/db/Assignment.class
