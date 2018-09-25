@@ -31,7 +31,7 @@ public class AssignmentResource {
 	
 	@GET
     @Timed
-	public Response getCategory(@PathParam("ass") long ass){
+	public Response getAssignment(@PathParam("ass") long ass){
 		if(!refHub.getTargetFunctionManager().containsAssignment(ass)){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}

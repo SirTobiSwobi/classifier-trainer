@@ -13,12 +13,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategories;
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCCategory;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationship;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCRelationships;
+import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SearchDirection;
 
 
 @Path("/relationships")
@@ -57,6 +61,32 @@ public class RelationshipsResource {
 	public TCRelationships getRelationshipsTo(@PathParam("toId") long toId){
 		Relationship[] relationships = refHub.getCategoryManager().getAllRelationshipsTo(toId);
 		return buildRelationships(relationships);
+	}
+	
+	@GET
+	@Path("/ancestors/{ofId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAncestorsOf(@PathParam("ofId") long ofId){
+		long[] ancestorIds = refHub.getTargetFunctionManager().findAllImplicitCatIds(ofId, SearchDirection.Ascending);
+		
+		TCCategory[] tcCategories = new TCCategory[ancestorIds.length];
+		for(int i=0; i<ancestorIds.length; i++){
+			Category category = refHub.getCategoryManager().getByAddress(ancestorIds[i]);
+			if(category!=null){
+				tcCategories[i] = new TCCategory(category.getId(),category.getLabel(),category.getDescription());
+			}else{
+				Response response = Response.status(404).build();
+				return response;
+			}
+			
+		}
+		TCCategories returnValue;
+		if(tcCategories.length>0){
+			returnValue=new TCCategories(tcCategories);
+		}else{
+			returnValue = new TCCategories();
+		}
+		return Response.ok(returnValue).build();
 	}
 	
 	

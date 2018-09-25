@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>/targetfunction/assignment</title>
+		<script src="jquery-3.3.1.min.js"></script>
+		<script src="utilities.js"></script>
+		<script src="assignment.js"></script>
+	</head>
+<body>
+	<h1>Manage document-to-category assignment</h1>
+	<button id="read">Read assignment</button>
+	<button id="create">Create or update assignment</button>
+	<button id="delete">Delete this assignment</button>
+	<a href="targetfunction.html"><button>Back to targetfunction</button></a>
+	<div id="assList"><h2>Available assignments:</h2></div>
+	<div id="createForm">
+		<h2>Create an assignment</h2>
+			<form action="/" id="createF">
+				<table>
+					<tr><td>Id:</td><td><input type="text" name="id" id="id" placeholder="-1 if you don't know"></td></tr>
+					<tr><td>Document:</td><td><select name="docId" id="docId"></select></td></tr>
+					<tr><td>Category:</td><td><select name="catId" id="catId"></select></td></tr>				
+					<tr><td></td><td><input type="submit" value="Upload Assignment">
+				</table>
+			</form>
+			This is a manually made explicit assignment. Implicit assignments are computed automatically based upon category 
+			<a href="relationships.html">relationships</a>.
+	</div>
+	<div id="deleteConfirm">
+		<h2>Delete all relationships in this microservice</h2>
+		<p>Note: To delete this assignment, type delete into the field and press the delete button.</p>
+		<form action="/" id="deleteF">
+			<input type="text" name="delete" placeholder="delete"><br>
+			<input type="submit" value="Delete all categories">
+		</form>	
+	</div>
+</body>
+</html>

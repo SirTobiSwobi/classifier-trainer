@@ -15,7 +15,8 @@
 						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
 					}else{
 						for (var i=0; i< json.categories.length; i++){
-							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+"</a></li>");
+							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
+							"</a><a href=\"assignment.html?catId="+json.categories[i].id+"\"><button>Assign documents</button></a></li>");
 						}
 					}
 				});
@@ -33,7 +34,8 @@
 						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
 					}else{
 						for (var i=0; i< json.categories.length; i++){
-							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+"</a></li>");
+							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
+							"</a><a href=\"assignment.html?catId="+json.categories[i].id+"\"><button>Assign documents</button></a></li>");
 							}
 						}
 					});

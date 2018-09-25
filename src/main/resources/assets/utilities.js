@@ -33,3 +33,11 @@ function getObjectById(allObjects, id){
 	}
 	return output;
 }
+
+function idIsSet(id){
+	var returnValue=true;
+	if(typeof id == "undefined" || id == null || id == -1){
+		returnValue=false;
+	}
+	return returnValue;
+}

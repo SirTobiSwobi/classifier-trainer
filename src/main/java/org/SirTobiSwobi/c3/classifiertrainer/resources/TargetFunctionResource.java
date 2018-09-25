@@ -46,7 +46,7 @@ public class TargetFunctionResource {
 				Document[] documents = refHub.getDocumentManager().getDocumentArray();
 				if(documents==null){
 					return Response.status(404).build();
-				}else{
+				}else if(documents!=null&&refHub.getTargetFunctionManager().getSize()>0){
 					Assignment[] assignments = null;
 					for(int i=0; i<documents.length; i++){
 						if(i==0){
@@ -66,8 +66,10 @@ public class TargetFunctionResource {
 	private Assignment[] getAssignmentsForDoc(long docId){
 		Assignment[] assignments = refHub.getTargetFunctionManager().getDocumentAssignments(docId);
 		long[] implicitCats=refHub.getTargetFunctionManager().getImplicitCatIdsForDocument(docId);
-		for(int i=0;i<implicitCats.length;i++){
-			assignments = addAssignmentIfCatNotIn(assignments, implicitCats[i], docId);
+		if(implicitCats!=null){
+			for(int i=0;i<implicitCats.length;i++){
+				assignments = addAssignmentIfCatNotIn(assignments, implicitCats[i], docId);
+			}
 		}
 		return assignments;
 	}

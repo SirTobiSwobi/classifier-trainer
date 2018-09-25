@@ -163,10 +163,14 @@ public class TargetFunctionManager {
 			explicitCatIds=Utilities.increaseAndAddValueIfNotIn(catId, explicitCatIds);
 		}
 		
-		long[] allCatIds = explicitCatIds.clone();
-		for(int i=0; i<explicitCatIds.length;i++){
-			allCatIds = Utilities.arrayUnionWithoutDuplicates(allCatIds, findAllImplicitCatIds(explicitCatIds[i],SearchDirection.Ascending));
-		}	
+		long[] allCatIds=null;
+		if(explicitCatIds!=null){
+			allCatIds = explicitCatIds.clone();
+			for(int i=0; i<explicitCatIds.length;i++){
+				allCatIds = Utilities.arrayUnionWithoutDuplicates(allCatIds, findAllImplicitCatIds(explicitCatIds[i],SearchDirection.Ascending));
+			}
+		}
+			
 		return allCatIds;
 	}
 	
