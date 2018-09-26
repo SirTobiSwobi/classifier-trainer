@@ -1,12 +1,13 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/CategoryManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCTargetFunctionTest.java
-/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManagerTest.java
-/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationshipTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationshipsTest.java
-/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoryTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadataTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManagerTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManagerTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentsTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoriesTest.java

@@ -22,3 +22,4 @@ Version change log:
 - 0.3.5: implementing endpoint hash function
 - 0.3.6: implementing /targetfunction and /targetfunction/$x endpoints
 - 0.3.7: implementing targetfunction GUI
+- 0.3.8: implementing abstract /config endpoint
