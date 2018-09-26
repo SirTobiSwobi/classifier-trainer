@@ -1,181 +1,123 @@
 <!DOCTYPE html>
+<!--
+	Webdesign: Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	
+	Software: Tobias Eljasik-Swoboda
+	License: TBD.
+-->
 <html>
 	<head>
-		<title>/document</title>
-		<script src="jquery-3.3.1.min.js"></script>
-		<script>
-
-			$(document).ready(function(){
-				var pageURL = window.location.search.substring(1);
-				var urlVariables = pageURL.split('&');
-				var docId;
-				for(var i=0; i< urlVariables.length; i++){
-					var paramName = urlVariables[i].split('=');
-					if(paramName[0] == "id"){
-						docId = paramName[1];
-					}
-				}
-				$("#header").append(docId);
-				$("#createForm").hide();
-				$("#deleteConfirm").hide();
-				$.getJSON("../documents/"+docId,function(json){
-					//console.log("accessing ../documents/"+docId);
-					//console.log(json);
-					if(json==null){
-						$("#docList").append("<h3>The document with id "+docId+" does not exist. You can create it</h3>");
-					}else{
-						$("#docList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
-						$("#docList").append("<p>URL: "+json.url+"</p>");
-						$("#docList").append("<p>");
-						$("#docList").append(json.content);
-						$("#docList").append("</p>");
-					}
-				});
-				
-				$("#read").click(function() {
-					$("#createForm").hide("slow");
-					$("#deleteConfirm").hide("slow");
-					$("#docList").empty();
-					$("#docList").append("<h2>Available document:</h2>");
-					$.getJSON("../documents/"+docId,function(json){
-						if(json==null){
-							$("#docList").append("<h3>The document with id "+docId+" does not exist. You can create it</h3>");
-						}else{
-							$("#docList").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
-							$("#docList").append("<p>URL: "+json.url+"</p>");
-							$("#docList").append("<p>");
-							$("#docList").append(json.content);
-							$("#docList").append("</p>");
-						}
-					});
-					$("#docList").show("fast");
-				});
-			
-				$("#create").click(function() {
-					console.log("loading form");
-					$.getJSON("../documents/"+docId,function(json){
-						if(json==null){
-							//nothing but empty fields
-						}else{
-							$("#id").val(json.id);
-							$("#label").val(json.label);
-							$("#content").empty();
-							$("#content").append(json.content);
-							$("#url").val(json.url);
-						}
-					});
-				
-				
-					$("#result").empty()
-					$("#docList").hide("slow");
-					$("#deleteConfirm").hide("slow");
-					$("#createForm").show("fast");
-				});
-				
-				
-				
-				$("#delete").click(function() {
-					$("#result").empty()
-					$("#docList").hide("slow");
-					$("#createForm").hide("slow");
-					$("#deleteConfirm").show("fast");
-				});
-				
-				
-				$("#createF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Uploading data");
-					var form = $("#createF").serializeArray();
-					//console.log(form);
-					var json = "{\"id\":"+form[0].value+
-						",\"label\":\""+form[1].value;
-					json = json+"\",\"content\":\"";
-					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ");;
-					json = json+"\",\"url\":\""+form[3].value+"\"}";
-					console.log(json);
-					
-					var url="../documents/"+docId;
-					
-					
-					$.ajax({
-    					url: url,
-    					headers: {
-    					    'Accept': 'application/json',
-					        'Content-Type':'application/json'
-					    },
-					    method: 'PUT',
-					    dataType: 'json',
-					    data: json,
-					    success: function(data){
-					    	console.log('something worked');
-     					 	console.log('succes: '+data);
-    					}
- 					 });
-					
-				});
-				
-				$("#deleteF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Deleting data");
-					var form = $("#deleteF").serializeArray();
-					//console.log(form);
-					var json="";
-					if(form[0].value=="delete"){
-						var url="../documents/"+docId;
-					
-					
-						$.ajax({
-	    					url: url,
-	    					headers: {
-	    					    'Accept': 'application/json',
-						        'Content-Type':'application/json'
-						    },
-						    method: 'DELETE',
-						    dataType: 'json',
-						    data: json,
-						    success: function(data){
-						    	console.log('something worked');
-	     					 	console.log('succes: '+data);
-	    					}
-	 					 });
-					}
-					
-					
-					
-				});
-				
-			
-			});
-			
-		</script>
+		<title>/documents</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-<body>
-	<h1 id="header">Manage document </h1>
-	<button id="read">Read document</button>
-	<button id="create">Create or update document</button>
-	<button id="delete">Delete document</button>
-	<a href="documents.html"><button>Back to /documents</button></a>
-	<div id="docList">
-		<h2>Available document:</h2>
-	</div>
-	<div id="createForm">
-		<h2>Create a document</h2>
-		<p>Note: The URL and the textarea are mutually exclusive. If there is a URL, the content from that URL will be added. This overwrites anything in the textarea.</p>
-		<form action="/" id="createF">
-			<input type="text" name="id" id="id" placeholder="-1 if you don't know the ID"><br>
-			<input type="text" name="label" id="label" placeholder="Label of the text document"><br>
-			<textarea name="content" id="content" cols="35" rows="4">Your Text</textarea><br>
-			<input type="url" name="url" id="url" placeholder="http://here.is.your.text.com/text"><br>
-			<input type="submit" value="Upload document">
-		</form>	
-	</div>
-	<div id="deleteConfirm">
-		<h2>Delete this document</h2>
-		<p>Note: To delete the document, type delete into the field and press the delete button.</p>
-		<form action="/" id="deleteF">
-			<input type="text" name="delete" placeholder="delete"><br>
-			<input type="submit" value="Delete document">
-		</form>	
-	</div>
-</body>
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Header -->
+					<header id="header" class="alt">
+						<a href="index.html" class="logo"><strong>C3 Classifier Trainer API</strong> <span>by Tobias Eljasik-Swoboda</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+			<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="metadata.html">/metadata</a></li>
+							<li><a href="documents.html">/documents</a></li>
+							<li><a href="categories.html">/categories</a></li>
+							<li><a href="relationships.html">/relationships</a></li>
+							<li><a href="targetfunction.html">/targetfunction</a></li>
+							<li><a href="configurations.html">/configurations</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="index.html#one" class="button primary fit">Overview</a></li>
+						</ul>
+					</nav>
+			<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Manage document /documents/$docId</h1>
+									</header>
+			<ul class="actions">						
+				<li><button id="read">Read</button></li>
+				<li><button id="create">Create or update</button></li>
+				<li><button id="delete">Delete</button></li>
+				<li><a href="documents.html" class="button next">Back to /documents</a></li>
+			</ul>
+				<div id="list"><h2>Available document:</h2></div>
+			<div id="createForm">
+				<h2>Create or update a document</h2>
+				<p>Note: The URL and the textarea are mutually exclusive. If there is a URL, the content from that URL will be added. This overwrites anything in the textarea.</p>
+				<div class="fields">
+					<form action="/" id="createF">
+						<div class="field half">
+							<label for="id">ID:</label>
+							<input type="text" name="id" id="id" placeholder="-1 if you don't know the ID" />
+						</div>
+						<div class="field half">
+							<label for="label">Label:</label>
+							<input type="text" name="label" id="label" placeholder="Label of the text document" />
+						</div>
+						<div class="field">
+							<label for="content">Content:</label>
+							<textarea name="content" id="content" cols="35" rows="4">Your Text</textarea>
+						</div>
+						<div class="field half">
+							<label for="label">URL:</label>
+							<input type="url" name="url" id="url" placeholder="http://here.is.your.text.com/text" />
+						</div>
+						<ul class="actions">
+							<li><input type="submit" value="Upload document" class="primary" /></li>
+							<li><input type="reset" value="Clear" /></li>
+						</ul>
+					</form>	
+				</div>
+			</div>
+			<div id="deleteConfirm">
+				<h2>Delete this document in this microservice</h2>
+				<p>Note: To delete this document, type delete into the field and press the delete button.</p>
+				<form action="/" id="deleteF">
+					<input type="text" name="delete" placeholder="delete"><br>
+					<input type="submit" value="Delete" class="primary"/>
+				</form>	
+			</div>
+										
+										
+									</div>
+							</section>
+
+					</div>
+			<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="https://github.com/SirTobiSwobi/classifier-trainer" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Software License TBD. By Tobias Eljasik-Swoboda</li><li>Visual design: <a href="https://html5up.net">HTML5 UP</a> released under Creative Commons.</li>
+							</ul>
+						</div>
+					</footer>
+			
+		</div>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/c3.ct.trainer-api.js"></script>
+			<script src="assets/js/c3.ct.document.js"></script>
+	
+	</body>
 </html>

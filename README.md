@@ -22,4 +22,5 @@ Version change log:
 - 0.3.5: implementing endpoint hash function
 - 0.3.6: implementing /targetfunction and /targetfunction/$x endpoints
 - 0.3.7: implementing targetfunction GUI
-- 0.3.8: implementing abstract /config endpoint
+- 0.3.8: implementing abstract /configuration endpoint
+- 0.3.9: creating JavaScript Library encapsulating all calls to the API and adding rudimentary GUI design 

@@ -2,173 +2,53 @@
 <html>
 	<head>
 		<title>/categories</title>
-		<script src="jquery-3.3.1.min.js"></script>
-		<script>
-			
-			$(document).ready(function(){
-				$("#createForm").hide();
-				$("#uploadForm").hide();
-				$("#deleteConfirm").hide();
-				$.getJSON("../categories",function(json){
-					
-					if(json.categories==null){
-						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
-					}else{
-						for (var i=0; i< json.categories.length; i++){
-							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
-							"</a><a href=\"assignment.html?catId="+json.categories[i].id+"\"><button>Assign documents</button></a></li>");
-						}
-					}
-				});
-				
-				$("#read").click(function() {
-					$("#result").empty()
-					$("#createForm").hide("slow");
-					$("#uploadForm").hide("slow");
-					$("#deleteConfirm").hide("slow");
-					$("#catList").empty();
-					$("#catList").append("<h2>Available categories:</h2>");
-					$.getJSON("../categories",function(json){
-					
-					if(json.categories==null){
-						$("#catList").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
-					}else{
-						for (var i=0; i< json.categories.length; i++){
-							$("#catList").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
-							"</a><a href=\"assignment.html?catId="+json.categories[i].id+"\"><button>Assign documents</button></a></li>");
-							}
-						}
-					});
-					$("#catList").show("fast");
-				});
-			
-				$("#create").click(function() {
-					$("#result").empty()
-					$("#catList").hide("slow");
-					$("#uploadForm").hide("slow");
-					$("#deleteConfirm").hide("slow");
-					$("#createForm").show("fast");
-				});
-				
-				$("#upload").click(function() {
-					$("#result").empty()
-					$("#catList").hide("slow");
-					$("#createForm").hide("slow");
-					$("#deleteConfirm").hide("slow");
-					$("#uploadForm").show("fast");
-				});
-				
-				$("#delete").click(function() {
-					$("#result").empty()
-					$("#catList").hide("slow");
-					$("#uploadForm").hide("slow");
-					$("#createForm").hide("slow");
-					$("#deleteConfirm").show("fast");
-				});
-				
-				
-				$("#createF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Uploading data");
-					var form = $("#createF").serializeArray();
-					//console.log(form);
-					var json = "{ \"categories\":[{\"id\":"+form[0].value+
-						",\"label\":\""+form[1].value;
-					json = json+"\",\"description\":\"";
-					json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ")+"\"}]}";
-					console.log(json);
-					
-					var url="../categories";
-					
-					
-					$.ajax({
-    					url: url,
-    					headers: {
-    					    'Accept': 'application/json',
-					        'Content-Type':'application/json'
-					    },
-					    method: 'POST',
-					    dataType: 'json',
-					    data: json,
-					    success: function(data){
-					    	console.log('something worked');
-     					 	console.log('succes: '+data);
-    					}
- 					 });
-					
-				});
-				
-				$("#uploadF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Uploading data");
-					var form = $("#uploadF").serializeArray();
-					//console.log(form);
-					var json = form[0].value;
-					//console.log(json);
-					
-					var url="../categories";
-					
-					
-					$.ajax({
-    					url: url,
-    					headers: {
-    					    'Accept': 'application/json',
-					        'Content-Type':'application/json'
-					    },
-					    method: 'POST',
-					    dataType: 'json',
-					    data: json,
-					    success: function(data){
-					    	console.log('something worked');
-     					 	console.log('succes: '+data);
-    					}
- 					 });
-					
-				});
-				
-				$("#deleteF").submit(function( event ) {
-					event.preventDefault();
-					//console.log("Deleting data");
-					var form = $("#deleteF").serializeArray();
-					//console.log(form);
-					var json="";
-					if(form[0].value=="delete"){
-						var url="../categories";
-					
-					
-						$.ajax({
-	    					url: url,
-	    					headers: {
-	    					    'Accept': 'application/json',
-						        'Content-Type':'application/json'
-						    },
-						    method: 'DELETE',
-						    dataType: 'json',
-						    data: json,
-						    success: function(data){
-						    	console.log('something worked');
-	     					 	console.log('succes: '+data);
-	    					}
-	 					 });
-					}
-					
-					
-					
-				});
-				
-			
-			});
-			
-		</script>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-<body>
-	<h1>Manage categories:</h1>
-	<button id="read">Read categories</button>
-	<button id="create">Create category</button>
-	<button id="upload">Upload category collection JSON</button>
-	<button id="delete">Delete all categories</button>
-	<a href="index.html"><button>Back to overview</button></a>
-	<div id="catList"><h2>Available categories:</h2></div>
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Header -->
+					<header id="header" class="alt">
+						<a href="index.html" class="logo"><strong>C3 Classifier Trainer API</strong> <span>by Tobias Eljasik-Swoboda</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+			<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="metadata.html">/metadata</a></li>
+							<li><a href="documents.html">/documents</a></li>
+							<li><a href="categories.html">/categories</a></li>
+							<li><a href="relationships.html">/relationships</a></li>
+							<li><a href="targetfunction.html">/targetfunction</a></li>
+							<li><a href="configurations.html">/configurations</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="index.html#one" class="button primary fit">Overview</a></li>
+						</ul>
+					</nav>
+<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Manage categories /categories</h1>
+									</header>
+			<ul class="actions">						
+				<li><button id="read">Read all</button></li>
+				<li><button id="create">Create</button></li>
+				<li><button id="upload">Upload collection JSON</button></li>
+				<li><button id="delete">Delete all</button></li>
+				<li><a href="index.html#one" class="button next">Back to overview</a></li>
+			</ul>
+			
+	<div id="list"><h2>Available categories:</h2></div>
 	<div id="createForm">
 		<h2>Create a category</h2>
 		<form action="/" id="createF">
@@ -212,5 +92,28 @@
 			<input type="submit" value="Delete all categories">
 		</form>	
 	</div>
-</body>
+	</section>
+
+					</div>
+			<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="https://github.com/SirTobiSwobi/classifier-trainer" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Software License TBD. By Tobias Eljasik-Swoboda</li><li>Visual design: <a href="https://html5up.net">HTML5 UP</a> released under Creative Commons.</li>
+							</ul>
+						</div>
+					</footer>
+	</div>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/c3.ct.trainer-api.js"></script>
+		<script src="assets/js/c3.ct.categories.js"></script>
+	</body>
 </html>

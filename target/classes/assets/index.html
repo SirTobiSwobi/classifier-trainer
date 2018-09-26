@@ -1,14 +1,195 @@
 <!DOCTYPE html>
+<!--
+	Webdesign: Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	
+	Software: Tobias Eljasik-Swoboda
+	License: TBD.
+-->
 <html>
-<head>
-<title>C3 Classifier Trainer API</title>
-</head>
-<body>
-<h1>Available endpoints:</h1>
-<li><a href="metadata.html">/metadata</a></li>
-<li><a href="documents.html">/documents</a></li>
-<li><a href="categories.html">/categories</a></li>
-<li><a href="relationships.html">/relationships</a></li>
-<li><a href="targetfunction.html">/targetfunction</a></li>
+	<head>
+		<title>C3 Classifier Trainer API</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Header -->
+					<header id="header" class="alt">
+						<a href="index.html" class="logo"><strong>C3 Classifier Trainer API</strong> <span>by Tobias Eljasik-Swoboda</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+			<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="metadata.html">/metadata</a></li>
+							<li><a href="documents.html">/documents</a></li>
+							<li><a href="categories.html">/categories</a></li>
+							<li><a href="relationships.html">/relationships</a></li>
+							<li><a href="targetfunction.html">/targetfunction</a></li>
+							<li><a href="configurations.html">/configurations</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="index.html#one" class="button primary fit">Overview</a></li>
+						</ul>
+					</nav>
+			<!-- Banner -->
+					<section id="banner" class="major">
+						<div class="inner">
+							<header class="major">
+								<h1>C3 Classifier Trainer API</h1>
+							</header>
+							<div class="content">
+								<p>This microservice is an abstract implementation of the C3 Classifier-Trainer API. Microservices are based on it.</p>
+								<ul class="actions">
+									<li><a href="#one" class="button next scrolly">Get Started</a></li>
+								</ul>
+							</div>
+						</div>
+					</section>
+			<!-- Main -->
+					<div id="main">
+
+						<!-- One -->
+							<section id="one" class="tiles">
+								<article>
+									<span class="image">
+										<img src="images/pic01.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="metadata.html" class="link">/metadata</a></h3>
+										<p>Renders the metadata returned by the service.</p>
+									</header>
+								</article>
+								<article>
+									<span class="image">
+										<img src="images/pic02.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="documents.html" class="link">/documents</a></h3>
+										<p>Here, all documents relevant for the classifier trainer can be created, read, updated and deleted.</p>
+									</header>
+								</article>
+								<article>
+									<span class="image">
+										<img src="images/pic03.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="categories.html" class="link">/categories</a></h3>
+										<p>Here, all categories relevant for the classifier trainer can be created, read, updated and deleted.</p>
+									</header>
+								</article>
+								<article>
+									<span class="image">
+										<img src="images/pic04.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="relationships.html" class="link">/relationships</a></h3>
+										<p>Categories can form relationships. This means, that certain categories can be sub-categories of others. 
+											They also can be equivalent to each other. 
+											This has logical implications for assigned documents. 
+											Documents assigned to sub-categories are always implicitly also
+											assigned to their super categories as well as to their equivalent categories. 
+											The service automatically computes these relationships. 
+											Here you can edit these relationships.</p>
+									</header>
+								</article>
+								<article>
+									<span class="image">
+										<img src="images/pic05.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="targetfunction.html" class="link">/targetfunction</a></h3>
+										<p>In Text Categorization, the target function is the manually created definition which document belongs to which category. 
+										The trainer needs this to learn from.</p>
+									</header>
+								</article>
+								<article>
+									<span class="image">
+										<img src="images/pic06.jpg" alt="" />
+									</span>
+									<header class="major">
+										<h3><a href="configuration.html" class="link">/configuration</a></h3>
+										<p>Depending on the utilized machine learning algorithm, different hyper-parameters for the learning algorithm can be specified.
+										This happens using this API endpoint.</p>
+									</header>
+								</article>
+							</section>
+
+						<!-- Two -->
+							<section id="two">
+								<div class="inner">
+									<header class="major">
+										<h2>Classifier-Trainer</h2>
+									</header>
+									<p>A classifier assigns documents to categories based on their content by employing machine learning. 
+									This service is part of the Classifier Trainer/Athlete pattern developed by Tobias Eljasik-Swoboda. 
+									A Trainer Service uses machine learning to learn from existing document-to-category assignments. After having learned from these examples,
+									an Athlete Service can use these insights to perform classifications. This facilitates Scale-Out.
+									A Trainer Service always includes an Athlete Service. Each C3 Service is available as JAR file and Docker Container. This makes them runable anywhere.
+									<br/> The service employs multiple endpoints using a REST/JSON API. This is wrapped in the classifier-trainer.js JavaScript employed by this web GUI. 
+									<br/> Serving this web GUI can be turned off in the configuration yml prior to starting the service. 
+									</p>
+									<ul class="actions">
+										<li><a href="index.html#one" class="button next">Get Started</a></li>
+									</ul>
+								</div>
+							</section>
+
+					</div>
+					<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+							<section class="split">
+								<section>
+									<div class="contact-method">
+										<span class="icon alt fa-envelope"></span>
+										<h3>Email</h3>
+										<a href="mailto:Tobias.Swoboda@fernuni-hagen.de">Tobias.Swoboda@fernuni-hagen.de</a>
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
+										<span class="icon alt fa-home"></span>
+										<h3>Address</h3>
+										<span>Faculty of Mathematics and Computer Science<br />
+										University of Hagen<br />
+										Universitätsstra&szlig;e 47<br />
+										58085 Hagen,<br />
+										Germany</span>
+									</div>
+								</section>
+							</section>
+						</div>
+					</section>
+					
+					<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="https://github.com/SirTobiSwobi/classifier-trainer" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Software License TBD. By Tobias Eljasik-Swoboda</li><li>Visual design: <a href="https://html5up.net">HTML5 UP</a> released under Creative Commons.</li>
+							</ul>
+						</div>
+					</footer>
+			
+				
+		</div>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
 </body>
 </html>

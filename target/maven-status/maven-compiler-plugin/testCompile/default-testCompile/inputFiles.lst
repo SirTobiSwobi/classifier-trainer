@@ -4,6 +4,7 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationshipsTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoryTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadataTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurationsTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManagerTest.java
