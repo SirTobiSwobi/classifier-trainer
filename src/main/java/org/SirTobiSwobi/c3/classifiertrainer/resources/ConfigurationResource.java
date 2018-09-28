@@ -36,7 +36,7 @@ public class ConfigurationResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		Configuration configuration = refHub.getConfigurationManager().getByAddress(conf);	
-		TCConfiguration output = new TCConfiguration(configuration.getId());	
+		TCConfiguration output = new TCConfiguration(configuration.getId(),configuration.getFolds());	
 		return Response.ok(output).build();
 		
 	}
@@ -48,7 +48,7 @@ public class ConfigurationResource {
 			return response;
 		}
 		
-		refHub.getConfigurationManager().setConfiguration(new Configuration(configuration.getId()));
+		refHub.getConfigurationManager().setConfiguration(new Configuration(configuration.getId(),configuration.getFolds()));
 		Response response = Response.ok().build();
 		return response;
 	}

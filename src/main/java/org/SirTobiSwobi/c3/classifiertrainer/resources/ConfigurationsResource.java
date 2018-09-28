@@ -39,7 +39,7 @@ public class ConfigurationsResource {
 			Configuration[] confArray=refHub.getConfigurationManager().getConfigurationArray();
 			TCConfiguration[] outputArray = new TCConfiguration[confArray.length];
 			for(int i=0; i<confArray.length;i++){
-				outputArray[i]=new TCConfiguration(confArray[i].getId());
+				outputArray[i]=new TCConfiguration(confArray[i].getId(), confArray[i].getFolds());
 			}
 			TCConfigurations output = new TCConfigurations(outputArray);
 			return Response.ok(output).build();
@@ -57,10 +57,10 @@ public class ConfigurationsResource {
 			for(int i=0; i<configurations.getConfigurations().length; i++){
 				TCConfiguration conf=configurations.getConfigurations()[i];
 				if(conf.getId()>=0){
-					Configuration config = new Configuration(conf.getId());
+					Configuration config = new Configuration(conf.getId(), conf.getFolds());
 					refHub.getConfigurationManager().setConfiguration(config);
 				}else{			
-					refHub.getConfigurationManager().addConfigurationWithoutId("");
+					refHub.getConfigurationManager().addConfigurationWithoutId(conf.getFolds(),"");
 				}
 			}
 		}

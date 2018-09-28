@@ -7,6 +7,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
@@ -19,6 +20,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.TargetFunctionResource;
@@ -55,7 +57,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		CategoryManager catMan = new CategoryManager(); 
 		TargetFunctionManager tfMan = new TargetFunctionManager();
 		ConfigurationManager confMan = new ConfigurationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan);
+		ModelManager modMan = new ModelManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
 		tfMan.setRefHub(refHub);
 		
 		
@@ -80,6 +83,7 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final AssignmentResource assignment = new AssignmentResource(refHub);
 		final ConfigurationsResource configurations = new ConfigurationsResource(refHub);
 		final ConfigurationResource configurationR = new ConfigurationResource(refHub);
+		final ModelsResource models = new ModelsResource(refHub);
 		
 		/*
 		 * Initializing health checks
@@ -103,6 +107,7 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(assignment);
 		environment.jersey().register(configurations);
 		environment.jersey().register(configurationR);
+		environment.jersey().register(models);
 		
 		/*
 		 * Generating example data for manual testing during development

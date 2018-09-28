@@ -12,7 +12,7 @@ public class ConfigurationManagerTest {
 		ConfigurationManager confMan = new ConfigurationManager();
 		
 		confMan.setConfiguration(config);
-		confMan.addConfigurationWithoutId("This is not used here");
+		confMan.addConfigurationWithoutId(2,"This is not used here");
 		
 		assertTrue("There are two documents",confMan.getSize()==2);
 		confMan.deleteConfiguration(1);

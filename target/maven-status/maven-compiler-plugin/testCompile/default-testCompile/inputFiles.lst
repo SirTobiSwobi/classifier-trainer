@@ -11,4 +11,5 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocumentsTest.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/db/ModelManagerTest.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/test/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoriesTest.java

@@ -1220,13 +1220,13 @@ $.getJSON("../configurations/"+confId,function(json){
 	if(json==null){
 		$("#list").append("<h3>The configuration with id "+confId+" does not exist. You can create it</h3>");
 	}else{
-		$("#list").append("<h3>Id: "+json.id+"</h3>");
+		$("#list").append("<h3>Id: "+json.id+" has: "+json.folds+" folds</h3>");
 	}
 });
 }
 
 function createConfiguration(form){
-	var json = "{ \"configurations\":[{\"id\":"+form[0].value+" }]}";
+	var json = "{ \"configurations\":[{\"id\":"+form[0].value+", \"folds\":"+form[1].value+" }]}";
 	console.log(json);
 	
 	var url="../configurations";
@@ -1248,7 +1248,7 @@ function createConfiguration(form){
 }
 
 function updateConfiguration(form){
-var json = "{\"id\":"+form[0].value+" }";
+var json = "{\"id\":"+form[0].value+", \"folds\":"+form[1].value+" }";
 console.log(json);
 
 var url="../configurations/"+form[0].value;
@@ -1275,6 +1275,7 @@ $.getJSON("../configurations/"+confId,function(json){
 		//nothing but empty fields
 	}else{
 		$("#id").val(json.id);
+		$("#folds").val(json.folds);
 	}
 });
 }

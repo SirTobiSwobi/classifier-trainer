@@ -13,7 +13,8 @@ public class TargetFunctionManagerTest {
 		CategoryManager catMan = new CategoryManager(); 
 		TargetFunctionManager tfMan = new TargetFunctionManager();
 		ConfigurationManager confMan = new ConfigurationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan);
+		ModelManager modMan = new ModelManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
 		tfMan.setRefHub(refHub);
 		
 		Category category = new Category(0,"Diseases","");

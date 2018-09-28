@@ -10,6 +10,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
 import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
@@ -30,7 +31,8 @@ public class TCTargetFunctionTest {
 		CategoryManager catMan = new CategoryManager(); 
 		TargetFunctionManager tfMan = new TargetFunctionManager();
 		ConfigurationManager confMan = new ConfigurationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan);
+		ModelManager modMan = new ModelManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
 		tfMan.setRefHub(refHub);
 		
 		Category cat = new Category(0,"Diseases","");

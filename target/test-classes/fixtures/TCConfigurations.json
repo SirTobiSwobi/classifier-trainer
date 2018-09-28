@@ -1,13 +1,16 @@
 {
 	"configurations":[
 		{
-		"id": 1
+		"id": 1,
+		"folds": 1
 		},
 		{
-		"id": 2
+		"id": 2,
+		"folds": 3
 		},
 		{
-		"id": 5
+		"id": 5,
+		"folds": 5
 		}
 	]
 }

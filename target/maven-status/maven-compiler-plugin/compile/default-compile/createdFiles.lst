@@ -2,6 +2,7 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.class
 org/SirTobiSwobi/c3/classifiertrainer/db/SearchDirection.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadata.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TCAssignment.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCProgress.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/AssignmentResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/ReferenceHub.class
 org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerApplication.class
@@ -9,6 +10,7 @@ org/SirTobiSwobi/c3/classifiertrainer/db/Category.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCTargetFunction.class
 org/SirTobiSwobi/c3/classifiertrainer/db/CategoryManager.class
 org/SirTobiSwobi/c3/classifiertrainer/health/ConfigHealthCheck.class
+org/SirTobiSwobi/c3/classifiertrainer/db/Model.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategory.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/RelationshipResource.class
 org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerConfiguration.class
@@ -18,15 +20,18 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/TargetFunctionResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategories.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/MetadataResource.class
+org/SirTobiSwobi/c3/classifiertrainer/resources/ModelsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManager.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationships.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCModel.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoryResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipType.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.class
+org/SirTobiSwobi/c3/classifiertrainer/db/ModelManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/RelationshipsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/core/Utilities.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationship.class
@@ -39,3 +44,4 @@ org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCHash.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurations.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoriesResource.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCModels.class

@@ -12,3 +12,4 @@ org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManagerTest.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategoryTest.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCTargetFunctionTest.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurationsTest.class
+org/SirTobiSwobi/c3/classifiertrainer/db/ModelManagerTest.class

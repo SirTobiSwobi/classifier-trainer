@@ -19,16 +19,16 @@ public class TCConfigurationsTest {
 	public void serializesToJSON() throws Exception {
 		
 		ConfigurationManager confMan =  new ConfigurationManager();
-		confMan.addConfigurationWithoutId("This needs to be replaced with an actual configuration in the actual classifier trainer");
-		confMan.addConfigurationWithoutId("As does this");
-		confMan.setConfiguration(new Configuration(5));
+		confMan.addConfigurationWithoutId(1,"This needs to be replaced with an actual configuration in the actual classifier trainer");
+		confMan.addConfigurationWithoutId(3,"As does this");
+		confMan.setConfiguration(new Configuration(5,5));
 		
 		
 		Configuration[] configurations = confMan.getConfigurationArray();
 		TCConfiguration[] TCconfigurationArray = new TCConfiguration[configurations.length];
 		for(int i=0; i<configurations.length;i++){
 			Configuration conf = configurations[i];
-			TCConfiguration TCconf = new TCConfiguration(conf.getId());
+			TCConfiguration TCconf = new TCConfiguration(conf.getId(), conf.getFolds());
 			TCconfigurationArray[i]=TCconf;
 		}
 		TCConfigurations TCconfigurations = new TCConfigurations(TCconfigurationArray);

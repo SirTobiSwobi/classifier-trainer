@@ -25,9 +25,9 @@ public class ConfigurationManager {
 	/**
 	 * This depends on the type of classifier trainer that is implemented. The parameter is not used in this API sample implementation. 
 	 */
-	public synchronized void addConfigurationWithoutId(String tbd){
+	public synchronized void addConfigurationWithoutId(int folds,String tbd){
 		long id = configurations.getMaxId()+1;
-		Configuration conf = new Configuration(id);
+		Configuration conf = new Configuration(id,folds);
 		configurations.setContent(conf,id);
 	}
 	
