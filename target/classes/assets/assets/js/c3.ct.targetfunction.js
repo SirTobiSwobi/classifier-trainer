@@ -345,15 +345,15 @@
 		});
 		
 		$("#create").click(function() {
-			renderCreateForm();
-			$("#assList").hide("slow");
+			renderAssignmentCreateForm();
+			$("#list").hide("slow");
 			$("#uploadForm").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
 		});
 		
 		$("#upload").click(function() {
-			$("#assList").hide("slow");
+			$("#list").hide("slow");
 			$("#createForm").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#uploadForm").show("fast");
@@ -361,62 +361,22 @@
 		
 		$("#createF").submit(function( event ) {
 			event.preventDefault();
-			console.log("Uploading data");
-			
-			
 			var form = $("#createF").serializeArray();
-			console.log(form);
-			var json = "{ \"assignments\":[{\"id\":"+form[0].value;
-			json = json + ", \"documentId\":"+form[1].value;
-			json = json + ", \"categoryId\":"+form[2].value+"";
-			json = json + "}]}";
-			console.log(json);
-			
-			var url="../targetfunction";	
-			$.ajax({
-				url: url,
-				headers: {
-				    'Accept': 'application/json',
-			        'Content-Type':'application/json'
-			    },
-			    method: 'POST',
-			    dataType: 'json',
-			    data: json,
-			    success: function(data){
-			    	console.log('something worked');
-					 	console.log('succes: '+data);
-				}
-			});
+			createAssignment(form);
 			location.reload(true);
 		});
 		
 		$("#uploadF").submit(function( event ) {
 			event.preventDefault();
-			//console.log("Uploading data");
 			var form = $("#uploadF").serializeArray();
-			//console.log(form);
 			var json = form[0].value;
-			//console.log(json);
-			var url="../targetfunction";	
-			$.ajax({
-				url: url,
-				headers: {
-				    'Accept': 'application/json',
-			        'Content-Type':'application/json'
-			    },
-			    method: 'POST',
-			    dataType: 'json',
-			    data: json,
-			    success: function(data){
-			    	console.log('something worked');
-					 	console.log('succes: '+data);
-				}
-				 });
+			uploadTargetfunctionJSON(json);
+			location.reload(true);
 			
 		});
 		
 		$("#delete").click(function() {
-			$("#assList").hide("slow");
+			$("#list").hide("slow");
 			$("#uploadForm").hide("slow");
 			$("#createForm").hide("slow");
 			$("#deleteConfirm").show("fast");
@@ -424,34 +384,11 @@
 		
 		$("#deleteF").submit(function( event ) {
 			event.preventDefault();
-			//console.log("Deleting data");
 			var form = $("#deleteF").serializeArray();
-			//console.log(form);
-			var json="";
 			if(form[0].value=="delete"){
-				var url="../targetfunction";
-			
-			
-				$.ajax({
-					url: url,
-					headers: {
-					    'Accept': 'application/json',
-				        'Content-Type':'application/json'
-				    },
-				    method: 'DELETE',
-				    dataType: 'json',
-				    data: json,
-				    success: function(data){
-				    	console.log('something worked');
-						 	console.log('succes: '+data);
-					}
-					 });
-			}
-			
-			
-			
+				deleteTargetfunction();
+			}		
+			location.reload(true);
 		});
-			
-		
-
+	
 })(jQuery);

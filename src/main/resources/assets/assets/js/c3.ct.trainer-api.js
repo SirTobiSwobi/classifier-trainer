@@ -10,7 +10,7 @@ function getIdObject(){
 	
 	var pageURL = window.location.search.substring(1);
 	var urlVariables = pageURL.split('&');
-	var assId, docId, catId, relId;
+	var assId, docId, catId, relId, confId;
 	for(var i=0; i< urlVariables.length; i++){
 		var paramName = urlVariables[i].split('=');
 		if(paramName[0] == "assId"){
@@ -21,10 +21,12 @@ function getIdObject(){
 			catId = paramName[1];
 		}else if(paramName[0] == "relId"){
 			relId = paramName[1];
+		}else if(paramName[0] == "confId"){
+			confId = paramName[1];
 		}
 	}
 	
-	var output = {assId: assId, docId: docId, catId: catId, relId: relId};
+	var output = {assId: assId, docId: docId, catId: catId, relId: relId, confId: confId};
 	return output;
 	
 }
@@ -397,6 +399,7 @@ function renderRelationships(){
 	});
 }
 
+/*
 function renderCategoryCreation(){
 	$("#fromId").empty();
 	$("#toId").empty();
@@ -411,6 +414,7 @@ function renderCategoryCreation(){
 			$("#toId").append(appendString);		
 	});
 }
+*/
 
 function createRelationship(form){
 	var json = "{ \"relationships\":[{\"id\":"+form[0].value;
@@ -663,11 +667,10 @@ function deleteRelationship(relId){
  * 	Targetfunction functions
  */
 
-function findRootId(categories, assignments){
-	var rootId=0;
+function findRootId(categories, assignments, roots){
+	var rootId=categories[0].id;
 	var maxImplicit=0;
 	for(var i=0;i<categories.length;i++){
-		console.log("category "+categories[i].id+" - "+categories[i].label);
 		var implicits=0;
 		if(assignments!=null){
 			for(var j=0; j<assignments.length; j++){
@@ -676,9 +679,7 @@ function findRootId(categories, assignments){
 				}
 			}
 		}	
-		console.log("has "+implicits+" implicit assignments. Previous Maximum: "+maxImplicit);
-		if(implicits>maxImplicit){
-			console.log("assigning root role to category "+categories[i].id);
+		if(implicits>maxImplicit&&!roots.includes(categories[i].id)){
 			maxImplicit=implicits;
 			rootId = categories[i].id;
 		}
@@ -700,28 +701,24 @@ function getCategoryAssignmentArray(assignments, catId){
 }
 
 function hideDesc(catId){
-	console.log(catId);
 	$("#cat"+catId+"desc").hide();
 	$("#cat"+catId+"hideCats").hide();
 	$("#cat"+catId+"showCats").show();
 }
 
 function showDesc(catId){
-	console.log(catId);
 	$("#cat"+catId+"desc").show();
 	$("#cat"+catId+"showCats").hide();
 	$("#cat"+catId+"hideCats").show();
 }
 
 function hideDocs(catId){
-	console.log(catId);
 	$("#cat"+catId+"docs").hide();
 	$("#cat"+catId+"hideDocs").hide();
 	$("#cat"+catId+"showDocs").show();
 }
 
 function showDocs(catId){
-	console.log(catId);
 	$("#cat"+catId+"docs").show();
 	$("#cat"+catId+"showDocs").hide();
 	$("#cat"+catId+"hideDocs").show();
@@ -730,11 +727,22 @@ function showDocs(catId){
 
 function showEq(catId){
 	$.getJSON("../relationships/ancestors/"+catId,function(json){
-		console.log(json);
 		for(var i=json.categories.length-1; i>=0; i--){
 			showDesc(json.categories[i].id);
 		}
 	});
+}
+
+function getDescendantAmount(relationships, catId){
+	console.log(relationships);
+	console.log(catId);
+	var descendants=0;
+	for(var j=0; j<relationships.length; j++){
+		if(relationships[j].type=="Sub"&&relationships[j].fromId==catId){
+			descendants++;
+		}
+	}	
+	return descendants;
 }
 
 
@@ -745,8 +753,9 @@ function generateTargetFunctionCategory(categories, descendants, equalities, ass
 		visited.push(categories[i]);
 		appendString = "<div id=\"cat"+categories[i].id+"\" style=\"padding-left: 10px\">";
 		appendString += "<table>";
-		appendString += "<tr><td colspan=4>"
+		appendString += "<tr><td>";	
 		appendString += "<b>Category "+categories[i].label;
+		appendString += "</b> <a href=\"assignment.html?catId="+categories[i].id+"\" class=\"button next\">Assign document</a></td></tr>";
 		if(typeof equalities[i]!="undefined" && equalities[i].length>0){
 				appendString += " equal to ";
 			for(var j=0;j<equalities[i].length;j++){
@@ -760,6 +769,7 @@ function generateTargetFunctionCategory(categories, descendants, equalities, ass
 			}
 		}		
 		appendString += "</b></td></tr>";
+		/*
 		appendString += "<tr><td><label>"
 		appendString += assignments[i].length+" assigned documents </label></td><td>";
 		appendString += "<button onclick=\"hideDocs("+categories[i].id+")\" id=\"cat"+categories[i].id+"hideDocs\">Hide</button>";
@@ -773,11 +783,14 @@ function generateTargetFunctionCategory(categories, descendants, equalities, ass
 			appendString += "colspan=2>"
 		}
 		appendString += "</td></tr>";
-		appendString += "<tr><td colspan=4>";
-		appendString += "<a href=\"assignment.html?catId="+categories[i].id+"\" class=\"button next\">Assign document</a></td></tr>";
-		appendString += "<tr><td colspan=4>"
-		appendString += categories[i].label;
-		appendString +=" documents:<br/>"
+		*/
+		
+		appendString += "<tr><td><b>"
+		appendString += categories[i].label+": ";
+		appendString += assignments[i].length+" assigned documents </b> ";
+		appendString += "<button onclick=\"hideDocs("+categories[i].id+")\" id=\"cat"+categories[i].id+"hideDocs\">Hide</button>";
+		appendString += "<button onclick=\"showDocs("+categories[i].id+")\" id=\"cat"+categories[i].id+"showDocs\">Show</button>";
+		appendString += "<br/>";	
 		if(assignments[i].length>0){
 			appendString += "<div id=\"cat"+categories[i].id+"docs\">";
 			appendString += "<table>";
@@ -800,9 +813,12 @@ function generateTargetFunctionCategory(categories, descendants, equalities, ass
 		appendString += "</td></tr>"
 		
 		if(typeof descendants[i]!="undefined"&&descendants[i].length>0){
-			appendString += "<tr><td colspan=4>"
-			appendString += categories[i].label;
-			appendString+=" sub-categories: <br/>"
+			appendString += "<tr><td>"
+			appendString += "<b>"+categories[i].label+": "+descendants[i].length+" sub-categories</b> ";
+			appendString += "<button onclick=\"hideDesc("+categories[i].id+")\" id=\"cat"+categories[i].id+"hideCats\">Hide</button>";
+			appendString += "<button onclick=\"showDesc("+categories[i].id+")\" id=\"cat"+categories[i].id+"showCats\">Show</button>";
+			appendString += "<br/>";
+				
 			appendString += "<div id=\"cat"+categories[i].id+"desc\">";		
 			for(var j=0; j<descendants[i].length; j++){
 				console.log("category "+i+" "+categories[i].label+" descendant "+j+" is category: ")
@@ -825,10 +841,10 @@ function generateTargetFunctionCategory(categories, descendants, equalities, ass
 }
 
 function renderTargetFunction(categoryDisplay, categoryDescendants, categoryEqualities, categoryAssignments, documents){
-	$("#assList").empty();
-	$("#assList").append("<h2>Available assignments:</h2>");
+	$("#list").empty();
+	$("#list").append("<h2>Available assignments:</h2>");
 	if(categoryDisplay.length==0){
-		$("#assList").append("<h3>There is currently no target function in this microservice. You can add one</h3>");
+		$("#list").append("<h3>There is currently no target function in this microservice. You can add one</h3>");
 	}else{
 		var visited = new Array();
 		for(var i=0;i<categoryDisplay.length;i++){
@@ -836,8 +852,10 @@ function renderTargetFunction(categoryDisplay, categoryDescendants, categoryEqua
 			var catResult = generateTargetFunctionCategory(categoryDisplay,categoryDescendants,categoryEqualities, categoryAssignments, documents, i, visited, 0);
 			var appendString = catResult.appendString;
 			visited = catResult.visited;
+			console.log("rendering category");
+			console.log(visited);
 			
-			$("#assList").append(appendString);
+			$("#list").append(appendString);
 			$("#cat"+categoryDisplay[i].id+"desc").hide();
 			$("#cat"+categoryDisplay[i].id+"hideCats").hide();
 			$("#cat"+categoryDisplay[i].id+"docs").hide();
@@ -856,19 +874,15 @@ function readTargetFunction(){
 	
 	$.getJSON("../categories",function(json){
 		categoryJSON = json;
-		console.log(categoryJSON);
 	}).done(function(){
 		$.getJSON("../documents",function(json){
 			documentJSON = json;
-			console.log(documentJSON);
 		}).done(function(){
 				$.getJSON("../relationships",function(json){
 				relationshipJSON = json;
-				console.log(relationshipJSON);
 			}).done(function(){
 				$.getJSON("../targetfunction",function(json){
 					targetfunctionJSON = json;
-					console.log(targetfunctionJSON);
 				}).done(function(){
 					
 					var categoryDisplay = new Array();
@@ -878,21 +892,23 @@ function readTargetFunction(){
 					
 					var categoryDisplayCounter = 0;
 					if(relationshipJSON.relationships==null){
-						console.log("There are no relationships. Display will be just for categories without their hierarchies");
 						for(var i=0;i<categoryJSON.categories.length;i++){
 							categoryDisplay[categoryDisplayCounter]=categoryJSON.categories[i];
 							categoryAssignments[categoryDisplayCounter]=getCategoryAssignmentArray(targetfunctionJSON.assignments,categoryJSON.categories[i].id);
 							categoryDisplayCounter++;
 						}
 					}else{
-						var rootId=findRootId(categoryJSON.categories, targetfunctionJSON.assignments);
-						console.log("Root has categoryId: "+rootId);
+						var roots = new Array();
+									
+						var rootId=findRootId(categoryJSON.categories, targetfunctionJSON.assignments, roots);
 						//implement BFS to find everything connected to the root. Repeat for all remaining nodes.
 						var visited = new Array();
 						var queue = new Array();
+						
 						var unvisited = getIds(categoryJSON.categories);
 						//visited.push(rootId);
 						queue.push(rootId);
+						roots.push(rootId);
 						while(queue.length>0){
 							var catId=queue.pop();
 							visited.push(catId);
@@ -927,9 +943,20 @@ function readTargetFunction(){
 							categoryDisplayCounter++;
 							if(queue.length==0&&unvisited.length>0){
 								//check for alternative roots
-								rootId=findRootId(buildArrayFromIds(categoryJSON.categories,unvisited), targetfunctionJSON.assignments);
+								rootId=findRootId(buildArrayFromIds(categoryJSON.categories,unvisited), targetfunctionJSON.assignments, roots);
 								console.log("Found new root: "+rootId);
-								queue.push(rootId);
+								console.log("Has descendants: "+getDescendantAmount(relationshipJSON.relationships,rootId));
+								if(!roots.includes(rootId)&&getDescendantAmount(relationshipJSON.relationships,rootId)>0){
+									console.log("pushing rootId: "+rootId);
+									queue.push(rootId);
+								}else{
+									console.log("unvisited: "+unvisited);
+									for(var i=0; i<unvisited.length; i++){
+										categoryDisplay[categoryDisplayCounter]=getObjectById(categoryJSON.categories, unvisited[i]);
+										categoryAssignments[categoryDisplayCounter]=getCategoryAssignmentArray(targetfunctionJSON.assignments,unvisited[i]);
+										categoryDisplayCounter++;
+									}
+								}										
 							}
 						}
 						
@@ -950,18 +977,16 @@ function readTargetFunction(){
 	});
 }
 
-function renderCreateForm(){
+function renderAssignmentCreateForm(){
 	$("#docId").empty();
 	$("#catId").empty();
 	var categoryJSON;
 	var documentJSON;
 	$.getJSON("../categories",function(json){
 		categoryJSON = json;
-		console.log(categoryJSON);
 	}).done(function(){
 		$.getJSON("../documents",function(json){
 			documentJSON = json;
-			console.log(documentJSON);
 		}).done(function(){
 			var appendString = "";			
 			for(var j=0; j< documentJSON.documents.length; j++){				
@@ -980,4 +1005,330 @@ function renderCreateForm(){
 			$("#catId").append(appendString);			
 		})
 	});
+}
+
+function createAssignment(form){
+	var json = "{ \"assignments\":[{\"id\":"+form[0].value;
+	json = json + ", \"documentId\":"+form[1].value;
+	json = json + ", \"categoryId\":"+form[2].value+"";
+	json = json + "}]}";
+	var url="../targetfunction";	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+function uploadTargetfunctionJSON(json){
+	var url="../targetfunction";	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function deleteTargetfunction(){
+	var url="../targetfunction";
+	var json="";
+
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function renderAssignment(assId){
+	var appendString="";
+	var ass;
+	var document;
+	var category;
+	$.getJSON("../targetfunction/"+assId,function(json){
+		ass=json;
+	}).done(function(){		
+		console.log(ass);
+		console.log("../documents/"+ass.documentId);
+		console.log("../categories/"+ass.categoryId);
+		appendString+="<h3>Assignment "+assId+": ";
+		$.getJSON("../documents/"+ass.documentId,function(json){
+			console.log(json);
+			document=json;
+			appendString+="Document "+document.id+" ("+document.label+") is assigned to ";
+		}).done(function(){
+			$.getJSON("../categories/"+ass.categoryId,function(json){
+				console.log(json);
+				category=json;
+				appendString+="category "+category.id+" ("+category.label+")</h3>";
+			}).done(function(){
+				$("#list").empty();
+				$("#list").append(appendString);
+				$("#list").show();
+			});
+		});		
+	}).fail(function(){
+		
+		appendString+="<h3>An assignment with ID "+assId+" does not exist. You can create it.</h3>";
+		$("#list").empty();
+		$("#list").append(appendString);
+		$("#list").show();
+	});
+	
+}
+
+function renderAssignmentCreateForm(ids){
+	$("#docId").empty();
+	$("#catId").empty();
+	var categoryJSON;
+	var documentJSON;
+	$.getJSON("../categories",function(json){
+		categoryJSON = json;
+		console.log(categoryJSON);
+	}).done(function(){
+		$.getJSON("../documents",function(json){
+			documentJSON = json;
+			console.log(documentJSON);
+		}).done(function(){
+			var appendString = "";			
+			for(var j=0; j< documentJSON.documents.length; j++){				
+				appendString = appendString +"<option value=\""+documentJSON.documents[j].id+"\"";
+				if(documentJSON.documents[j].id==ids.docId){
+					appendString+= " selected";
+				}
+				appendString+=">";
+				appendString = appendString +documentJSON.documents[j].id+" (";
+				appendString = appendString +documentJSON.documents[j].label+")</option>";				
+			}
+			$("#docId").append(appendString);
+						
+			appendString = "";			
+			for(var j=0; j< categoryJSON.categories.length; j++){			
+				appendString = appendString +"<option value=\""+categoryJSON.categories[j].id+"\"";
+				if(categoryJSON.categories[j].id==ids.catId){
+					appendString+= " selected";
+				}
+				appendString+=">";
+				appendString = appendString +categoryJSON.categories[j].id+" (";
+				appendString = appendString +categoryJSON.categories[j].label+")</option>";			
+			}
+			$("#catId").append(appendString);
+			console.log("attempting id Setting: "+ids.assId);
+			if(idIsSet(ids.assId)){
+				console.log("Id is set");
+				$("#id").val(ids.assId);
+			}
+			
+		})
+	});
+}
+
+function updateAssignment(form){
+	var json = "{\"id\":"+form[0].value+
+		",\"documentId\":\""+form[1].value;
+		json = json+"\",\"categoryId\":\"";
+		json = json+form[2].value+"\"}";
+		console.log(json);
+
+	var url="../targetfunction/"+form[0].value;
+	
+	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'PUT',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+function deleteAssignment(assId){
+	var json="";
+	var url="../targetfunction/"+assId;	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+/**
+ * Configuration Functions. These are overwritten for each different classifier trainer
+*/
+
+function renderConfigurations(){
+$("#list").empty();
+$("#list").append("<h2>Available configurations:</h2>");
+$.getJSON("../configurations",function(json){	
+	if(json.configurations==null){
+		$("#list").append("<h3>There are currently no configurations in this microservice. You can add one</h3>");
+	}else{
+		for (var i=0; i< json.configurations.length; i++){
+			$("#list").append("<li><a href=\"configuration.html?confId="+json.configurations[i].id+"\">/configurations/"+json.configurations[i].id+"</a></li>");
+		}
+	}
+});
+}
+
+function renderConfiguration(confId){
+$("#list").empty();
+$("#list").append("<h2>Available configuration:</h2>");
+$.getJSON("../configurations/"+confId,function(json){
+	if(json==null){
+		$("#list").append("<h3>The configuration with id "+confId+" does not exist. You can create it</h3>");
+	}else{
+		$("#list").append("<h3>Id: "+json.id+"</h3>");
+	}
+});
+}
+
+function createConfiguration(form){
+	var json = "{ \"configurations\":[{\"id\":"+form[0].value+" }]}";
+	console.log(json);
+	
+	var url="../configurations";
+	
+	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+		 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function updateConfiguration(form){
+var json = "{\"id\":"+form[0].value+" }";
+console.log(json);
+
+var url="../configurations/"+form[0].value;
+
+
+$.ajax({
+	url: url,
+	headers: {
+	    'Accept': 'application/json',
+        'Content-Type':'application/json'
+    },
+    method: 'PUT',
+    dataType: 'json',
+    data: json,
+    success: function(data){
+		 console.log('succes: '+data);
+	}
+ });
+}
+
+function renderConfigurationUpdate(confId){
+$.getJSON("../configurations/"+confId,function(json){
+	if(json==null){
+		//nothing but empty fields
+	}else{
+		$("#id").val(json.id);
+	}
+});
+}
+
+function uploadConfigurationJSON(json){
+var url="../configurations";	
+$.ajax({
+	url: url,
+	headers: {
+	    'Accept': 'application/json',
+        'Content-Type':'application/json'
+    },
+    method: 'POST',
+    dataType: 'json',
+    data: json,
+    success: function(data){
+	 	console.log('succes: '+data);
+	}
+ });
+}
+
+function deleteAllConfigurations(){
+var url="../configurations";	
+var json="";
+$.ajax({
+	url: url,
+	headers: {
+	    'Accept': 'application/json',
+        'Content-Type':'application/json'
+    },
+    method: 'DELETE',
+    dataType: 'json',
+    data: json,
+    success: function(data){
+	 	console.log('succes: '+data);
+	}
+ });
+}
+
+function deleteConfiguration(confId){
+var url="../configurations/"+confId;
+var json="";
+
+$.ajax({
+	url: url,
+	headers: {
+	    'Accept': 'application/json',
+        'Content-Type':'application/json'
+    },
+    method: 'DELETE',
+    dataType: 'json',
+    data: json,
+    success: function(data){
+		 	console.log('succes: '+data);
+	}
+ });
 }

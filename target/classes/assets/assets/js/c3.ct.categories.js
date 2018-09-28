@@ -346,7 +346,7 @@
 		});
 	
 		$("#create").click(function() {
-			renderCategoryCreation();
+			//renderCategoryCreation();
 			$("#list").hide("slow");
 			$("#uploadForm").hide("slow");
 			$("#deleteConfirm").hide("slow");

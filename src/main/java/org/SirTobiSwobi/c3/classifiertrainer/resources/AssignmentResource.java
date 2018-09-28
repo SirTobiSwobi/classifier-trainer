@@ -49,8 +49,12 @@ public class AssignmentResource {
 			Response response = Response.status(400).build();
 			return response;
 		}
+		if(ass!=-1){
+			refHub.getTargetFunctionManager().setAssignment(assignment.getId(), assignment.getDocumentId(), assignment.getCategoryId());
+		}else{
+			refHub.getTargetFunctionManager().addAssignmentWithoutId(assignment.getDocumentId(), assignment.getCategoryId());
+		}
 		
-		refHub.getTargetFunctionManager().setAssignment(assignment.getId(), assignment.getDocumentId(), assignment.getCategoryId());
 
 		Response response = Response.ok().build();
 		return response;
