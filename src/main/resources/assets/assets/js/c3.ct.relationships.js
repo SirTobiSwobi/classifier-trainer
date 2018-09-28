@@ -332,33 +332,38 @@
 
 			});
 		
-		var docId = getIdObject().docId;
-		$("#firstHeadline").append(docId);
 		$("#createForm").hide();
+		$("#uploadForm").hide();
 		$("#deleteConfirm").hide();
-		renderDocument(docId);
+		renderRelationships();
 		$("#list").show("fast");
 		
 		$("#read").click(function() {
-			var docId = getIdObject().docId;
-			$("#createForm").hide();
-			$("#deleteConfirm").hide();
-			renderDocument(docId);
+			$("#createForm").hide("slow");
+			$("#uploadForm").hide("slow");
+			$("#deleteConfirm").hide("slow");
+			renderRelationships();
 			$("#list").show("fast");
 		});
 	
 		$("#create").click(function() {
-			var docId = getIdObject().docId;
-			renderDocumentUpdate(docId);
-			$("#result").empty()
+			renderRelationshipCreation();
 			$("#list").hide("slow");
+			$("#uploadForm").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
-		});	
+		});
+		
+		$("#upload").click(function() {
+			$("#list").hide("slow");
+			$("#createForm").hide("slow");
+			$("#deleteConfirm").hide("slow");
+			$("#uploadForm").show("fast");
+		});
 		
 		$("#delete").click(function() {
-			$("#result").empty()
 			$("#list").hide("slow");
+			$("#uploadForm").hide("slow");
 			$("#createForm").hide("slow");
 			$("#deleteConfirm").show("fast");
 		});
@@ -367,20 +372,25 @@
 		$("#createF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#createF").serializeArray();
-			var docId = getIdObject().docId;
-			updateDocument(form,docId);
+			createRelationship(form);
+			location.reload(true);
+		});
+		
+		$("#uploadF").submit(function( event ) {
+			event.preventDefault();
+			var form = $("#uploadF").serializeArray();
+			var json = form[0].value;
+			uploadRelationshipJSON(json);
 			location.reload(true);
 		});
 		
 		$("#deleteF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#deleteF").serializeArray();
-			var docId = getIdObject().docId;
 			if(form[0].value=="delete"){
-				deleteDocument(docId);
-			}	
-			location.reload(true);
-		});
-		
+				deleteAllRelationships();
+				location.reload(true);
+			}			
+		});		
 
 })(jQuery);

@@ -333,6 +333,7 @@
 			});
 		
 		var docId = getIdObject().docId;
+		$("#firstHeadline").append(docId);
 		$("#createForm").hide();
 		$("#deleteConfirm").hide();
 		renderDocument(docId);
@@ -353,9 +354,7 @@
 			$("#list").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
-		});
-		
-		
+		});	
 		
 		$("#delete").click(function() {
 			$("#result").empty()
@@ -369,7 +368,8 @@
 			event.preventDefault();
 			var form = $("#createF").serializeArray();
 			var docId = getIdObject().docId;
-			updateDocument(form,docId)
+			updateDocument(form,docId);
+			location.reload(true);
 		});
 		
 		$("#deleteF").submit(function( event ) {
@@ -378,7 +378,8 @@
 			var docId = getIdObject().docId;
 			if(form[0].value=="delete"){
 				deleteDocument(docId);
-			}			
+			}	
+			location.reload(true);
 		});
 		
 

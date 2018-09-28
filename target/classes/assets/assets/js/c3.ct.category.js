@@ -332,32 +332,32 @@
 
 			});
 		
-		var docId = getIdObject().docId;
-		$("#firstHeadline").append(docId);
+	
+	
+		var catId = getIdObject().catId;
+		
+		$("#firstHeadline").append(catId);
 		$("#createForm").hide();
 		$("#deleteConfirm").hide();
-		renderDocument(docId);
-		$("#list").show("fast");
+		renderCategory(catId);
 		
 		$("#read").click(function() {
-			var docId = getIdObject().docId;
-			$("#createForm").hide();
-			$("#deleteConfirm").hide();
-			renderDocument(docId);
+			$("#createForm").hide("slow");
+			$("#deleteConfirm").hide("slow");
+			renderCategory(catId);
 			$("#list").show("fast");
 		});
 	
 		$("#create").click(function() {
-			var docId = getIdObject().docId;
-			renderDocumentUpdate(docId);
-			$("#result").empty()
+			renderCategoryUpdate(catId);
 			$("#list").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
-		});	
+		});
+		
+		
 		
 		$("#delete").click(function() {
-			$("#result").empty()
 			$("#list").hide("slow");
 			$("#createForm").hide("slow");
 			$("#deleteConfirm").show("fast");
@@ -367,17 +367,15 @@
 		$("#createF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#createF").serializeArray();
-			var docId = getIdObject().docId;
-			updateDocument(form,docId);
-			location.reload(true);
+			updateCategory(form);
+			
 		});
 		
 		$("#deleteF").submit(function( event ) {
 			event.preventDefault();
-			var form = $("#deleteF").serializeArray();
-			var docId = getIdObject().docId;
+			var form = $("#deleteF").serializeArray();			
 			if(form[0].value=="delete"){
-				deleteDocument(docId);
+				deleteCategory(catId);
 			}	
 			location.reload(true);
 		});

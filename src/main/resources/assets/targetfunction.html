@@ -2,17 +2,51 @@
 <html>
 	<head>
 		<title>/targetfunction</title>
-		<script src="jquery-3.3.1.min.js"></script>
-		<script src="utilities.js"></script>
-		<script src="tf.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-<body>
-	<h1>Manage document assignments to categories:</h1>
-	<button id="read">Read target function</button>
-	<button id="create">Create assignment</button>
-	<button id="upload">Upload target function JSON</button>
-	<button id="delete">Delete all assignments</button>
-	<a href="index.html"><button>Back to overview</button></a>
+<body class="is-preload">
+<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Header -->
+					<header id="header" class="alt">
+						<a href="index.html" class="logo"><strong>C3 Classifier Trainer API</strong> <span>by Tobias Eljasik-Swoboda</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+			<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="metadata.html">/metadata</a></li>
+							<li><a href="documents.html">/documents</a></li>
+							<li><a href="categories.html">/categories</a></li>
+							<li><a href="relationships.html">/relationships</a></li>
+							<li><a href="targetfunction.html">/targetfunction</a></li>
+							<li><a href="configurations.html">/configurations</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="index.html#one" class="button primary fit">Overview</a></li>
+						</ul>
+					</nav>
+			<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Manage document assignments to categories /targetfunction</h1>
+									</header>
+									
+	<ul class="actions">						
+				<li><button id="read">Read all</button></li>
+				<li><button id="create">Create</button></li>
+				<li><button id="upload">Upload collection JSON</button></li>
+				<li><button id="delete">Delete all</button></li>
+				<li><a href="index.html#one" class="button next">Back to overview</a></li>
+			</ul>
 	<div id="assList"><h2>Available assignments:</h2></div>
 	<div id="createForm">
 		<h2>Create an assignment</h2>
@@ -56,6 +90,29 @@
 			<input type="text" name="delete" placeholder="delete"><br>
 			<input type="submit" value="Delete all categories">
 		</form>	
-	</div>
+	</div>			
+					</div><!--Inner-->
+				</section><!--Main-->
+			</div><!--Main-->
+			<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="https://github.com/SirTobiSwobi/classifier-trainer" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Software License TBD. By Tobias Eljasik-Swoboda</li><li>Visual design: <a href="https://html5up.net">HTML5 UP</a> released under Creative Commons.</li>
+							</ul>
+						</div>
+					</footer>
+		</div><!--Wrapper-->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/c3.ct.trainer-api.js"></script>
+		<script src="assets/js/c3.ct.targetfunction.js"></script>
 </body>
 </html>

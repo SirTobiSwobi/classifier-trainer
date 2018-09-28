@@ -332,29 +332,29 @@
 
 			});
 		
-		var docId = getIdObject().docId;
-		$("#firstHeadline").append(docId);
+	
+		var relId=getIdObject().relId;
+		$("#firstHeadline").append(relId);
 		$("#createForm").hide();
 		$("#deleteConfirm").hide();
-		renderDocument(docId);
-		$("#list").show("fast");
+		renderRelationship();
+		
 		
 		$("#read").click(function() {
-			var docId = getIdObject().docId;
-			$("#createForm").hide();
-			$("#deleteConfirm").hide();
-			renderDocument(docId);
+			$("#createForm").hide("slow");
+			$("#deleteConfirm").hide("slow");
+			renderRelationship();
 			$("#list").show("fast");
 		});
 	
 		$("#create").click(function() {
-			var docId = getIdObject().docId;
-			renderDocumentUpdate(docId);
-			$("#result").empty()
+			renderRelationshipUpdate();
 			$("#list").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
-		});	
+		});
+		
+		
 		
 		$("#delete").click(function() {
 			$("#result").empty()
@@ -367,18 +367,17 @@
 		$("#createF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#createF").serializeArray();
-			var docId = getIdObject().docId;
-			updateDocument(form,docId);
+			updateRelationship(form);
 			location.reload(true);
+			
 		});
 		
 		$("#deleteF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#deleteF").serializeArray();
-			var docId = getIdObject().docId;
 			if(form[0].value=="delete"){
-				deleteDocument(docId);
-			}	
+				deleteRelationship(relId);
+			}			
 			location.reload(true);
 		});
 		

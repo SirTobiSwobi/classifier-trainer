@@ -10,7 +10,7 @@ function getIdObject(){
 	
 	var pageURL = window.location.search.substring(1);
 	var urlVariables = pageURL.split('&');
-	var assId, docId, catId;
+	var assId, docId, catId, relId;
 	for(var i=0; i< urlVariables.length; i++){
 		var paramName = urlVariables[i].split('=');
 		if(paramName[0] == "assId"){
@@ -19,10 +19,12 @@ function getIdObject(){
 			docId = paramName[1];
 		}else if(paramName[0] == "catId"){
 			catId = paramName[1];
+		}else if(paramName[0] == "relId"){
+			relId = paramName[1];
 		}
 	}
 	
-	var output = {assId: assId, docId: docId, catId: catId};
+	var output = {assId: assId, docId: docId, catId: catId, relId: relId};
 	return output;
 	
 }
@@ -223,7 +225,7 @@ function renderCategories(){
 		$("#list").append("<h3>There are currently no categories in this microservice. You can add one</h3>");
 	}else{
 		for (var i=0; i< json.categories.length; i++){
-			$("#list").append("<li><a href=\"category.html?id="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
+			$("#list").append("<li><a href=\"category.html?catId="+json.categories[i].id+"\">/categories/"+json.categories[i].id+" - "+json.categories[i].label+
 			"</a> - <a href=\"assignment.html?catId="+json.categories[i].id+"\" class=\"button next\">Assign documents</a></li>");
 			}
 		}
@@ -251,8 +253,7 @@ function createCategory(form){
 	 });
 }
 
-function uploadCategoryJSON(form){
-	var json = form[0].value;
+function uploadCategoryJSON(json){
 	var url="../categories";
 	$.ajax({
 		url: url,
@@ -286,4 +287,697 @@ function deleteAllCategories(){
 	    	console.log('succes: '+data);
 		}
 	 });
+}
+
+function renderCategory(catId){
+	$.getJSON("../categories/"+catId,function(json){
+		$("#list").empty();
+		$("#list").append("<h2>Available category:</h2>");
+		if(json==null){
+			$("#list").append("<h3>The category with id "+catId+" does not exist. You can create it</h3>");
+		}else{
+			$("#list").append("<h3>Id: "+json.id+": "+json.label+"</h3>");
+			$("#list").append("<p>Description: "+json.description+"</p>");
+			
+		}
+	});
+}
+
+function renderCategoryUpdate(catId){
+	$.getJSON("../categories/"+catId,function(json){
+		console.log(json);
+		if(json==null){
+			//nothing but empty fields
+		}else{
+			$("#id").val(json.id);
+			$("#label").val(json.label);
+			$("#description").val(json.description);
+		}
+	});
+}
+
+function updateCategory(form){
+	var json = "{\"id\":"+form[0].value+
+	",\"label\":\""+form[1].value;
+	json = json+"\",\"description\":\"";
+	json = json+form[2].value.replace(/(\r\n|\n|\r)/gm," ");;
+	json = json+"\"}";
+	var url="../categories/"+form[0].value;
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'PUT',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function deleteCategory(catId){
+	var url="../categories/"+catId;
+	var json="";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+function renderRelationships(){
+	var categoryJSON;
+	$("#list").empty();
+	$("#list").append("<h2>Available category relationships:</h2>");
+	$.getJSON("../categories",function(json){
+			categoryJSON = json;
+		}).done(function(){
+			$.getJSON("../relationships",function(json){
+				
+				if(json.relationships==null){
+					$("#list").append("<h3>There are currently no category relationships in this microservice. You can add one</h3>");
+				}else{
+					for (var i=0; i< json.relationships.length; i++){
+						var fromLabel;
+						var toLabel;
+						for(var j=0; j< categoryJSON.categories.length; j++){
+							if(json.relationships[i].fromId==categoryJSON.categories[j].id){
+								fromLabel = categoryJSON.categories[j].label;
+							}
+							if(json.relationships[i].toId==categoryJSON.categories[j].id){
+								toLabel = categoryJSON.categories[j].label;
+							}
+						}
+						var appendString = "<li><a href=\"relationship.html?relId=";
+						appendString = appendString +json.relationships[i].id+"\">/relationships/"+json.relationships[i].id;
+						appendString = appendString +" from: "+json.relationships[i].fromId;
+						appendString = appendString +" ("+fromLabel+")";
+						appendString = appendString +" to: "+json.relationships[i].toId;
+						appendString = appendString +" ("+toLabel+")";
+						appendString = appendString +" - Type: "+json.relationships[i].type;
+						appendString = appendString +"</a></li>";
+						$("#list").append(appendString);
+					}
+				}
+				
+			})
+	});
+}
+
+function renderCategoryCreation(){
+	$("#fromId").empty();
+	$("#toId").empty();
+	$.getJSON("../categories",function(json){
+			var appendString = "";
+			for(var j=0; j< json.categories.length; j++){
+				appendString = appendString +"<option value=\""+json.categories[j].id+"\">";
+				appendString = appendString +json.categories[j].id+" (";
+				appendString = appendString +json.categories[j].label+")</option>";			
+			}
+			$("#fromId").append(appendString);
+			$("#toId").append(appendString);		
+	});
+}
+
+function createRelationship(form){
+	var json = "{ \"relationships\":[{\"id\":"+form[0].value;
+	json = json + ", \"fromId\":"+form[1].value;
+	json = json + ", \"toId\":"+form[2].value;
+	json = json + ", \"type\": \""+form[3].value+"\"";
+	json = json + "}]}";
+	console.log(json);
+	var url="../relationships";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+			console.log('succes: '+data);
+		}
+	});
+}
+
+function uploadRelationshipJSON(json){
+	var url="../relationships";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function deleteAllRelationships(){
+	var json="";
+	var url="../relationships";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+function renderRelationship(){
+	var relId=getIdObject().relId;
+	var categoryJSON;
+	
+	$("#list").empty();
+	$("#list").append("<h2>Available relationship:</h2>");
+	$.getJSON("../categories",function(json){
+			categoryJSON = json;
+		}).done(function(){
+			$.getJSON("../relationships/"+relId,function(json){
+				console.log(json);					
+				var fromLabel;
+				var toLabel;
+				for(var j=0; j< categoryJSON.categories.length; j++){
+					if(json.fromId==categoryJSON.categories[j].id){
+						fromLabel = categoryJSON.categories[j].label;
+					}
+					if(json.toId==categoryJSON.categories[j].id){
+						toLabel = categoryJSON.categories[j].label;									}
+				}
+				var appendString = "<table>";
+				appendString = appendString+"<tr><td>Id:</td><td>"+json.id+"</td></tr>";
+				appendString = appendString+"<tr><td>From:</td><td><a href=\"category.html?catId="+json.fromId+"\" class=\"button next\">"+json.fromId+" ("+fromLabel+")</a></td></tr>";
+				appendString = appendString+"<tr><td>To:</td><td><a href=\"category.html?catId="+json.toId+"\" class=\"button next\">"+json.toId+" ("+toLabel+")</a></td></tr>";
+				appendString = appendString+"<tr><td>Type:</td><td>"+json.type+"</td></tr>";
+				appendString = appendString+"</table>";
+				$("#list").append(appendString);		
+				
+			}).fail(function(){
+				$("#list").empty();
+				$("#list").append("<h3>There is currently no category with id "+relId+". You can create it</h3>");
+			})
+	});
+}
+
+function renderRelationshipCreation(){
+	var categoryJSON;
+	$.getJSON("../categories",function(json){
+		categoryJSON = json;
+		var appendFrom="";
+		var appendTo="";
+		var appendType="";
+		for(var j=0; j< categoryJSON.categories.length; j++){
+			appendFrom = appendFrom +"<option value=\""+categoryJSON.categories[j].id+"\"";
+			appendFrom = appendFrom +">"+categoryJSON.categories[j].id+" (";
+			appendFrom = appendFrom +categoryJSON.categories[j].label+")</option>";	
+			appendTo = appendTo +"<option value=\""+categoryJSON.categories[j].id+"\"";
+			appendTo = appendTo +">"+categoryJSON.categories[j].id+" (";
+			appendTo = appendTo +categoryJSON.categories[j].label+")</option>";	
+			appendType += "<option value=\"Sub\"";
+			appendType += ">Sub</option>";
+			appendType += "<option value=\"Equality\"";
+			appendType += ">Equality</option>";
+		}
+		$("#fromId").empty();
+		$("#toId").empty();
+		$("#id").empty();
+		$("#type").empty();
+		$("#fromId").append(appendFrom);
+		$("#toId").append(appendTo);
+		$("#id").val(json.id);
+		$("#type").val(json.type);
+	});
+}
+
+function renderRelationshipUpdate(){
+	var relId=getIdObject().relId;
+	var categoryJSON;
+	$.getJSON("../categories",function(json){
+		categoryJSON = json;
+		}).done(function(){
+			$.getJSON("../relationships/"+relId,function(json){
+				//console.log(json);
+				//console.log(categoryJSON);
+				var appendFrom="";
+				var appendTo="";
+				var appendType="";
+				for(var j=0; j< categoryJSON.categories.length; j++){
+					appendFrom = appendFrom +"<option value=\""+categoryJSON.categories[j].id+"\"";
+					if(json.fromId==categoryJSON.categories[j].id){
+						appendFrom = appendFrom+" selected";
+					}
+					appendFrom = appendFrom +">"+categoryJSON.categories[j].id+" (";
+					appendFrom = appendFrom +categoryJSON.categories[j].label+")</option>";	
+						
+					appendTo = appendTo +"<option value=\""+categoryJSON.categories[j].id+"\"";
+					if(json.toId==categoryJSON.categories[j].id){
+						appendTo = appendTo+" selected";
+					}
+					appendTo = appendTo +">"+categoryJSON.categories[j].id+" (";
+					appendTo = appendTo +categoryJSON.categories[j].label+")</option>";				
+				}
+				appendType += "<option value=\"Sub\"";
+				if(json.type=="Sub"){
+					appendType += " selected";
+				}
+				appendType += ">Sub</option>";
+				appendType += "<option value=\"Equality\"";
+				if(json.type=="Equality"){
+					appendType += " selected";
+				}
+				appendType += ">Equality</option>";
+				console.log("appendType: "+appendType);
+				$("#fromId").empty();
+				$("#toId").empty();
+				$("#id").empty();
+				$("#type").empty();
+				$("#fromId").append(appendFrom);
+				$("#toId").append(appendTo);
+				$("#id").val(json.id);
+				$("#relType").val(appendType);
+		}).fail(function(){
+			var appendFrom="";
+			var appendTo="";
+			var appendType="";
+			for(var j=0; j< categoryJSON.categories.length; j++){
+				appendFrom = appendFrom +"<option value=\""+categoryJSON.categories[j].id+"\"";
+				appendFrom = appendFrom +">"+categoryJSON.categories[j].id+" (";
+				appendFrom = appendFrom +categoryJSON.categories[j].label+")</option>";	
+				appendTo = appendTo +"<option value=\""+categoryJSON.categories[j].id+"\"";
+				appendTo = appendTo +">"+categoryJSON.categories[j].id+" (";
+				appendTo = appendTo +categoryJSON.categories[j].label+")</option>";	
+				
+			}
+			appendType += "<option value=\"Sub\"";
+			appendType += ">Sub</option>";
+			appendType += "<option value=\"Equality\"";
+			appendType += ">Equality</option>";
+			$("#fromId").empty();
+			$("#toId").empty();
+			$("#id").empty();
+			$("#type").empty();
+			$("#id").val(relId);
+			$("#fromId").append(appendFrom);
+			$("#toId").append(appendTo);
+			$("#type").val(json.type);
+		})
+	});
+}
+
+function updateRelationship(form){
+	var json = "{\"id\":"+form[0].value;
+	json = json + ", \"fromId\":"+form[1].value;
+	json = json + ", \"toId\":"+form[2].value;
+	json = json + ", \"type\": \""+form[3].value+"\"";
+	json = json + "}";
+	console.log(json);
+	
+	var url="../relationships/"+form[0].value;
+	
+	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'PUT',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+function deleteRelationship(relId){
+	var url="../relationships/"+relId;
+	var json="";
+
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+	    	console.log('something worked');
+			 	console.log('succes: '+data);
+		}
+	});
+}
+
+/**
+ * 	Targetfunction functions
+ */
+
+function findRootId(categories, assignments){
+	var rootId=0;
+	var maxImplicit=0;
+	for(var i=0;i<categories.length;i++){
+		console.log("category "+categories[i].id+" - "+categories[i].label);
+		var implicits=0;
+		if(assignments!=null){
+			for(var j=0; j<assignments.length; j++){
+				if(assignments[j].categoryId==categories[i].id&&assignments[j].id==-1){
+					implicits++;
+				}
+			}
+		}	
+		console.log("has "+implicits+" implicit assignments. Previous Maximum: "+maxImplicit);
+		if(implicits>maxImplicit){
+			console.log("assigning root role to category "+categories[i].id);
+			maxImplicit=implicits;
+			rootId = categories[i].id;
+		}
+		
+	}
+	return rootId;
+}
+
+function getCategoryAssignmentArray(assignments, catId){
+	var output = new Array();
+	if(assignments!=null){
+		for(var i=0;i<assignments.length;i++){
+			if(assignments[i].categoryId==catId){
+				output.push(assignments[i]);
+			}
+		}
+	}
+	return output;
+}
+
+function hideDesc(catId){
+	console.log(catId);
+	$("#cat"+catId+"desc").hide();
+	$("#cat"+catId+"hideCats").hide();
+	$("#cat"+catId+"showCats").show();
+}
+
+function showDesc(catId){
+	console.log(catId);
+	$("#cat"+catId+"desc").show();
+	$("#cat"+catId+"showCats").hide();
+	$("#cat"+catId+"hideCats").show();
+}
+
+function hideDocs(catId){
+	console.log(catId);
+	$("#cat"+catId+"docs").hide();
+	$("#cat"+catId+"hideDocs").hide();
+	$("#cat"+catId+"showDocs").show();
+}
+
+function showDocs(catId){
+	console.log(catId);
+	$("#cat"+catId+"docs").show();
+	$("#cat"+catId+"showDocs").hide();
+	$("#cat"+catId+"hideDocs").show();
+	
+}
+
+function showEq(catId){
+	$.getJSON("../relationships/ancestors/"+catId,function(json){
+		console.log(json);
+		for(var i=json.categories.length-1; i>=0; i--){
+			showDesc(json.categories[i].id);
+		}
+	});
+}
+
+
+
+function generateTargetFunctionCategory(categories, descendants, equalities, assignments, documents, i, visited, depth){
+	var appendString="";
+	if(!visited.includes(categories[i])){
+		visited.push(categories[i]);
+		appendString = "<div id=\"cat"+categories[i].id+"\" style=\"padding-left: 10px\">";
+		appendString += "<table>";
+		appendString += "<tr><td colspan=4>"
+		appendString += "<b>Category "+categories[i].label;
+		if(typeof equalities[i]!="undefined" && equalities[i].length>0){
+				appendString += " equal to ";
+			for(var j=0;j<equalities[i].length;j++){
+				var eq = getObjectById(categories, equalities[i][j]);
+				appendString += "<a href=\"#cat"+eq.id+"\" onclick=\"showEq("+eq.id+")\">"
+				appendString += eq.label+"</a>";
+				if(j<equalities[i].length-1){
+					appendString += ", ";
+				}
+					
+			}
+		}		
+		appendString += "</b></td></tr>";
+		appendString += "<tr><td><label>"
+		appendString += assignments[i].length+" assigned documents </label></td><td>";
+		appendString += "<button onclick=\"hideDocs("+categories[i].id+")\" id=\"cat"+categories[i].id+"hideDocs\">Hide</button>";
+		appendString += "<button onclick=\"showDocs("+categories[i].id+")\" id=\"cat"+categories[i].id+"showDocs\">Show</button>";
+		appendString += "<td"
+		if(typeof descendants[i]!="undefined" && descendants[i].length>0){
+			appendString += "><label>"+descendants[i].length+" sub-categories</label></td><td>";
+			appendString += "<button onclick=\"hideDesc("+categories[i].id+")\" id=\"cat"+categories[i].id+"hideCats\">Hide</button>";
+			appendString += "<button onclick=\"showDesc("+categories[i].id+")\" id=\"cat"+categories[i].id+"showCats\">Show</button>";
+		}else{
+			appendString += "colspan=2>"
+		}
+		appendString += "</td></tr>";
+		appendString += "<tr><td colspan=4>";
+		appendString += "<a href=\"assignment.html?catId="+categories[i].id+"\" class=\"button next\">Assign document</a></td></tr>";
+		appendString += "<tr><td colspan=4>"
+		appendString += categories[i].label;
+		appendString +=" documents:<br/>"
+		if(assignments[i].length>0){
+			appendString += "<div id=\"cat"+categories[i].id+"docs\">";
+			appendString += "<table>";
+			for(var j=0; j<assignments[i].length; j++){
+				appendString += "<tr><td>"
+				var document = getObjectById(documents,assignments[i][j].documentId);
+				if(assignments[i][j].id==-1){
+					appendString += "Implicit: ";
+				}else{
+					appendString += "Direct: ";
+				}
+				appendString += "</td><td><a href=\"document.html?docId="+document.id+"\">"
+				appendString += document.label+"</a></td><td>"
+				appendString += "<a href=\"assignment.html?catId="+categories[i].id+"&docId="+document.id+"&assId="+assignments[i][j].id+"\" class=\"button next\">Edit assignment</a>";
+				appendString += "</td></tr>";
+			}
+			appendString += "</table>";
+			appendString += "</div>";
+		}
+		appendString += "</td></tr>"
+		
+		if(typeof descendants[i]!="undefined"&&descendants[i].length>0){
+			appendString += "<tr><td colspan=4>"
+			appendString += categories[i].label;
+			appendString+=" sub-categories: <br/>"
+			appendString += "<div id=\"cat"+categories[i].id+"desc\">";		
+			for(var j=0; j<descendants[i].length; j++){
+				console.log("category "+i+" "+categories[i].label+" descendant "+j+" is category: ")
+				console.log(categories.indexOf(descendants[i][j]));
+				var descIndex = categories.indexOf(descendants[i][j]); 
+				var catResult=generateTargetFunctionCategory(categories, descendants, equalities, assignments, documents,descIndex,visited, depth+1);
+				appendString += catResult.appendString;
+				visited = catResult.visited;
+			}
+			appendString += "</div>";
+			appendString += "</td></tr>"
+		}
+		appendString += "</div>";
+		appendString += "</table>";
+	}
+	var output = {appendString: appendString, visited: visited};
+	return output;
+	
+	
+}
+
+function renderTargetFunction(categoryDisplay, categoryDescendants, categoryEqualities, categoryAssignments, documents){
+	$("#assList").empty();
+	$("#assList").append("<h2>Available assignments:</h2>");
+	if(categoryDisplay.length==0){
+		$("#assList").append("<h3>There is currently no target function in this microservice. You can add one</h3>");
+	}else{
+		var visited = new Array();
+		for(var i=0;i<categoryDisplay.length;i++){
+			
+			var catResult = generateTargetFunctionCategory(categoryDisplay,categoryDescendants,categoryEqualities, categoryAssignments, documents, i, visited, 0);
+			var appendString = catResult.appendString;
+			visited = catResult.visited;
+			
+			$("#assList").append(appendString);
+			$("#cat"+categoryDisplay[i].id+"desc").hide();
+			$("#cat"+categoryDisplay[i].id+"hideCats").hide();
+			$("#cat"+categoryDisplay[i].id+"docs").hide();
+			$("#cat"+categoryDisplay[i].id+"hideDocs").hide();
+		}
+	}
+	
+}
+
+function readTargetFunction(){
+	console.log("Reading the target function");
+	var categoryJSON;
+	var documentJSON;
+	var relationshipJSON;
+	var targetfunctionJSON;
+	
+	$.getJSON("../categories",function(json){
+		categoryJSON = json;
+		console.log(categoryJSON);
+	}).done(function(){
+		$.getJSON("../documents",function(json){
+			documentJSON = json;
+			console.log(documentJSON);
+		}).done(function(){
+				$.getJSON("../relationships",function(json){
+				relationshipJSON = json;
+				console.log(relationshipJSON);
+			}).done(function(){
+				$.getJSON("../targetfunction",function(json){
+					targetfunctionJSON = json;
+					console.log(targetfunctionJSON);
+				}).done(function(){
+					
+					var categoryDisplay = new Array();
+					var categoryDescendants = new Array();
+					var categoryEqualities = new Array();
+					var categoryAssignments = new Array();
+					
+					var categoryDisplayCounter = 0;
+					if(relationshipJSON.relationships==null){
+						console.log("There are no relationships. Display will be just for categories without their hierarchies");
+						for(var i=0;i<categoryJSON.categories.length;i++){
+							categoryDisplay[categoryDisplayCounter]=categoryJSON.categories[i];
+							categoryAssignments[categoryDisplayCounter]=getCategoryAssignmentArray(targetfunctionJSON.assignments,categoryJSON.categories[i].id);
+							categoryDisplayCounter++;
+						}
+					}else{
+						var rootId=findRootId(categoryJSON.categories, targetfunctionJSON.assignments);
+						console.log("Root has categoryId: "+rootId);
+						//implement BFS to find everything connected to the root. Repeat for all remaining nodes.
+						var visited = new Array();
+						var queue = new Array();
+						var unvisited = getIds(categoryJSON.categories);
+						//visited.push(rootId);
+						queue.push(rootId);
+						while(queue.length>0){
+							var catId=queue.pop();
+							visited.push(catId);
+							unvisited=deleteFromArray(unvisited, catId);
+							console.log("Processing category "+catId);
+							console.log(visited);	
+							console.log(unvisited)
+							for(var j=0;j<categoryJSON.categories.length;j++){
+								if(categoryJSON.categories[j].id==catId){
+									categoryDisplay[categoryDisplayCounter]=categoryJSON.categories[j];
+								}
+							}
+							categoryDescendants[categoryDisplayCounter]=new Array();
+							categoryEqualities[categoryDisplayCounter]=new Array();
+							for (var i=0;i<relationshipJSON.relationships.length;i++){
+								var rel=relationshipJSON.relationships[i];
+								if(rel.type=="Sub"&&rel.fromId==catId&&!visited.includes(rel.toId)){
+									queue.push(rel.toId)
+									for(var j=0;j<categoryJSON.categories.length;j++){
+										var cat=categoryJSON.categories[j];
+										if(cat.id==rel.toId){
+											categoryDescendants[categoryDisplayCounter].push(cat);
+										}
+									}							
+								}else if(rel.type=="Equality"&&rel.fromId==catId){
+									categoryEqualities[categoryDisplayCounter].push(rel.toId);
+								}else if(rel.type=="Equality"&&rel.toId==catId){
+									categoryEqualities[categoryDisplayCounter].push(rel.fromId);
+								}
+							}
+							categoryAssignments[categoryDisplayCounter]=getCategoryAssignmentArray(targetfunctionJSON.assignments,catId);
+							categoryDisplayCounter++;
+							if(queue.length==0&&unvisited.length>0){
+								//check for alternative roots
+								rootId=findRootId(buildArrayFromIds(categoryJSON.categories,unvisited), targetfunctionJSON.assignments);
+								console.log("Found new root: "+rootId);
+								queue.push(rootId);
+							}
+						}
+						
+						
+					}
+					
+					console.log(categoryDisplay);
+					console.log(categoryDescendants);
+					console.log(categoryEqualities);
+					console.log(categoryAssignments);
+					renderTargetFunction(categoryDisplay, categoryDescendants, categoryEqualities, categoryAssignments, documentJSON.documents);
+					
+				});
+			});
+			
+		});
+		
+	});
+}
+
+function renderCreateForm(){
+	$("#docId").empty();
+	$("#catId").empty();
+	var categoryJSON;
+	var documentJSON;
+	$.getJSON("../categories",function(json){
+		categoryJSON = json;
+		console.log(categoryJSON);
+	}).done(function(){
+		$.getJSON("../documents",function(json){
+			documentJSON = json;
+			console.log(documentJSON);
+		}).done(function(){
+			var appendString = "";			
+			for(var j=0; j< documentJSON.documents.length; j++){				
+				appendString = appendString +"<option value=\""+documentJSON.documents[j].id+"\">";
+				appendString = appendString +documentJSON.documents[j].id+" (";
+				appendString = appendString +documentJSON.documents[j].label+")</option>";				
+			}
+			$("#docId").append(appendString);
+						
+			appendString = "";			
+			for(var j=0; j< categoryJSON.categories.length; j++){			
+				appendString = appendString +"<option value=\""+categoryJSON.categories[j].id+"\">";
+				appendString = appendString +categoryJSON.categories[j].id+" (";
+				appendString = appendString +categoryJSON.categories[j].label+")</option>";			
+			}
+			$("#catId").append(appendString);			
+		})
+	});
 }

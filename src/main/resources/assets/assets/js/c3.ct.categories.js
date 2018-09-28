@@ -346,6 +346,7 @@
 		});
 	
 		$("#create").click(function() {
+			renderCategoryCreation();
 			$("#list").hide("slow");
 			$("#uploadForm").hide("slow");
 			$("#deleteConfirm").hide("slow");
@@ -378,7 +379,8 @@
 		$("#uploadF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#uploadF").serializeArray();
-			uploadCategoryJSON(form)
+			var json = form[0].value;
+			uploadCategoryJSON(json);
 			location.reload(true);
 		});
 		

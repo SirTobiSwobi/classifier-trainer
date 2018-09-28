@@ -332,55 +332,126 @@
 
 			});
 		
-		var docId = getIdObject().docId;
-		$("#firstHeadline").append(docId);
-		$("#createForm").hide();
-		$("#deleteConfirm").hide();
-		renderDocument(docId);
-		$("#list").show("fast");
+
 		
-		$("#read").click(function() {
-			var docId = getIdObject().docId;
-			$("#createForm").hide();
-			$("#deleteConfirm").hide();
-			renderDocument(docId);
-			$("#list").show("fast");
+		$("#createForm").hide();
+		$("#uploadForm").hide();
+		$("#deleteConfirm").hide();
+		
+		readTargetFunction();
+		
+		$("#read").click(function(){
+			location.reload(true);
 		});
-	
+		
 		$("#create").click(function() {
-			var docId = getIdObject().docId;
-			renderDocumentUpdate(docId);
-			$("#result").empty()
-			$("#list").hide("slow");
+			renderCreateForm();
+			$("#assList").hide("slow");
+			$("#uploadForm").hide("slow");
 			$("#deleteConfirm").hide("slow");
 			$("#createForm").show("fast");
-		});	
+		});
+		
+		$("#upload").click(function() {
+			$("#assList").hide("slow");
+			$("#createForm").hide("slow");
+			$("#deleteConfirm").hide("slow");
+			$("#uploadForm").show("fast");
+		});
+		
+		$("#createF").submit(function( event ) {
+			event.preventDefault();
+			console.log("Uploading data");
+			
+			
+			var form = $("#createF").serializeArray();
+			console.log(form);
+			var json = "{ \"assignments\":[{\"id\":"+form[0].value;
+			json = json + ", \"documentId\":"+form[1].value;
+			json = json + ", \"categoryId\":"+form[2].value+"";
+			json = json + "}]}";
+			console.log(json);
+			
+			var url="../targetfunction";	
+			$.ajax({
+				url: url,
+				headers: {
+				    'Accept': 'application/json',
+			        'Content-Type':'application/json'
+			    },
+			    method: 'POST',
+			    dataType: 'json',
+			    data: json,
+			    success: function(data){
+			    	console.log('something worked');
+					 	console.log('succes: '+data);
+				}
+			});
+			location.reload(true);
+		});
+		
+		$("#uploadF").submit(function( event ) {
+			event.preventDefault();
+			//console.log("Uploading data");
+			var form = $("#uploadF").serializeArray();
+			//console.log(form);
+			var json = form[0].value;
+			//console.log(json);
+			var url="../targetfunction";	
+			$.ajax({
+				url: url,
+				headers: {
+				    'Accept': 'application/json',
+			        'Content-Type':'application/json'
+			    },
+			    method: 'POST',
+			    dataType: 'json',
+			    data: json,
+			    success: function(data){
+			    	console.log('something worked');
+					 	console.log('succes: '+data);
+				}
+				 });
+			
+		});
 		
 		$("#delete").click(function() {
-			$("#result").empty()
-			$("#list").hide("slow");
+			$("#assList").hide("slow");
+			$("#uploadForm").hide("slow");
 			$("#createForm").hide("slow");
 			$("#deleteConfirm").show("fast");
 		});
 		
-		
-		$("#createF").submit(function( event ) {
-			event.preventDefault();
-			var form = $("#createF").serializeArray();
-			var docId = getIdObject().docId;
-			updateDocument(form,docId);
-			location.reload(true);
-		});
-		
 		$("#deleteF").submit(function( event ) {
 			event.preventDefault();
+			//console.log("Deleting data");
 			var form = $("#deleteF").serializeArray();
-			var docId = getIdObject().docId;
+			//console.log(form);
+			var json="";
 			if(form[0].value=="delete"){
-				deleteDocument(docId);
-			}	
-			location.reload(true);
+				var url="../targetfunction";
+			
+			
+				$.ajax({
+					url: url,
+					headers: {
+					    'Accept': 'application/json',
+				        'Content-Type':'application/json'
+				    },
+				    method: 'DELETE',
+				    dataType: 'json',
+				    data: json,
+				    success: function(data){
+				    	console.log('something worked');
+						 	console.log('succes: '+data);
+					}
+					 });
+			}
+			
+			
+			
 		});
+			
 		
 
 })(jQuery);
