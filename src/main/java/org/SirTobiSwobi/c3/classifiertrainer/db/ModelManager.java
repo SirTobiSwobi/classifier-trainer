@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class ModelManager {
 	private AVLTree<Model> models;
 	private ReferenceHub refHub;
+	private boolean trainingInProgress;
 	
 	public ModelManager() {
 		super();
 		this.models = new AVLTree<Model>();
 		this.refHub = null;
+		this.trainingInProgress=false;
 	}
 
 	public ReferenceHub getRefHub() {
@@ -61,6 +63,15 @@ public class ModelManager {
 		}
 		return result;
 	}
+
+	public boolean isTrainingInProgress() {
+		return trainingInProgress;
+	}
+
+	public synchronized void setTrainingInProgress(boolean trainingInProgress) {
+		this.trainingInProgress = trainingInProgress;
+	}
+
 	
 	
 }

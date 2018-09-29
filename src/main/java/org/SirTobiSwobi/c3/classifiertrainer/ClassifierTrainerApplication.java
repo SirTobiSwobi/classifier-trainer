@@ -2,8 +2,10 @@ package org.SirTobiSwobi.c3.classifiertrainer;
 
 import javax.ws.rs.client.Client;
 
+import org.SirTobiSwobi.c3.classifiertrainer.core.Trainer;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
@@ -20,6 +22,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipsResource;
@@ -61,6 +64,11 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
 		tfMan.setRefHub(refHub);
 		
+		/*
+		 * Initializing trainer
+		 */
+		
+		Trainer trainer = new Trainer(refHub);
 		
 		/*
 		 * Initializing HTTP client
@@ -83,7 +91,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final AssignmentResource assignment = new AssignmentResource(refHub);
 		final ConfigurationsResource configurations = new ConfigurationsResource(refHub);
 		final ConfigurationResource configurationR = new ConfigurationResource(refHub);
-		final ModelsResource models = new ModelsResource(refHub);
+		final ModelsResource models = new ModelsResource(refHub, trainer);
+		final ModelResource model = new ModelResource(refHub);
 		
 		/*
 		 * Initializing health checks
@@ -108,6 +117,7 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(configurations);
 		environment.jersey().register(configurationR);
 		environment.jersey().register(models);
+		environment.jersey().register(model);
 		
 		/*
 		 * Generating example data for manual testing during development
@@ -167,6 +177,10 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		tfMan.setAssignment(2, 2, 2);
 		tfMan.setAssignment(3, 3, 450);
 		tfMan.setAssignment(4, 4, 525);
+		
+		refHub.getConfigurationManager().setConfiguration(new Configuration(0,1));
+		refHub.getConfigurationManager().setConfiguration(new Configuration(1,3));
+		refHub.getConfigurationManager().setConfiguration(new Configuration(2,5));
 		
 		
 		

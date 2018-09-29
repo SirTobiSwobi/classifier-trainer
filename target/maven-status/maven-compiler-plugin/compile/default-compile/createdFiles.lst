@@ -1,4 +1,5 @@
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.class
+org/SirTobiSwobi/c3/classifiertrainer/resources/ModelResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/SearchDirection.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadata.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TCAssignment.class
@@ -19,12 +20,14 @@ org/SirTobiSwobi/c3/classifiertrainer/db/Relationship.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/TargetFunctionResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCCategories.class
+org/SirTobiSwobi/c3/classifiertrainer/core/Fold.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/MetadataResource.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ModelsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManager.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.class
+org/SirTobiSwobi/c3/classifiertrainer/core/Trainer.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationships.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCModel.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoryResource.class

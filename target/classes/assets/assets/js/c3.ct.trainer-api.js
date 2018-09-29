@@ -10,7 +10,7 @@ function getIdObject(){
 	
 	var pageURL = window.location.search.substring(1);
 	var urlVariables = pageURL.split('&');
-	var assId, docId, catId, relId, confId;
+	var assId, docId, catId, relId, confId, modId;
 	for(var i=0; i< urlVariables.length; i++){
 		var paramName = urlVariables[i].split('=');
 		if(paramName[0] == "assId"){
@@ -23,10 +23,12 @@ function getIdObject(){
 			relId = paramName[1];
 		}else if(paramName[0] == "confId"){
 			confId = paramName[1];
+		}else if(paramName[0] == "modId"){
+			modId = paramName[1];
 		}
 	}
 	
-	var output = {assId: assId, docId: docId, catId: catId, relId: relId, confId: confId};
+	var output = {assId: assId, docId: docId, catId: catId, relId: relId, confId: confId, modId: modId};
 	return output;
 	
 }
@@ -1281,55 +1283,161 @@ $.getJSON("../configurations/"+confId,function(json){
 }
 
 function uploadConfigurationJSON(json){
-var url="../configurations";	
-$.ajax({
-	url: url,
-	headers: {
-	    'Accept': 'application/json',
-        'Content-Type':'application/json'
-    },
-    method: 'POST',
-    dataType: 'json',
-    data: json,
-    success: function(data){
-	 	console.log('succes: '+data);
-	}
- });
+	var url="../configurations";	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+		 	console.log('succes: '+data);
+		}
+	 });
 }
 
 function deleteAllConfigurations(){
-var url="../configurations";	
-var json="";
-$.ajax({
-	url: url,
-	headers: {
-	    'Accept': 'application/json',
-        'Content-Type':'application/json'
-    },
-    method: 'DELETE',
-    dataType: 'json',
-    data: json,
-    success: function(data){
-	 	console.log('succes: '+data);
-	}
- });
+	var url="../configurations";	
+	var json="";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+		 	console.log('succes: '+data);
+		}
+	 });
 }
 
 function deleteConfiguration(confId){
 var url="../configurations/"+confId;
 var json="";
 
-$.ajax({
-	url: url,
-	headers: {
-	    'Accept': 'application/json',
-        'Content-Type':'application/json'
-    },
-    method: 'DELETE',
-    dataType: 'json',
-    data: json,
-    success: function(data){
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+			 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function renderModels(){
+	$("#list").empty();
+	$("#list").append("<h2>Available models:</h2>");
+	$.getJSON("../models",function(json){	
+		if(json.models==null){
+			$("#list").append("<h3>There are currently no model in this microservice. You can add one</h3>");
+		}else{
+			for (var i=0; i< json.models.length; i++){
+				$("#list").append("<li><a href=\"model.html?modId="+json.models[i].id+"\">/models/"+json.models[i].id+"</a></li>");
+			}
+		}
+	});
+
+}
+
+function renderConfigurationSelectionForm(){
+	$("#configuration").empty();
+	var configurationJSON;
+	$.getJSON("../configurations",function(json){
+		configurationJSON = json;
+		console.log(configurationJSON);
+	}).done(function(){
+		
+		var appendString = "";			
+		for(var j=0; j< configurationJSON.configurations.length; j++){				
+			appendString = appendString +"<option value=\""+configurationJSON.configurations[j].id+"\"";
+			appendString+=">";
+			appendString = appendString +configurationJSON.configurations[j].id+" (";
+			appendString = appendString +configurationJSON.configurations[j].folds+" folds)</option>";				
+		}
+		$("#configuration").append(appendString);
+		
+	});
+}
+
+function deleteAllModels(){
+	var url="../models";	
+	var json="";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'DELETE',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
 		 	console.log('succes: '+data);
-	}
- });
+		}
+	 });
+}
+
+function startTraining(confId){
+	var url="../models?confId="+confId;	
+	var json="";
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+		 	console.log('succes: '+data);
+		}
+	 });
+}
+
+function renderModel(modId){
+	$("#list").empty();
+	$("#list").append("<h2>Available model:</h2>");
+	$.getJSON("../models/"+modId,function(json){	
+	
+		$("#list").append("Id: "+json.id+"<br/>");
+		$("#list").append("Configuration Id: "+json.configurationId+"<br/>");
+		$("#list").append("Progress:"+json.progress+"<br/>");
+		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
+		
+	}).fail(function(){
+		$("#list").empty();
+		$("#list").append("<h3>There are currently no such model in this microservice. You can add one by starting a training process</h3>");
+	});
+}
+
+function deleteModel(modId){
+	var url="../models/"+modId;
+	var json="";
+
+		$.ajax({
+			url: url,
+			headers: {
+			    'Accept': 'application/json',
+		        'Content-Type':'application/json'
+		    },
+		    method: 'DELETE',
+		    dataType: 'json',
+		    data: json,
+		    success: function(data){
+				 	console.log('succes: '+data);
+			}
+		 });
 }

@@ -3,6 +3,7 @@ package org.SirTobiSwobi.c3.classifiertrainer.resources;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,18 +16,23 @@ import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModel;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModels;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCProgress;
+import org.SirTobiSwobi.c3.classifiertrainer.core.Trainer;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
+import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
+import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
 
 @Path("/models")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ModelsResource {
 	private ReferenceHub refHub;
+	private Trainer trainer;
 
-	public ModelsResource(ReferenceHub refHub) {
+	public ModelsResource(ReferenceHub refHub, Trainer trainer) {
 		super();
 		this.refHub = refHub;
+		this.trainer = trainer;
 	}
 	
 	@GET
@@ -39,7 +45,7 @@ public class ModelsResource {
 			TCModel[] TCmodelArray = new TCModel[models.length];
 			for(int i=0; i<models.length;i++){
 				Model mod = models[i];
-				TCModel TCmod = new TCModel(mod.getId(),mod.getConfigurationId());
+				TCModel TCmod = new TCModel(mod.getId(),mod.getConfigurationId(), mod.getProgress(), mod.getTrainingLog());
 				TCmodelArray[i]=TCmod;
 			}
 			TCModels TCmodels;
@@ -65,10 +71,18 @@ public class ModelsResource {
 			//Spawn training progress
 			long modId=refHub.getModelManager().addModelWithoutId(conf);
 			TCProgress progress = new TCProgress("/models/"+modId,.0);
+			trainer.startTraining(conf, modId);
 			Response response = Response.ok(progress).build();
 			return response;
 			
 		}		
+	}
+	
+	@DELETE
+	public Response deleteAllModels(){
+		refHub.setModelManager(new ModelManager());
+		Response response = Response.ok().build();
+		return response;
 	}
 
 }
