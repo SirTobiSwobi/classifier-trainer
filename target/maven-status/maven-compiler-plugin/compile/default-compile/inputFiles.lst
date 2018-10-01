@@ -5,6 +5,7 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Configuration.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/CategoryManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipType.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Categorization.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocuments.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationsResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCModels.java
@@ -25,6 +26,7 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerConfiguration.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/CategoryResource.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/CategorizationManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCModel.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/ModelResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/TCAssignment.java

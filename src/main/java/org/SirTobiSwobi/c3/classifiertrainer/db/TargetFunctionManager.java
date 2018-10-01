@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.SirTobiSwobi.c3.classifiertrainer.core.Utilities;
 
 public class TargetFunctionManager {
-	private AVLTree<Assignment> assignments;
-	private AVLTree<ArrayList<Assignment>> documentIndex;
-	private AVLTree<ArrayList<Assignment>> categoryIndex;
-	private ReferenceHub refHub;
+	protected AVLTree<Assignment> assignments;
+	protected AVLTree<ArrayList<Assignment>> documentIndex;
+	protected AVLTree<ArrayList<Assignment>> categoryIndex;
+	protected ReferenceHub refHub;
 	
 	public TargetFunctionManager() {
 		super();
@@ -23,8 +23,6 @@ public class TargetFunctionManager {
 	public ReferenceHub getRefHub() {
 		return refHub;
 	}
-
-
 
 	public void setRefHub(ReferenceHub refHub) {
 		this.refHub = refHub;

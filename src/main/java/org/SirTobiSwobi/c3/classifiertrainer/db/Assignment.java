@@ -1,9 +1,9 @@
 package org.SirTobiSwobi.c3.classifiertrainer.db;
 
 public class Assignment {
-	private long id;
-	private long documentId;
-	private long categoryId;
+	protected long id;
+	protected long documentId;
+	protected long categoryId;
 	public Assignment(long id, long documentId, long categoryId) {
 		super();
 		this.id = id;

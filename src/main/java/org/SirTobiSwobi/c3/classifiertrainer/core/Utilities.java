@@ -87,6 +87,12 @@ public class Utilities {
 	}
 	
 	public static long[] arrayUnionWithoutDuplicates(long[] a, long[] b){
+		if(a==null){
+			return b;
+		}
+		if(b==null){
+			return a;
+		}
 		for(int i=0;i<a.length;i++){
 			b = increaseAndAddValueIfNotIn(a[i],b);
 		}
@@ -94,6 +100,12 @@ public class Utilities {
 	}
 	
 	public static Assignment[] arrayUnionWithoutDuplicates(Assignment[] a, Assignment[] b){
+		if(a==null){
+			return b;
+		}
+		if(b==null){
+			return a;
+		}
 		for(int i=0;i<a.length;i++){
 			b = increaseAndAddValueIfNotIn(a[i],b);
 		}

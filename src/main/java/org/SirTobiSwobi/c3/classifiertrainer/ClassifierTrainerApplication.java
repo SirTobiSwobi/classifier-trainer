@@ -3,6 +3,7 @@ package org.SirTobiSwobi.c3.classifiertrainer;
 import javax.ws.rs.client.Client;
 
 import org.SirTobiSwobi.c3.classifiertrainer.core.Trainer;
+import org.SirTobiSwobi.c3.classifiertrainer.db.CategorizationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
@@ -61,8 +62,10 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		TargetFunctionManager tfMan = new TargetFunctionManager();
 		ConfigurationManager confMan = new ConfigurationManager();
 		ModelManager modMan = new ModelManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
+		CategorizationManager cznMan = new CategorizationManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan);
 		tfMan.setRefHub(refHub);
+		cznMan.setRefHub(refHub);
 		
 		/*
 		 * Initializing trainer

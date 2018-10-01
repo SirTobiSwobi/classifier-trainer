@@ -6,14 +6,17 @@ public class ReferenceHub {
 	private TargetFunctionManager targetFunctionManager;
 	private ConfigurationManager configurationManager;
 	private ModelManager modelManager;
+	private CategorizationManager categorizationManager;
 	public ReferenceHub(CategoryManager categoryManager, DocumentManager documentManager,
-			TargetFunctionManager targetFunctionManager, ConfigurationManager configurationManager, ModelManager modelManager) {
+			TargetFunctionManager targetFunctionManager, ConfigurationManager configurationManager, ModelManager modelManager, 
+			CategorizationManager categorizationManager) {
 		super();
 		this.categoryManager = categoryManager;
 		this.documentManager = documentManager;
 		this.targetFunctionManager = targetFunctionManager;
 		this.configurationManager = configurationManager;
 		this.modelManager = modelManager;
+		this.categorizationManager = categorizationManager;
 	}
 	public CategoryManager getCategoryManager() {
 		return categoryManager;
@@ -45,6 +48,13 @@ public class ReferenceHub {
 	public void setModelManager(ModelManager modelManager) {
 		this.modelManager = modelManager;
 	}
+	public CategorizationManager getCategorizationManager() {
+		return categorizationManager;
+	}
+	public void setCategorizationManager(CategorizationManager categorizationManager) {
+		this.categorizationManager = categorizationManager;
+	}
+	
 	
 	
 	

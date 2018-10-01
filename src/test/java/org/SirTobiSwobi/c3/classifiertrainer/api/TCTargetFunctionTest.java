@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.db.CategorizationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
@@ -32,8 +33,10 @@ public class TCTargetFunctionTest {
 		TargetFunctionManager tfMan = new TargetFunctionManager();
 		ConfigurationManager confMan = new ConfigurationManager();
 		ModelManager modMan = new ModelManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan);
+		CategorizationManager cznMan = new CategorizationManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan);
 		tfMan.setRefHub(refHub);
+		cznMan.setRefHub(refHub);
 		
 		Category cat = new Category(0,"Diseases","");
 		catMan.setCategory(cat);
