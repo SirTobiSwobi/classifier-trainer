@@ -1,16 +1,25 @@
 {
 	"configurations":[
 		{
-		"id": 1,
-		"folds": 1
+			"id": 1,
+			"folds": 2,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.5,
+			"selectionPolicy": "MicroaverageF1"
 		},
 		{
-		"id": 2,
-		"folds": 3
+			"id": 3,
+			"folds": 3,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.6,
+			"selectionPolicy": "MacroaverageF1"
 		},
 		{
-		"id": 5,
-		"folds": 5
+			"id": 5,
+			"folds": 5,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.4,
+			"selectionPolicy": "MicroaverageRecall"
 		}
 	]
 }

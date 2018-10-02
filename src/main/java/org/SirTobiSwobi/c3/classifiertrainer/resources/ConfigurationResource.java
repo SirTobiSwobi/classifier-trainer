@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCConfiguration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -36,7 +37,12 @@ public class ConfigurationResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		Configuration configuration = refHub.getConfigurationManager().getByAddress(conf);	
-		TCConfiguration output = new TCConfiguration(configuration.getId(),configuration.getFolds());	
+		TCConfiguration output = new TCConfiguration(
+						configuration.getId(),
+						configuration.getFolds(),
+						configuration.isIncludeImplicits(), 
+						configuration.getAssignmentThreshold(),
+						configuration.getSelectionPolicy().toString());	
 		return Response.ok(output).build();
 		
 	}
@@ -47,8 +53,27 @@ public class ConfigurationResource {
 			Response response = Response.status(400).build();
 			return response;
 		}
+		SelectionPolicy selectionPolicy = SelectionPolicy.MicroaverageF1;
+		if(configuration.getSelectionPolicy().equals("MicroaverageF1")){
+			selectionPolicy=SelectionPolicy.MicroaverageF1;
+		}else if(configuration.getSelectionPolicy().equals("MicroaveragePrecision")){
+			selectionPolicy=SelectionPolicy.MicroaveragePrecision;
+		}else if(configuration.getSelectionPolicy().equals("MicroaverageRecall")){
+			selectionPolicy=SelectionPolicy.MicroaverageRecall;
+		}else if(configuration.getSelectionPolicy().equals("MacroaverageF1")){
+			selectionPolicy=SelectionPolicy.MacroaverageF1;
+		}else if(configuration.getSelectionPolicy().equals("MacroaveragePrecision")){
+			selectionPolicy=SelectionPolicy.MacroaveragePrecision;
+		}else if(configuration.getSelectionPolicy().equals("MacroaverageRecall")){
+			selectionPolicy=SelectionPolicy.MacroaverageRecall;
+		}
 		
-		refHub.getConfigurationManager().setConfiguration(new Configuration(configuration.getId(),configuration.getFolds()));
+		refHub.getConfigurationManager().setConfiguration(
+				new Configuration(configuration.getId(),
+								configuration.getFolds(),
+								configuration.isIncludeImplicits(),
+								configuration.getAssignmentThreshold(),
+								selectionPolicy));
 		Response response = Response.ok().build();
 		return response;
 	}

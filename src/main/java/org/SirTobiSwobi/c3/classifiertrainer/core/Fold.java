@@ -10,6 +10,8 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Relationship;
 import org.SirTobiSwobi.c3.classifiertrainer.db.SearchDirection;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
+import org.SirTobiSwobi.c3.classifiertrainer.db.TrainingSession;
 
 import ch.qos.logback.access.servlet.Util;
 
@@ -18,23 +20,28 @@ public class Fold extends Thread {
 	private long[] trainingIds, evaluationIds;
 	private int foldId;
 	private long modelId;
+	private TrainingSession trainingSession;
+	private Trainer trainer;
 	
-	public Fold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId) {
+	public Fold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId, TrainingSession trainingSession, Trainer trainer) {
 		super();
 		this.refHub = refHub;
 		this.trainingIds = trainingIds;
 		this.evaluationIds = evaluationIds;
 		this.foldId = foldId;
 		this.modelId = modelId;
+		this.trainingSession=trainingSession;
+		this.trainer = trainer;
 	}
 	
-	public static Fold produceFold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId){
-		return new Fold(refHub, trainingIds, evaluationIds, foldId, modelId);
+	public static Fold produceFold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId, TrainingSession trainingSession, Trainer trainer){
+		return new Fold(refHub, trainingIds, evaluationIds, foldId, modelId, trainingSession, trainer);
 	}
 
 	public void run(){
 		Model model=refHub.getModelManager().getModelByAddress(modelId);
-		boolean includeImplicits = true; //ToDo: refactor this into the model!
+		boolean includeImplicits = true; //ToDo: refactor this into the configuration!
+		double assignmentThreshold = 0.5; //ToDo: refactor this into the configuration!
 		
 		
 		for(int i=0; i<trainingIds.length; i++){
@@ -50,7 +57,7 @@ public class Fold extends Thread {
 			}*/
 			model.appendToTrainingLog(appendString);
 			model.incrementCompletedSteps();
-			/* Use this to simulate training time
+			/*
 			try{
 				Thread.sleep(5000);
 			}catch(InterruptedException e){
@@ -124,6 +131,7 @@ public class Fold extends Thread {
 				//This is just use to simulate the actual training progress.
 			}
 			*/
+			
 		}
 		
 		String appendString = "Fold "+foldId+" summarized categorizations: ";
@@ -147,7 +155,7 @@ public class Fold extends Thread {
 		model.appendToTrainingLog(appendString);
 		String evalDescription = "Fold "+foldId;
 		
-		double assignmentThreshold = 0.5;
+		
 		/*
 		 * Not all assignments can be taken into account per fold. Otherwise false negatives sky-rocket. If this fold doesn't know a document,
 		 * it cannot be evaluated as if it knows it. 
@@ -163,17 +171,12 @@ public class Fold extends Thread {
 											refHub.getDocumentManager().getDocumentArray(),  
 											evalDescription,
 											includeImplicits, 
-											assignmentThreshold);
-		appendString = " Evaluation: "+eval.getDescription()+" Time: "+eval.getTimestamp();
-		Category[] categories = refHub.getCategoryManager().getCategoryArray();
-		for(int i=0; i<categories.length; i++){
-			appendString = appendString + " Category: "+categories[i].getId()+
-					" TP: "+eval.getTP(categories[i].getId())+" FP: "+eval.getFP(categories[i].getId())+
-					" FN: "+eval.getFN(categories[i].getId())+
-					" precision: "+eval.getPrecision(categories[i].getId())+" recall "+eval.getRecall(categories[i].getId())+
-					" F1: "+eval.getF1(categories[i].getId());
-		}
-		model.appendToTrainingLog(appendString);
+											assignmentThreshold,
+											trainingSession,
+											foldId);
+		trainer.selectBestEvaluation();
+		
+		
 	}
 
 }

@@ -4,18 +4,17 @@ import java.util.Date;
 
 public class Evaluation {
 	private ReferenceHub refHub;
-	private String timestamp;
-	private String description;
+	
 	private boolean includeImplicits;
 	private double assignmentThreshold;
+	private double microaveragePrecision, microaverageRecall, microaverageF1, macroaveragePrecision, macroaverageRecall, macroaverageF1;
+	private int foldId;
 	
 	public Evaluation(Assignment[] tfAssignments, Categorization[] evalAssignments, Category[] categories, Relationship[] relationships, 
-			Document[] documents, String description, boolean includeImplicits, double assignmentThreshold){
-		Date date = new Date();
-		this.timestamp = date.toString();
-		this.description = description;
+			Document[] documents, String description, boolean includeImplicits, double assignmentThreshold, TrainingSession trainingSession, int foldId){
 		this.includeImplicits=includeImplicits;
 		this.assignmentThreshold=assignmentThreshold;
+		this.foldId = foldId;
 		
 		DocumentManager docMan = new DocumentManager();
 		CategoryManager catMan = new CategoryManager(); 
@@ -23,7 +22,8 @@ public class Evaluation {
 		ConfigurationManager confMan = new ConfigurationManager();
 		ModelManager modMan = new ModelManager();
 		CategorizationManager cznMan = new CategorizationManager();
-		this.refHub = new ReferenceHub(catMan, docMan, evalMan, confMan, modMan, cznMan); //Every evaluation has it's own reference Hub. Data from the evaluation is copied to it. 
+		EvaluationManager evaluMan=null;
+		this.refHub = new ReferenceHub(catMan, docMan, evalMan, confMan, modMan, cznMan, evaluMan); //Every evaluation has it's own reference Hub. Data from the evaluation is copied to it. 
 		evalMan.setRefHub(refHub);
 		cznMan.setRefHub(refHub);
 		
@@ -57,6 +57,8 @@ public class Evaluation {
 		}
 		countScores();
 		calculateEffectiveness();
+		calculateAverages();
+		trainingSession.addFoldEvlaution(this);
 		
 	}
 	
@@ -145,6 +147,47 @@ public class Evaluation {
 		}
 	}
 	
+	private void calculateAverages(){
+		long sumTP=0;
+		long sumFP=0;
+		long sumFN=0;
+		double sumPrecision=0.0;
+		double sumRecall = 0.0;
+		double sumF1 = 0.0;
+		Category[] catArray = refHub.getCategoryManager().getCategoryArray();
+		EvalCategory[] categories = new EvalCategory[catArray.length];
+		for(int i=0; i<catArray.length; i++){
+			categories[i] = (EvalCategory) catArray[i];
+		}
+		for(int i=0; i<categories.length; i++){
+			EvalCategory cat = categories[i];
+			sumTP+=cat.getTP();
+			sumFP+=cat.getFP();
+			sumFN+=cat.getFN();
+			sumPrecision+=cat.getPrecision();
+			sumRecall+=cat.getRecall();
+			sumF1+=cat.getF1();
+		}
+		if(sumTP+sumFP==0){
+			this.microaveragePrecision=0.0;
+		}else{
+			this.microaveragePrecision=(double)sumTP/((double)sumTP+(double)sumFP);
+		}
+		if(sumTP+sumFN==0){
+			this.microaverageRecall=0.0;
+		}else{
+			this.microaverageRecall=(double)sumTP/((double)sumTP+(double)sumFN);
+		}
+		if(microaveragePrecision+microaverageRecall==0.0){
+			this.microaverageF1=0.0;
+		}else{
+			this.microaverageF1=(2*microaveragePrecision*microaverageRecall)/(microaveragePrecision+microaverageRecall);
+		}		
+		this.macroaveragePrecision=sumPrecision/(double)categories.length;
+		this.macroaverageRecall=sumRecall/(double)categories.length;
+		this.macroaverageF1=sumF1/(double)categories.length;
+	}
+	
 	public double getPrecision(long catId){
 		double precision = 0.0;
 		EvalCategory cat = (EvalCategory) refHub.getCategoryManager().getByAddress(catId);
@@ -199,12 +242,34 @@ public class Evaluation {
 		return FN;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public double getMicroaveragePrecision() {
+		return microaveragePrecision;
 	}
 
-	public String getDescription() {
-		return description;
+	public double getMicroaverageRecall() {
+		return microaverageRecall;
+	}
+
+	public double getMicroaverageF1() {
+		return microaverageF1;
+	}
+
+	public double getMacroaveragePrecision() {
+		return macroaveragePrecision;
+	}
+
+	public double getMacroaverageRecall() {
+		return macroaverageRecall;
+	}
+
+	public double getMacroaverageF1() {
+		return macroaverageF1;
+	}
+
+	public int getFoldId() {
+		return foldId;
 	}	
+	
+	
 	
 }

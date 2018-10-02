@@ -11,6 +11,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.CategoryManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.EvaluationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
@@ -34,9 +35,11 @@ public class TCTargetFunctionTest {
 		ConfigurationManager confMan = new ConfigurationManager();
 		ModelManager modMan = new ModelManager();
 		CategorizationManager cznMan = new CategorizationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan);
+		EvaluationManager evalMan = new EvaluationManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan, evalMan);
 		tfMan.setRefHub(refHub);
 		cznMan.setRefHub(refHub);
+		evalMan.setRefHub(refHub);
 		
 		Category cat = new Category(0,"Diseases","");
 		catMan.setCategory(cat);

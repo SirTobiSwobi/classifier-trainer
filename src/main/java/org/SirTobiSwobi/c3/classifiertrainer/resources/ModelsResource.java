@@ -69,11 +69,19 @@ public class ModelsResource {
 		}
 		else{
 			//Spawn training progress
-			long modId=refHub.getModelManager().addModelWithoutId(conf);
-			TCProgress progress = new TCProgress("/models/"+modId,.0);
-			trainer.startTraining(conf, modId);
-			Response response = Response.ok(progress).build();
-			return response;
+			if(!refHub.getModelManager().isTrainingInProgress()){
+				long modId=refHub.getModelManager().addModelWithoutId(conf);
+				TCProgress progress = new TCProgress("/models/"+modId,.0);
+				trainer.startTraining(conf, modId);
+				Response response = Response.ok(progress).build();
+				return response;
+			}else{
+				long modId=refHub.getModelManager().getMaxId();//computes currently used modelId;
+				TCProgress progress = new TCProgress("/models/"+modId,refHub.getModelManager().getModelByAddress(modId).getProgress());
+				Response response = Response.ok(progress).build();
+				return response;
+			}
+			
 			
 		}		
 	}

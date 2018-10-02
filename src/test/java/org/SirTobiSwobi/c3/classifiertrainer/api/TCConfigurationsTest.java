@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,18 +18,25 @@ public class TCConfigurationsTest {
 
 	@Test
 	public void serializesToJSON() throws Exception {
-		
+		//new Configuration(long id, int folds, boolean includeImplicits, double assignmentThreshold, SelectionPolicy selectionPolicy) 
 		ConfigurationManager confMan =  new ConfigurationManager();
-		confMan.addConfigurationWithoutId(1,"This needs to be replaced with an actual configuration in the actual classifier trainer");
-		confMan.addConfigurationWithoutId(3,"As does this");
-		confMan.setConfiguration(new Configuration(5,5));
+		Configuration cfgn = new Configuration(1,2, true, 0.5,SelectionPolicy.MicroaverageF1);
+		confMan.setConfiguration(cfgn);
+		cfgn = new Configuration(3,3, true, 0.6,SelectionPolicy.MacroaverageF1);
+		confMan.setConfiguration(cfgn);
+		cfgn = new Configuration(5,5, true, 0.4,SelectionPolicy.MicroaverageRecall);
+		confMan.setConfiguration(cfgn);
 		
 		
 		Configuration[] configurations = confMan.getConfigurationArray();
 		TCConfiguration[] TCconfigurationArray = new TCConfiguration[configurations.length];
 		for(int i=0; i<configurations.length;i++){
 			Configuration conf = configurations[i];
-			TCConfiguration TCconf = new TCConfiguration(conf.getId(), conf.getFolds());
+			TCConfiguration TCconf = new TCConfiguration(conf.getId(),
+					conf.getFolds(),
+					conf.isIncludeImplicits(), 
+					conf.getAssignmentThreshold(),
+					conf.getSelectionPolicy().toString());
 			TCconfigurationArray[i]=TCconf;
 		}
 		TCConfigurations TCconfigurations = new TCConfigurations(TCconfigurationArray);

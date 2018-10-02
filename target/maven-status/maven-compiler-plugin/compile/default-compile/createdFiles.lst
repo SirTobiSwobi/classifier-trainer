@@ -2,6 +2,7 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ModelResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/SearchDirection.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadata.class
+org/SirTobiSwobi/c3/classifiertrainer/db/EvaluationManager.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TCAssignment.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCProgress.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/AssignmentResource.class
@@ -48,7 +49,9 @@ org/SirTobiSwobi/c3/classifiertrainer/db/AVLTree.class
 org/SirTobiSwobi/c3/classifiertrainer/db/DocumentManager.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCHash.class
+org/SirTobiSwobi/c3/classifiertrainer/db/SelectionPolicy.class
 org/SirTobiSwobi/c3/classifiertrainer/db/Categorization.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurations.class
+org/SirTobiSwobi/c3/classifiertrainer/db/TrainingSession.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoriesResource.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCModels.class

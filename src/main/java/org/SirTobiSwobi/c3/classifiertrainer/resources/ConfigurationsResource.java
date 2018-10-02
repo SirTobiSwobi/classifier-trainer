@@ -39,7 +39,11 @@ public class ConfigurationsResource {
 			Configuration[] confArray=refHub.getConfigurationManager().getConfigurationArray();
 			TCConfiguration[] outputArray = new TCConfiguration[confArray.length];
 			for(int i=0; i<confArray.length;i++){
-				outputArray[i]=new TCConfiguration(confArray[i].getId(), confArray[i].getFolds());
+				outputArray[i]=new TCConfiguration(confArray[i].getId(),
+						confArray[i].getFolds(),
+						confArray[i].isIncludeImplicits(), 
+						confArray[i].getAssignmentThreshold(),
+						confArray[i].getSelectionPolicy().toString());
 			}
 			TCConfigurations output = new TCConfigurations(outputArray);
 			return Response.ok(output).build();

@@ -71,7 +71,10 @@ public class ModelManager {
 	public synchronized void setTrainingInProgress(boolean trainingInProgress) {
 		this.trainingInProgress = trainingInProgress;
 	}
-
+	
+	public long getMaxId(){
+		return models.getMaxId();
+	}
 	
 	
 }

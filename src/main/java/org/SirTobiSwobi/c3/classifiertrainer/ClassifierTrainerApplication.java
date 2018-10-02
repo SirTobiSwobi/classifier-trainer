@@ -10,9 +10,11 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ConfigurationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.DocumentManager;
+import org.SirTobiSwobi.c3.classifiertrainer.db.EvaluationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.RelationshipType;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
 import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
 import org.SirTobiSwobi.c3.classifiertrainer.health.ConfigHealthCheck;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.AssignmentResource;
@@ -63,9 +65,11 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		ConfigurationManager confMan = new ConfigurationManager();
 		ModelManager modMan = new ModelManager();
 		CategorizationManager cznMan = new CategorizationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan);
+		EvaluationManager evalMan = new EvaluationManager();
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan, evalMan);
 		tfMan.setRefHub(refHub);
 		cznMan.setRefHub(refHub);
+		evalMan.setRefHub(refHub);
 		
 		/*
 		 * Initializing trainer
@@ -181,9 +185,13 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		tfMan.setAssignment(3, 3, 450);
 		tfMan.setAssignment(4, 4, 525);
 		
-		refHub.getConfigurationManager().setConfiguration(new Configuration(0,1));
-		refHub.getConfigurationManager().setConfiguration(new Configuration(1,3));
-		refHub.getConfigurationManager().setConfiguration(new Configuration(2,5));
+	
+		Configuration cfgn = new Configuration(1,2, true, 0.5,SelectionPolicy.MicroaverageF1);
+		confMan.setConfiguration(cfgn);
+		cfgn = new Configuration(3,3, true, 0.6,SelectionPolicy.MacroaverageF1);
+		confMan.setConfiguration(cfgn);
+		cfgn = new Configuration(5,5, true, 0.4,SelectionPolicy.MicroaverageRecall);
+		confMan.setConfiguration(cfgn);
 		
 		
 		

@@ -1222,13 +1222,19 @@ $.getJSON("../configurations/"+confId,function(json){
 	if(json==null){
 		$("#list").append("<h3>The configuration with id "+confId+" does not exist. You can create it</h3>");
 	}else{
-		$("#list").append("<h3>Id: "+json.id+" has: "+json.folds+" folds</h3>");
+		$("#list").append("<h3>Id: "+json.id+"</h3><ul>");
+		$("#list").append("<li>Folds: "+json.folds+"</li>");
+		$("#list").append("<li>Include Implicits: "+json.includeImplicits+"</li>");
+		$("#list").append("<li>Assignment Threshold: "+json.assignmentThreshold+"</li>");
+		$("#list").append("<li>Selection Policy: "+json.selectionPolicy+"</li>");
+		$("#list").append("</ul>");
 	}
 });
 }
 
 function createConfiguration(form){
-	var json = "{ \"configurations\":[{\"id\":"+form[0].value+", \"folds\":"+form[1].value+" }]}";
+	var json = "{ \"configurations\":[{\"id\":"+form[0].value+
+				", \"folds\":"+form[1].value+" }]}";
 	console.log(json);
 	
 	var url="../configurations";
@@ -1440,4 +1446,4 @@ function deleteModel(modId){
 				 	console.log('succes: '+data);
 			}
 		 });
-}
+ }

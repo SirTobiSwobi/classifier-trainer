@@ -16,12 +16,15 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurations.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/RelationshipResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Model.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/SelectionPolicy.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCProgress.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/CategoriesResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/EvaluationManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Category.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/health/ConfigHealthCheck.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/TrainingSession.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCTargetFunction.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/ClassifierTrainerConfiguration.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.java
@@ -38,7 +41,9 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/core/Fold.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationships.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManager.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Evaluation.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationship.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/EvalCategory.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/core/Utilities.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/api/TCHash.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/AssignmentResource.java
