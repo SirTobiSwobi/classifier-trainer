@@ -362,7 +362,7 @@
 		$("#createF").submit(function( event ) {
 			event.preventDefault();
 			var form = $("#createF").serializeArray();
-			startTraining(form[1].value);
+			startTraining(form[0].value);
 			location.reload(true);
 		});
 		

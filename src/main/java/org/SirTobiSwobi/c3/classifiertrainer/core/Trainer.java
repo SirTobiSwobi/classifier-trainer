@@ -17,6 +17,7 @@ public class Trainer {
 	private int openEvaluations;
 	private long trainingSessionId;
 	private long modelId;
+	private long configId;
 	
 	public Trainer(ReferenceHub refHub) {
 		super();
@@ -41,6 +42,7 @@ public class Trainer {
 	}
 
 	public synchronized void startTraining(long configId, long modelId){
+		this.configId = configId;
 		refHub.getModelManager().setTrainingInProgress(true);
 		Configuration config = refHub.getConfigurationManager().getByAddress(configId);
 		int folds = config.getFolds();
@@ -68,7 +70,7 @@ public class Trainer {
 			long[] evaluationIds = Arrays.copyOfRange(allIds, start, end);
 			long[] trainingIds = computeTrainingIdsFromEvaluationIds(allIds,evaluationIds);
 			
-			(new Fold(refHub, trainingIds, evaluationIds, i, modelId, trainingSession, this)).start();
+			(new Fold(refHub, trainingIds, evaluationIds, i, modelId, trainingSession, this, configId)).start();
 		}	
 		
 	}
@@ -82,8 +84,8 @@ public class Trainer {
 			TrainingSession trainingSession = refHub.getEvaluationManager().getTrainingSessionByAddress(trainingSessionId);
 			String appendString="";
 			Model model = refHub.getModelManager().getModelByAddress(modelId);
-			SelectionPolicy selectionPolicy = SelectionPolicy.MicroaverageF1;
-			Evaluation[] evaluations = trainingSession.getEvaluationArray();
+			SelectionPolicy selectionPolicy = refHub.getConfigurationManager().getByAddress(configId).getSelectionPolicy();
+			Evaluation[] evaluations = trainingSession.getEvaluationArray();	
 			model.appendToTrainingLog("There are "+evaluations.length+" evaluations.");
 			double maxValue=0.0;
 			int maxId=0;

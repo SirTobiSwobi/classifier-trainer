@@ -43,6 +43,7 @@ public class ModelResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		refHub.getModelManager().deleteModel(mod);
+		refHub.getEvaluationManager().deleteTrainingSession(mod);
 		Response response = Response.ok().build();
 		return response;
 	}

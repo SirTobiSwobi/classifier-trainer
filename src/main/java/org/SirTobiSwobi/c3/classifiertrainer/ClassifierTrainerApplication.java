@@ -24,12 +24,14 @@ import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.DocumentsResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.EvaluationsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.MetadataResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.TargetFunctionResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.TrainingSessionResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -100,6 +102,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final ConfigurationResource configurationR = new ConfigurationResource(refHub);
 		final ModelsResource models = new ModelsResource(refHub, trainer);
 		final ModelResource model = new ModelResource(refHub);
+		final EvaluationsResource evaluations = new EvaluationsResource(refHub);
+		final TrainingSessionResource trainingSession = new TrainingSessionResource(refHub);
 		
 		/*
 		 * Initializing health checks
@@ -125,6 +129,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(configurationR);
 		environment.jersey().register(models);
 		environment.jersey().register(model);
+		environment.jersey().register(evaluations);
+		environment.jersey().register(trainingSession);
 		
 		/*
 		 * Generating example data for manual testing during development

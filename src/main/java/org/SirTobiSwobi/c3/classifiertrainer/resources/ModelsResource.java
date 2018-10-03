@@ -1,7 +1,5 @@
 package org.SirTobiSwobi.c3.classifiertrainer.resources;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,10 +15,10 @@ import org.SirTobiSwobi.c3.classifiertrainer.api.TCModel;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModels;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCProgress;
 import org.SirTobiSwobi.c3.classifiertrainer.core.Trainer;
+import org.SirTobiSwobi.c3.classifiertrainer.db.EvaluationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ModelManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
-import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
 
 @Path("/models")
 @Produces(MediaType.APPLICATION_JSON)
@@ -89,6 +87,9 @@ public class ModelsResource {
 	@DELETE
 	public Response deleteAllModels(){
 		refHub.setModelManager(new ModelManager());
+		refHub.getModelManager().setRefHub(refHub);
+		refHub.setEvaluationManager(new EvaluationManager());
+		refHub.getEvaluationManager().setRefHub(refHub);
 		Response response = Response.ok().build();
 		return response;
 	}

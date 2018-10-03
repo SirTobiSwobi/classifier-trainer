@@ -25,9 +25,10 @@ public class ConfigurationManager {
 	/**
 	 * This depends on the type of classifier trainer that is implemented. The parameter is not used in this API sample implementation. 
 	 */
-	public synchronized void addConfigurationWithoutId(int folds,String tbd){
+	public synchronized void addConfigurationWithoutId(int folds, boolean includeImplicits, double assignmentThreshold,
+			SelectionPolicy selectionPolicy){
 		long id = configurations.getMaxId()+1;
-		Configuration conf = new Configuration(id,folds);
+		Configuration conf = new Configuration(id,folds, includeImplicits, assignmentThreshold, selectionPolicy);
 		configurations.setContent(conf,id);
 	}
 	

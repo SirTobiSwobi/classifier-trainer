@@ -37,12 +37,27 @@ public class ConfigurationResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		Configuration configuration = refHub.getConfigurationManager().getByAddress(conf);	
+		String selectionPolicy="MicroaverageF1";
+		if(configuration.getSelectionPolicy()==SelectionPolicy.MacroaverageF1){
+			selectionPolicy="MicroaverageF1";
+		}else if(configuration.getSelectionPolicy()==SelectionPolicy.MicroaveragePrecision){
+			selectionPolicy="MicroaveragePrecision";
+		}else if(configuration.getSelectionPolicy()==SelectionPolicy.MicroaverageRecall){
+			selectionPolicy="MicroaverageRecall";
+		}else if(configuration.getSelectionPolicy()==SelectionPolicy.MacroaverageF1){
+			selectionPolicy="MacroaverageF1";
+		}else if(configuration.getSelectionPolicy()==SelectionPolicy.MacroaveragePrecision){
+			selectionPolicy="MacroaveragePrecision";
+		}else if(configuration.getSelectionPolicy()==SelectionPolicy.MacroaverageRecall){
+			selectionPolicy="MacroaverageRecall";
+		}
 		TCConfiguration output = new TCConfiguration(
 						configuration.getId(),
 						configuration.getFolds(),
 						configuration.isIncludeImplicits(), 
 						configuration.getAssignmentThreshold(),
-						configuration.getSelectionPolicy().toString());	
+						selectionPolicy
+						);	
 		return Response.ok(output).build();
 		
 	}

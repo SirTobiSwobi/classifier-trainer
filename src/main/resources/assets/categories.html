@@ -67,29 +67,22 @@
 		<form action="/" id="uploadF">
 			<textarea name="content" cols="70" rows="20">
 {
-	"configurations":[
+	"categories":[
 		{
-			"id": 1,
-			"folds": 2,
-			"includeImplicits": true,
-			"assignmentThreshold": 0.5,
-			"selectionPolicy": "MicroaverageF1"
+			"id":0,
+			"label":"first label",
+			"description":"first description"
 		},
 		{
-			"id": 3,
-			"folds": 3,
-			"includeImplicits": true,
-			"assignmentThreshold": 0.6,
-			"selectionPolicy": "MacroaverageF1"
+			"id":1,
+			"label":"second label",
+			"description":"second description"
 		},
 		{
-			"id": 5,
-			"folds": 5,
-			"includeImplicits": true,
-			"assignmentThreshold": 0.4,
-			"selectionPolicy": "MicroaverageRecall"
-		}
-	]
+			"id":2,
+			"label":"third label",
+			"description":"third description"
+		}]
 }
 			</textarea><br>
 			<input type="submit" value="Upload categories">

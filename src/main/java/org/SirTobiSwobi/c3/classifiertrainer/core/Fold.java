@@ -4,6 +4,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.Assignment;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Categorization;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategorizationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
+import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Evaluation;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
@@ -19,11 +20,11 @@ public class Fold extends Thread {
 	private ReferenceHub refHub;
 	private long[] trainingIds, evaluationIds;
 	private int foldId;
-	private long modelId;
+	private long modelId, configId;
 	private TrainingSession trainingSession;
 	private Trainer trainer;
 	
-	public Fold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId, TrainingSession trainingSession, Trainer trainer) {
+	public Fold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId, TrainingSession trainingSession, Trainer trainer, long configId) {
 		super();
 		this.refHub = refHub;
 		this.trainingIds = trainingIds;
@@ -32,16 +33,14 @@ public class Fold extends Thread {
 		this.modelId = modelId;
 		this.trainingSession=trainingSession;
 		this.trainer = trainer;
-	}
-	
-	public static Fold produceFold(ReferenceHub refHub, long[] trainingIds, long[] evaluationIds, int foldId, long modelId, TrainingSession trainingSession, Trainer trainer){
-		return new Fold(refHub, trainingIds, evaluationIds, foldId, modelId, trainingSession, trainer);
+		this.configId = configId;
 	}
 
 	public void run(){
 		Model model=refHub.getModelManager().getModelByAddress(modelId);
-		boolean includeImplicits = true; //ToDo: refactor this into the configuration!
-		double assignmentThreshold = 0.5; //ToDo: refactor this into the configuration!
+		Configuration config = refHub.getConfigurationManager().getByAddress(configId);
+		boolean includeImplicits = config.isIncludeImplicits(); //ToDo: refactor this into the configuration!
+		double assignmentThreshold = config.getAssignmentThreshold(); //ToDo: refactor this into the configuration!
 		
 		
 		for(int i=0; i<trainingIds.length; i++){

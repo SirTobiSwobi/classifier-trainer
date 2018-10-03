@@ -176,7 +176,7 @@ public class AVLTree<T> {
 	}
 	
 	public boolean containsId(long id){
-		if(this.size==0){
+		if(this.size==0||root==null){
 			return false;
 		}else{
 			return root.containsId(id);

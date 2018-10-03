@@ -1,5 +1,6 @@
 org/SirTobiSwobi/c3/classifiertrainer/api/TCDocument.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ModelResource.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCEvaluation.class
 org/SirTobiSwobi/c3/classifiertrainer/db/SearchDirection.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCMetadata.class
 org/SirTobiSwobi/c3/classifiertrainer/db/EvaluationManager.class
@@ -25,6 +26,7 @@ org/SirTobiSwobi/c3/classifiertrainer/api/TCCategories.class
 org/SirTobiSwobi/c3/classifiertrainer/core/Fold.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/MetadataResource.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ModelsResource.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCEvalCategory.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/ConfigurationResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/ConfigurationManager.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TargetFunctionManager.class
@@ -32,10 +34,12 @@ org/SirTobiSwobi/c3/classifiertrainer/db/Evaluation.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/core/Trainer.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCRelationships.class
+org/SirTobiSwobi/c3/classifiertrainer/resources/TrainingSessionResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/CategorizationManager.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCModel.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoryResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipType.class
+org/SirTobiSwobi/c3/classifiertrainer/resources/EvaluationsResource.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/DocumentResource.class
 org/SirTobiSwobi/c3/classifiertrainer/db/AVLTreeNode.class
 org/SirTobiSwobi/c3/classifiertrainer/db/ModelManager.class
@@ -53,5 +57,7 @@ org/SirTobiSwobi/c3/classifiertrainer/db/SelectionPolicy.class
 org/SirTobiSwobi/c3/classifiertrainer/db/Categorization.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCConfigurations.class
 org/SirTobiSwobi/c3/classifiertrainer/db/TrainingSession.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCTrainingSession.class
 org/SirTobiSwobi/c3/classifiertrainer/resources/CategoriesResource.class
+org/SirTobiSwobi/c3/classifiertrainer/api/TCEvaluations.class
 org/SirTobiSwobi/c3/classifiertrainer/api/TCModels.class

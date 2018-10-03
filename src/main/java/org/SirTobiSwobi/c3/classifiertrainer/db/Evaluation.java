@@ -9,6 +9,7 @@ public class Evaluation {
 	private double assignmentThreshold;
 	private double microaveragePrecision, microaverageRecall, microaverageF1, macroaveragePrecision, macroaverageRecall, macroaverageF1;
 	private int foldId;
+	private EvalCategory[] evalCategories;
 	
 	public Evaluation(Assignment[] tfAssignments, Categorization[] evalAssignments, Category[] categories, Relationship[] relationships, 
 			Document[] documents, String description, boolean includeImplicits, double assignmentThreshold, TrainingSession trainingSession, int foldId){
@@ -73,6 +74,7 @@ public class Evaluation {
 		for(int i=0; i<catArray.length; i++){
 			categories[i] = (EvalCategory) catArray[i];
 		}
+		this.evalCategories=categories;
 		for(int i=0; i<categories.length; i++){
 			EvalCategory cat = categories[i];
 			Categorization[] czn = refHub.getCategorizationManager().getCategoryCategorizations(cat.getId());
@@ -268,7 +270,22 @@ public class Evaluation {
 
 	public int getFoldId() {
 		return foldId;
+	}
+
+	public EvalCategory[] getEvalCategories() {
+		return evalCategories;
+	}
+
+	public boolean isIncludeImplicits() {
+		return includeImplicits;
+	}
+
+	public double getAssignmentThreshold() {
+		return assignmentThreshold;
 	}	
+	
+	
+	
 	
 	
 	

@@ -1234,7 +1234,11 @@ $.getJSON("../configurations/"+confId,function(json){
 
 function createConfiguration(form){
 	var json = "{ \"configurations\":[{\"id\":"+form[0].value+
-				", \"folds\":"+form[1].value+" }]}";
+				", \"folds\":"+form[1].value+
+				", \"includeImplicits\":"+form[2].value+
+				", \"assignmentThreshold\":"+form[3].value+
+				", \"selectionPolicy\": \""+form[4].value+"\""+
+				" }]}";
 	console.log(json);
 	
 	var url="../configurations";
@@ -1256,36 +1260,82 @@ function createConfiguration(form){
 }
 
 function updateConfiguration(form){
-var json = "{\"id\":"+form[0].value+", \"folds\":"+form[1].value+" }";
-console.log(json);
-
-var url="../configurations/"+form[0].value;
-
-
-$.ajax({
-	url: url,
-	headers: {
-	    'Accept': 'application/json',
-        'Content-Type':'application/json'
-    },
-    method: 'PUT',
-    dataType: 'json',
-    data: json,
-    success: function(data){
-		 console.log('succes: '+data);
-	}
- });
+	var json = "{ \"id\":"+form[0].value+
+				", \"folds\":"+form[1].value+
+				", \"includeImplicits\":"+form[2].value+
+				", \"assignmentThreshold\":"+form[3].value+
+				", \"selectionPolicy\": \""+form[4].value+"\""+
+				" }";
+	console.log(json);
+	
+	var url="../configurations/"+form[0].value;
+	
+	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'PUT',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+			 console.log('succes: '+data);
+		}
+	 });
 }
 
 function renderConfigurationUpdate(confId){
-$.getJSON("../configurations/"+confId,function(json){
-	if(json==null){
-		//nothing but empty fields
-	}else{
-		$("#id").val(json.id);
-		$("#folds").val(json.folds);
-	}
-});
+	$.getJSON("../configurations/"+confId,function(json){
+		if(json==null){
+			//nothing but empty fields
+		}else{
+			$("#id").val(json.id);
+			$("#folds").val(json.folds);
+			$("#includeImplicits").empty();
+			if(json.includeImplicits==true){
+				$("#includeImplicits").append("<option value=\"true\" selected>true</selected>");
+				$("#includeImplicits").append("<option value=\"false\">false</selected>");
+			}else{
+				$("#includeImplicits").append("<option value=\"true\">true</selected>");
+				$("#includeImplicits").append("<option value=\"false\" selected>false</selected>");
+			}
+			$("#assignmentThreshold").val(json.assignmentThreshold);
+			$("#selectionPolicy").empty();
+			if(json.selectionPolicy=="MicroaverageF1"){
+				$("#selectionPolicy").append("<option value=\"MicroaverageF1\" selected>Microaverage F1</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MicroaverageF1\">Microaverage F1</option>");
+			}
+			if(json.selectionPolicy=="MicroaveragePrecision"){
+				$("#selectionPolicy").append("<option value=\"MicroaveragePrecision\" selected>Microaverage Precision</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MicroaveragePrecision\">Microaverage Precision</option>");
+			}
+			if(json.selectionPolicy=="MicroaverageRecall"){
+				$("#selectionPolicy").append("<option value=\"MicroaverageRecall\" selected>Microaverage Recall</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MicroaverageRecall\">Microaverage Recall</option>");
+			}
+			if(json.selectionPolicy=="MacroaverageF1"){
+				$("#selectionPolicy").append("<option value=\"MacroaverageF1\" selected>Macroaverage F1</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MacroaverageF1\">Macroaverage F1</option>");
+			}
+			if(json.selectionPolicy=="MacroaveragePrecision"){
+				$("#selectionPolicy").append("<option value=\"MacroaveragePrecision\" selected>Macroaverage Precision</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MacroaveragePrecision\">Macroaverage Precision</option>");
+			}
+			if(json.selectionPolicy=="MacroaverageRecall"){
+				$("#selectionPolicy").append("<option value=\"MacroaverageRecall\" selected>Macroaverage Recall</option>");
+			}else{
+				$("#selectionPolicy").append("<option value=\"MacroaverageRecall\">Macroaverage Recall</option>");
+			}
+			
+		}
+	});
 }
 
 function uploadConfigurationJSON(json){
@@ -1370,7 +1420,11 @@ function renderConfigurationSelectionForm(){
 			appendString = appendString +"<option value=\""+configurationJSON.configurations[j].id+"\"";
 			appendString+=">";
 			appendString = appendString +configurationJSON.configurations[j].id+" (";
-			appendString = appendString +configurationJSON.configurations[j].folds+" folds)</option>";				
+			appendString = appendString +configurationJSON.configurations[j].folds+" folds, includeImplicits: ";
+			appendString = appendString +configurationJSON.configurations[j].includeImplicits+", ";
+			appendString = appendString +configurationJSON.configurations[j].assignmentThreshold+" assignmentThreshold, ";
+			appendString = appendString +configurationJSON.configurations[j].selectionPolicy+" selectionPolicy ";
+			appendString = appendString +")</option>";				
 		}
 		$("#configuration").append(appendString);
 		

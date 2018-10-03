@@ -67,17 +67,61 @@
 											<form action="/" id="createF">
 												<div class="field half">
 													<label for="id">ID:</label>
-													<input type="text" name="id" placeholder="-1 if you don't know the ID" />
+													<input type="text" name="id" id="id" placeholder="-1 if you don't know the ID" />
 												</div>	
 												<div class="field half">
-													<label for="folds">folds:</label>
-													<input type="text" name="folds" id="folds" placeholder="Default is 1" />
+													<label for="folds">Folds:</label>
+													<input type="text" name="folds" id="folds" placeholder="Default is 3" />
+												</div>
+												<div class="field half">
+													<label for="includeImplicits">Include Implicits:</label>
+													<select name="includeImplicits" id="includeImplicits">
+														<option value="true" selected>true</option>
+														<option value="false">false</option>
+													</select>
+												</div>
+												<div class="field half">
+													<label for="assignmentThreshold">Assignment Threshold:</label>
+													<input type="text" name="assignmentThreshold" id="assignmentThreshold" placeholder="Default is 0.5" />
+												</div>
+												<div class="field half">
+													<label for="selectionPolicy">Selection Policy:</label>
+													<select name="selectionPolicy" id="selectionPolicy">
+														<option value="MicroaverageF1" selected>Microaverage F1</option>
+														<option value="MicroaveragePrecision">Microaverage Precision</option>
+														<option value="MicroaverageRecall">Microaverage Recall</option>
+														<option value="MacroaverageF1">Macroaverage F1</option>
+														<option value="MacroaveragePrecision">Macroaverage Precision</option>
+														<option value="MacroaverageRecall">Macroaverage Recall</option>
+													</select>
 												</div>
 												<ul class="actions">
 													<li><input type="submit" value="Upload configuration" class="primary" /></li>
 													<li><input type="reset" value="Clear" /></li>
 												</ul>
 											</form>	
+											<p>Configurations are hyperparameters that the trainer uses during training. These are individual for every classifier.
+												There are some configuration options that are the same for all classifiers. These are: </p>
+												<ul>
+													<li>Folds: The trainer uses n-fold cross-validation. This means, that it divides the known documents into n subsets of roughly 
+													equal size. The machine learning system is then trained n times. Each time, it learns from n-1 subsets and is evaluated with 
+													the remaining one. The subset that worked best (see selection policy), is used for the active model. 
+													This parameter defines how many such training/evaluation sessions take place. They are run in parallel.
+													The default parameter is 3.</li>
+													<li>Include Implicits: If the categories have relationships between each other, documents can implicitly belong to others. 
+													For example, if there are the categories cats, and mammals with cats being a sub-category of mammals, a document that belongs to 
+													cats implicitly also belongs to mammals. This parameter controls if these implicit assignments are taken into account during training 
+													and evaluation. The default parameter is true. </li>
+													<li>Assignment Threshold: Certain classifier algorithms generate probabilities of documents belonging to certain categories. In order to 
+													evaluate which fold worked best, this parameter controls the minimum probability such an assignment needs to have in order to be considered 
+													as belonging to a certain document. High values boost precision, while low values boost recall (see selection policy). 
+													The default parameter is 0.5, balancing both measures.</li>
+													<li>Selection Policy: This parameter defines the selection policy during n-fold cross-validation. Precision means, that the amount of 
+													documents wrongly assigned to a category is minimized. Recall means, that the amount of documents missing from a category is minimized. 
+													F1 is a equal weighted combination of both. Microaverage measures emphasis overall performance, while macroaverage measures emphasise 
+													getting "small" categories with little belonging documents right. The default parameter is Microaverage F1, emphasis overall performance 
+													while balancing precision and recall.</li>
+												</ul>
 										</div>
 									</div>
 									<div id="uploadForm">
@@ -87,17 +131,27 @@
 {
 	"configurations":[
 		{
-			"id":0,
-			"folds":1
+			"id": 1,
+			"folds": 2,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.5,
+			"selectionPolicy": "MicroaverageF1"
 		},
 		{
-			"id":1,
-			"folds":3
+			"id": 3,
+			"folds": 3,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.6,
+			"selectionPolicy": "MacroaverageF1"
 		},
 		{
-			"id":2,
-			"folds":5
-		}]
+			"id": 5,
+			"folds": 5,
+			"includeImplicits": true,
+			"assignmentThreshold": 0.4,
+			"selectionPolicy": "MicroaverageRecall"
+		}
+	]
 }
 											</textarea><br>
 											<input type="submit" value="Upload configurations" class="primary" />
