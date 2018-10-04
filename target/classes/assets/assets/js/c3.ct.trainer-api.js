@@ -1400,7 +1400,9 @@ function renderModels(){
 			$("#list").append("<h3>There are currently no model in this microservice. You can add one</h3>");
 		}else{
 			for (var i=0; i< json.models.length; i++){
-				$("#list").append("<li><a href=\"model.html?modId="+json.models[i].id+"\">/models/"+json.models[i].id+"</a></li>");
+				$("#list").append("<li><a href=\"model.html?modId="+json.models[i].id+"\">/models/"+json.models[i].id+"</a> - " +
+						"<a href=\"evaluation.html?modId="+json.models[i].id+"\">/evaluations/"+json.models[i].id+"</a></li>");
+				
 			}
 		}
 	});
@@ -1501,3 +1503,69 @@ function deleteModel(modId){
 			}
 		 });
  }
+
+function renderEvaluations(){
+	$("#list").empty();
+	$("#list").append("<h2>Available evaluations:</h2>");
+	$.getJSON("../evaluations",function(json){	
+		if(json.trainingSessions==null){
+			$("#list").append("<h3>There are currently no models to be evaluated in this microservice. You can create a new model.</h3>");
+		}else{
+			for (var i=0; i< json.trainingSessions.length; i++){
+				$("#list").append("<li><a href=\"evaluation.html?modId="+json.trainingSessions[i].id+"\">/evaluations/"+json.trainingSessions[i].id+"</a></li>");
+			}
+		}
+	});
+
+}
+
+function renderTrainingSession(modId){
+	$.getJSON("../evaluations/"+modId,function(json){	
+		if(json.foldEvaluations==null){
+			$("#list").append("<h3>There is currently no evaluation for this model available.</h3>");
+		}else{
+			var appendString ="<ul>";
+			appendString+="<li>id: "+json.id+"</li>";
+			appendString+="<li>timestamp: "+json.timestamp+"</li>";
+			appendString+="<li>description: "+json.description+"</li>";
+			appendString+="<li>model id: "+json.modelId+"</li>"
+			appendString+="</ul>";
+			appendString+="<div id=\"foldEvaluations\">";
+			for (var i=0; i< json.foldEvaluations.length; i++){
+				appendString+="<div id=\"foldId="+json.foldEvaluations[i].foldId+"\">";
+				appendString+="<table>";
+				appendString+="<tr><td>Fold: </td><td>"+json.foldEvaluations[i].foldId+"</td>";
+				appendString+="<td>Assignment Threshold: </td><td>"+json.foldEvaluations[i].assignmentThreshold+"</td>";
+				appendString+="<td>Include Implicits: </td><td>"+json.foldEvaluations[i].includeImplicits+"</td></tr>";
+				appendString+="<tr><td>Microaverage Precision: </td><td>"+json.foldEvaluations[i].microaveragePrecision+"</td>";
+				appendString+="<td>Microaverage Recall: </td><td>"+json.foldEvaluations[i].microaverageRecall+"</td>";
+				appendString+="<td>Microaverage F1: </td><td>"+json.foldEvaluations[i].microaverageF1+"</td></tr>";
+				appendString+="<tr><td>Macroaverage Precision: </td><td>"+json.foldEvaluations[i].macroaveragePrecision+"</td>";
+				appendString+="<td>Macroaverage Recall: </td><td>"+json.foldEvaluations[i].macroaverageRecall+"</td>";
+				appendString+="<td>Macroaverage F1: </td><td>"+json.foldEvaluations[i].macroaverageF1+"</td></tr>";
+				appendString+="</table>";
+				appendString+="<div id=\"foldId="+json.foldEvaluations[i].foldId+"Cats\">";
+				appendString+="<table>";
+				appendString+="<tr><td>Category Id: </td><td>Category Label: </td>";
+				appendString+="<td>Category description: </td><td>True Positives</td>";
+				appendString+="<td>False Positives</td><td>False Negatives</td>";
+				appendString+="<td>Precision</td><td>Recall</td><td>F1</td></tr>";
+				for(var j=0; j<json.foldEvaluations[i].categories.length;j++){
+					var cat=json.foldEvaluations[i].categories[j];
+					appendString+="<tr><td>"+cat.id+"</td><td>"+cat.label+"</td>";
+					appendString+="<td>"+cat.description+"</td><td>"+cat.tp+"</td>";
+					appendString+="<td>"+cat.fp+"</td><td>"+cat.fn+"</td>";
+					appendString+="<td>"+cat.precision+"</td><td>"+cat.recall+"</td><td>"+cat.f1+"</td></tr>";
+					
+					
+				}
+				appendString+="</table>";
+				appendString+="</div>";
+				appendString+="</div>";
+			}
+			appendString+="</div>";
+			$("#list").append(appendString);
+		}
+	});
+	
+}
