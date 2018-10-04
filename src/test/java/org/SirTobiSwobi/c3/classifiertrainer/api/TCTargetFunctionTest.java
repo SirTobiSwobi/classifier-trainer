@@ -36,7 +36,7 @@ public class TCTargetFunctionTest {
 		ModelManager modMan = new ModelManager();
 		CategorizationManager cznMan = new CategorizationManager();
 		EvaluationManager evalMan = new EvaluationManager();
-		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan, evalMan);
+		ReferenceHub refHub = new ReferenceHub(catMan, docMan, tfMan, confMan, modMan, cznMan, evalMan, null);
 		tfMan.setRefHub(refHub);
 		cznMan.setRefHub(refHub);
 		evalMan.setRefHub(refHub);

@@ -17,6 +17,17 @@ public class Model {
 		this.steps=0;
 		this.completed=0;
 	}
+	
+	public Model(long id, long configurationId, String trainingLog) {
+		super();
+		this.id = id;
+		this.configurationId = configurationId;
+		this.progress = 1.0; //only used for active Model when put there. Training progress is always completed.
+		this.trainingLog=trainingLog;
+		this.steps=10; //only used for active Model when put there. Training progress is always completed.
+		this.completed=10; //only used for active Model when put there. Training progress is always completed.
+	}
+	
 
 	public long getId() {
 		return id;

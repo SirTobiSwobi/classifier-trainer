@@ -1569,3 +1569,55 @@ function renderTrainingSession(modId){
 	});
 	
 }
+
+function renderActiveModel(){
+	$("#list").empty();
+	$("#list").append("<h2>Active model:</h2>");
+	$.getJSON("../model",function(json){	
+	
+		$("#list").append("Id: "+json.id+"<br/>");
+		$("#list").append("Configuration Id: "+json.configurationId+"<br/>");
+		$("#list").append("Progress:"+json.progress+"<br/>");
+		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
+		
+	}).fail(function(){
+		$("#list").empty();
+		$("#list").append("<h3>There is no active model in this microservice. You can assign one.</h3>");
+	});
+}
+
+function retrieveActiveModel(url){
+	var json="";
+	var fullUrl = "../model?loadFrom="+url;
+	console.log("Posting: "+fullUrl);
+		$.ajax({
+			url: fullUrl,
+			headers: {
+			    'Accept': 'application/json',
+		        'Content-Type':'application/json'
+		    },
+		    method: 'POST',
+		    dataType: 'json',
+		    data: json,
+		    success: function(data){
+				 	console.log('succes: '+data);
+			}
+		 });
+}
+
+function uploadActiveModel(json){
+	var url="../model";	
+	$.ajax({
+		url: url,
+		headers: {
+		    'Accept': 'application/json',
+	        'Content-Type':'application/json'
+	    },
+	    method: 'POST',
+	    dataType: 'json',
+	    data: json,
+	    success: function(data){
+		 	console.log('succes: '+data);
+		}
+	 });
+}

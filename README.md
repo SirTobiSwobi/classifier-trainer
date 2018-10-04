@@ -25,4 +25,5 @@ Version change log:
 - 0.3.8: implementing abstract /configuration endpoint
 - 0.3.9: creating JavaScript Library encapsulating all calls to the API and adding rudimentary GUI design 
 - 0.4.0: creating training logic using the /model endpoint. This implements n-fold cross-validation. This breaks the established configuration logic adding the folds as parameter
-- 0.4.1: creating /evaluation endpoint
+- 0.4.1: creating /evaluations endpoint
+- 0.5.0: finished trainer API. Adding included athlete endpoints starting with active model logic at /model

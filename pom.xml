@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.SirTobiSwobi.c3</groupId>
   <artifactId>classifier-trainer</artifactId>
-  <version>0.4.1-SNAPSHOT</version>
+  <version>0.5.0-SNAPSHOT</version>
   <name>classifier-trainer</name>
   <description>Common microservice sidecar for services implementing the classifier trainer API of the athlete/trainer pattern.
 </description>
