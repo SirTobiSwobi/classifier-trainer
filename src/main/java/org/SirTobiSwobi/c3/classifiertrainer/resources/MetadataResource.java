@@ -33,7 +33,9 @@ public class MetadataResource {
 				configuration.getAlgorithm(),
 				configuration.getConfiguration(),
 				configuration.getConfigOptions(),
-				configuration.getArchetype()
+				configuration.getArchetype(),
+				configuration.getRunType(),
+				configuration.getDebugExamples()
 				);
 		
 		return metadata;

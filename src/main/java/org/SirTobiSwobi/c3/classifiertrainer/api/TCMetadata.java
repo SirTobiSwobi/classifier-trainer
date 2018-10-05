@@ -11,6 +11,8 @@ public class TCMetadata {
 	private String configuration;
 	private String configOptions;
 	private String archetype;
+	private String runType;
+	private String debugExamples;
 	
 	public TCMetadata(){
 		// Jackson deserialization
@@ -24,7 +26,7 @@ public class TCMetadata {
 	
 	
 	public TCMetadata(String name, String[] calls, String algorithm, String phases, String outputFormat,
-			String configuration, String configOptions, String archetype) {
+			String configuration, String configOptions, String archetype, String runType, String debugExamples) {
 		this.name = name;
 		this.calls = calls;
 		this.algorithm = algorithm;
@@ -33,6 +35,8 @@ public class TCMetadata {
 		this.configuration = configuration;
 		this.configOptions = configOptions;
 		this.archetype = archetype;
+		this.runType = runType;
+		this.debugExamples = debugExamples;
 	}
 
 	@JsonProperty
@@ -74,6 +78,18 @@ public class TCMetadata {
 	public String getArchetype() {
 		return archetype;
 	}
+
+	@JsonProperty
+	public String getRunType() {
+		return runType;
+	}
+
+	@JsonProperty
+	public String getDebugExamples() {
+		return debugExamples;
+	}
+	
+	
 
 	
 }

@@ -332,9 +332,6 @@
 
 			});
 	
-		
-		$("#createForm").hide();
-		$("#uploadForm").hide();
 		renderRetraining();
 		$("#list").show("fast");
 		

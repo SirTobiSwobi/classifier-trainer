@@ -6,5 +6,7 @@
 	"outputFormat":"example",
 	"configuration":"example",
 	"configOptions":"example",
-	"archetype":"example"
+	"archetype":"example",
+	"runType":"example",
+	"debugExamples":"true"
 }

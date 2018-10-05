@@ -28,6 +28,10 @@ public class ClassifierTrainerConfiguration extends Configuration {
 	private String configOptions;
 	@NotEmpty
 	private String archetype;
+	@NotEmpty
+	private String runType;
+	@NotEmpty
+	private String debugExamples;
 	
 	@Valid
 	@NotNull
@@ -114,7 +118,27 @@ public class ClassifierTrainerConfiguration extends Configuration {
 		this.archetype = archetype;
 	}
 	
-	 @JsonProperty("jerseyClient")
+	@JsonProperty
+	 public String getRunType() {
+		return runType;
+	}
+
+	@JsonProperty
+	public void setRunType(String runType) {
+		this.runType = runType;
+	}
+	
+	@JsonProperty
+	public String getDebugExamples() {
+		return debugExamples;
+	}
+
+	@JsonProperty
+	public void setDebugExamples(String debugExamples) {
+		this.debugExamples = debugExamples;
+	}
+
+	@JsonProperty("jerseyClient")
 	    public JerseyClientConfiguration getJerseyClientConfiguration() {
 	        return jerseyClientConfiguration;
 	    }

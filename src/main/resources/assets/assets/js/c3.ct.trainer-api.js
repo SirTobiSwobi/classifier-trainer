@@ -1940,3 +1940,28 @@ function renderRetraining(){
 	});
 
 }
+
+function renderMetadata(){
+	$("#list").empty();
+	$.getJSON("../metadata",function(json){	
+		$("#list").append("<ul>");
+		$("#list").append("<li>algorithm: "+json.algorithm+"</li>");
+		$("#list").append("<li>archetype: "+json.archetype+"</li>");
+		$("#list").append("<li>configOptions: "+json.configOptions+"</li>");
+		$("#list").append("<li>configuration: "+json.configuration+"</li>");
+		$("#list").append("<li>debugExamples: "+json.debugExamples+"</li>");
+		$("#list").append("<li>Name: "+json.name+"</li>");
+		$("#list").append("<li>outputFormat: "+json.outputFormat+"</li>");
+		$("#list").append("<li>phases: "+json.phases+"</li>");
+		$("#list").append("<li>runType: "+json.runType+"</li>");
+		$("#list").append("</ul>");
+		$("#list").append("<h3>Calls: </h3>");
+		$("#list").append("<ul>");
+		for(var i=0; i<json.calls.length; i++){
+			$("#list").append("<li>"+json.calls[i]+"</li>");
+		}
+		$("#list").append("</ul>");
+		
+		
+	});
+}

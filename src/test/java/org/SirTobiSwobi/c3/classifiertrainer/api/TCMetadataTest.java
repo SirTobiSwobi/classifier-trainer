@@ -17,7 +17,7 @@ public class TCMetadataTest {
 		String a="example";
 		String[] b={"GET /example","POST /example"};	
 		
-		final TCMetadata generated = new TCMetadata(a,b,a,a,a,a,a,a);
+		final TCMetadata generated = new TCMetadata(a,b,a,a,a,a,a,a,a,"true");
 		final String expected = MAPPER.writeValueAsString(MAPPER.readValue(fixture("fixtures/TCMetadata.json"), TCMetadata.class));
 		
 		assertThat(MAPPER.writeValueAsString(generated)).isEqualTo(expected);
