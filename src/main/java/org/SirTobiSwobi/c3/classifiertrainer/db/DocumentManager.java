@@ -25,16 +25,18 @@ public class DocumentManager {
 		documents.setContent(document, document.getId());
 	}
 
-	public synchronized void addDocumentWithoutId(String label, String content){
+	public synchronized long addDocumentWithoutId(String label, String content){
 		long id = documents.getMaxId()+1;
 		Document doc = new Document(id,label,content);
 		documents.setContent(doc,id);
+		return id;
 	}
 	
-	public synchronized void addDocumentWithoutId(String label, String content, String url){
+	public synchronized long addDocumentWithoutId(String label, String content, String url){
 		long id = documents.getMaxId()+1;
 		Document doc = new Document(id,label,content,url);
 		documents.setContent(doc,id);
+		return id;
 	}
 	
 	public void deleteDocument(long id){

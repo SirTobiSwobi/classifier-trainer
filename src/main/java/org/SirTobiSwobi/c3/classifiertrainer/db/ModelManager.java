@@ -36,7 +36,7 @@ public class ModelManager {
 	
 	public synchronized long addModelWithoutId(long configurationId){
 		long id = models.getMaxId()+1;
-		Model model = new Model(id, configurationId);
+		Model model = new Model(id, configurationId, refHub.getConfigurationManager().getByAddress(configurationId).isIncludeImplicits());
 		models.setContent(model, id);
 		return id;
 	}

@@ -42,7 +42,7 @@ public class ActiveModelResource {
 		if(model==null){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}	
-		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog());
+		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog(), model.isIncludeImplicits());
 		
 		return Response.ok(output).build();
 		
@@ -71,19 +71,22 @@ public class ActiveModelResource {
 			ObjectMapper MAPPER = Jackson.newObjectMapper();
 			try{
 				TCModel retrievedModel = MAPPER.readValue(content, TCModel.class);
-				Model activeModel = new Model(retrievedModel.getId(), retrievedModel.getConfigurationId(), retrievedModel.getTrainingLog());
+				Model activeModel = new Model(retrievedModel.getId(), retrievedModel.getConfigurationId(), retrievedModel.isIncludeImplicits(), retrievedModel.getTrainingLog());
 				refHub.setActiveModel(activeModel);
 			}catch(Exception e){
 				return Response.status(404).build();
 			}	
+			refHub.setNeedsRetraining(false);
 			return Response.ok().build();
 		}else if(model!=null){
-			Model activeModel = new Model(model.getId(), model.getConfigurationId(), model.getTrainingLog());
+			Model activeModel = new Model(model.getId(), model.getConfigurationId(), model.isIncludeImplicits(), model.getTrainingLog());
 			refHub.setActiveModel(activeModel);
+			refHub.setNeedsRetraining(false);
 			return Response.ok().build();
 		}else{
 			return Response.status(400).build();
 		}
+		
 	
 		
 	}

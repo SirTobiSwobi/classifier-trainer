@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCAssignment;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCTargetFunction;
 import org.SirTobiSwobi.c3.classifiertrainer.core.Utilities;
@@ -21,7 +22,6 @@ import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.SearchDirection;
-import org.SirTobiSwobi.c3.classifiertrainer.db.TCAssignment;
 import org.SirTobiSwobi.c3.classifiertrainer.db.TargetFunctionManager;
 
 @Path("/targetfunction")

@@ -51,7 +51,7 @@ public class CategoryResource {
 		}
 		
 		refHub.getCategoryManager().setCategory(new Category(category.getId(),category.getLabel(),category.getDescription()));
-
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}
@@ -62,6 +62,7 @@ public class CategoryResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		refHub.getCategoryManager().deleteCategory(cat);
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}

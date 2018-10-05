@@ -46,7 +46,7 @@ public class CategoriesResource {
 				}
 			}
 		}
-		
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}
@@ -78,7 +78,8 @@ public class CategoriesResource {
 	
 	@DELETE
 	public Response deleteAllCategories(){
-		refHub.getCategoryManager().deleteAllCategories();;
+		refHub.getCategoryManager().deleteAllCategories();
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}

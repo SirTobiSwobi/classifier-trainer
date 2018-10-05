@@ -9,6 +9,7 @@ public class ReferenceHub {
 	private CategorizationManager categorizationManager;
 	private EvaluationManager evaluationManager;
 	private Model activeModel;
+	private boolean needsRetraining;
 	
 	public ReferenceHub(CategoryManager categoryManager, DocumentManager documentManager,
 			TargetFunctionManager targetFunctionManager, ConfigurationManager configurationManager, ModelManager modelManager, 
@@ -22,6 +23,7 @@ public class ReferenceHub {
 		this.categorizationManager = categorizationManager;
 		this.evaluationManager = evaluationManager;
 		this.activeModel = activeModel;
+		this.needsRetraining = false;
 	}
 	public CategoryManager getCategoryManager() {
 		return categoryManager;
@@ -71,6 +73,13 @@ public class ReferenceHub {
 	public void setActiveModel(Model activeModel) {
 		this.activeModel = activeModel;
 	}
+	public boolean needsRetraining() {
+		return needsRetraining;
+	}
+	public void setNeedsRetraining(boolean needsRetraining) {
+		this.needsRetraining = needsRetraining;
+	}
+	
 	
 	
 	

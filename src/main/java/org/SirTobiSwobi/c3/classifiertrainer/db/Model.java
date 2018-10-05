@@ -8,24 +8,30 @@ public class Model {
 	private int completed;
 	private String trainingLog; //for API development purposed. Optional for actual model. Stores progress of the training.
 	
-	public Model(long id, long configurationId) {
+	private boolean includeImplicits;
+	
+	public Model(long id, long configurationId, boolean includeImplicits) {
 		super();
 		this.id = id;
 		this.configurationId = configurationId;
+		this.includeImplicits=includeImplicits;
 		this.progress = .0;
 		this.trainingLog="";
 		this.steps=0;
 		this.completed=0;
+		
 	}
 	
-	public Model(long id, long configurationId, String trainingLog) {
+	public Model(long id, long configurationId, boolean includeImplicits, String trainingLog) {
 		super();
 		this.id = id;
 		this.configurationId = configurationId;
+		this.includeImplicits=includeImplicits;
 		this.progress = 1.0; //only used for active Model when put there. Training progress is always completed.
 		this.trainingLog=trainingLog;
 		this.steps=10; //only used for active Model when put there. Training progress is always completed.
 		this.completed=10; //only used for active Model when put there. Training progress is always completed.
+		
 	}
 	
 
@@ -81,6 +87,16 @@ public class Model {
 		this.completed++;
 		this.progress=(double)completed/(double)steps;
 	}
+
+	public boolean isIncludeImplicits() {
+		return includeImplicits;
+	}
+
+	public void setIncludeImplicits(boolean includeImplicits) {
+		this.includeImplicits = includeImplicits;
+	}
+	
+	
 	
 	
 	

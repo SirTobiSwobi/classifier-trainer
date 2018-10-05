@@ -60,7 +60,7 @@ public class RelationshipResource {
 		}
 		
 		refHub.getCategoryManager().setRelationship(relationship.getId(), relationship.getFromId(), relationship.getToId(), type);
-
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}
@@ -68,6 +68,7 @@ public class RelationshipResource {
 	@DELETE
 	public Response deleteRelationship(@PathParam("rel") long rel){
 		refHub.getCategoryManager().deleteRelationship(rel);
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}

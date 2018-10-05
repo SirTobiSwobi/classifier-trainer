@@ -27,3 +27,4 @@ Version change log:
 - 0.4.0: creating training logic using the /model endpoint. This implements n-fold cross-validation. This breaks the established configuration logic adding the folds as parameter
 - 0.4.1: creating /evaluations endpoint
 - 0.5.0: finished trainer API. Adding included athlete endpoints starting with active model logic at /model
+- 0.5.1: implementing /categorizations and /retraining. Now functionally complete. 

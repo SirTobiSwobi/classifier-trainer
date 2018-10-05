@@ -31,7 +31,7 @@ public class ModelResource {
 		}
 		Model model = refHub.getModelManager().getModelByAddress(mod);
 		
-		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog());
+		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog(), model.isIncludeImplicits());
 		
 		return Response.ok(output).build();
 		

@@ -111,6 +111,7 @@ public class RelationshipsResource {
 	@DELETE
 	public Response deleteAllRelationships(){
 		refHub.getCategoryManager().deleteAllRelationships();
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}
@@ -141,7 +142,7 @@ public class RelationshipsResource {
 				}
 			}
 		}
-		
+		refHub.setNeedsRetraining(true);
 		Response response = Response.ok().build();
 		return response;
 	}

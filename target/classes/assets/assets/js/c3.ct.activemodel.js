@@ -367,7 +367,7 @@
 			var form = $("#uploadF").serializeArray();
 			var json = form[0].value;
 			uploadActiveModel(json);
-			//location.reload(true);
+			location.reload(true);
 			
 		});
 		

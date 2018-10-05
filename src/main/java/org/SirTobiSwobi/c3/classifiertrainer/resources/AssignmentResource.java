@@ -12,9 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCAssignment;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Assignment;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
-import org.SirTobiSwobi.c3.classifiertrainer.db.TCAssignment;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -55,7 +55,6 @@ public class AssignmentResource {
 			refHub.getTargetFunctionManager().addAssignmentWithoutId(assignment.getDocumentId(), assignment.getCategoryId());
 		}
 		
-
 		Response response = Response.ok().build();
 		return response;
 	}

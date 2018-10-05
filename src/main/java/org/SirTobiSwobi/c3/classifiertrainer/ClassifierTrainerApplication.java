@@ -2,6 +2,7 @@ package org.SirTobiSwobi.c3.classifiertrainer;
 
 import javax.ws.rs.client.Client;
 
+import org.SirTobiSwobi.c3.classifiertrainer.core.Classifier;
 import org.SirTobiSwobi.c3.classifiertrainer.core.Trainer;
 import org.SirTobiSwobi.c3.classifiertrainer.db.CategorizationManager;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
@@ -21,6 +22,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.health.ConfigHealthCheck;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ActiveModelResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.AssignmentResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.CategoriesResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.CategorizationsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.CategoryResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ConfigurationsResource;
@@ -32,6 +34,7 @@ import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelsResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.RelationshipsResource;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.RetrainingResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.TargetFunctionResource;
 import org.SirTobiSwobi.c3.classifiertrainer.resources.TrainingSessionResource;
 
@@ -75,12 +78,14 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		tfMan.setRefHub(refHub);
 		cznMan.setRefHub(refHub);
 		evalMan.setRefHub(refHub);
+		modMan.setRefHub(refHub);
 		
 		/*
-		 * Initializing trainer
+		 * Initializing trainer and classifier (for also implementing the athlete API)
 		 */
 		
 		Trainer trainer = new Trainer(refHub);
+		Classifier classifier = new Classifier(refHub);
 		
 		/*
 		 * Initializing HTTP client
@@ -108,6 +113,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		final EvaluationsResource evaluations = new EvaluationsResource(refHub);
 		final TrainingSessionResource trainingSession = new TrainingSessionResource(refHub);
 		final ActiveModelResource activeModelResource = new ActiveModelResource(refHub, client);
+		final CategorizationsResource categorizations = new CategorizationsResource(refHub, client, classifier);
+		final RetrainingResource retraining = new RetrainingResource(refHub);
 		
 		/*
 		 * Initializing health checks
@@ -136,6 +143,8 @@ public class ClassifierTrainerApplication extends Application<ClassifierTrainerC
 		environment.jersey().register(evaluations);
 		environment.jersey().register(trainingSession);
 		environment.jersey().register(activeModelResource);
+		environment.jersey().register(categorizations);
+		environment.jersey().register(retraining);
 		
 		/*
 		 * Generating example data for manual testing during development

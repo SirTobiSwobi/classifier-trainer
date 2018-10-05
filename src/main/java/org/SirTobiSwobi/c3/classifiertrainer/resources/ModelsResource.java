@@ -43,7 +43,7 @@ public class ModelsResource {
 			TCModel[] TCmodelArray = new TCModel[models.length];
 			for(int i=0; i<models.length;i++){
 				Model mod = models[i];
-				TCModel TCmod = new TCModel(mod.getId(),mod.getConfigurationId(), mod.getProgress(), mod.getTrainingLog());
+				TCModel TCmod = new TCModel(mod.getId(),mod.getConfigurationId(), mod.getProgress(), mod.getTrainingLog(), mod.isIncludeImplicits());
 				TCmodelArray[i]=TCmod;
 			}
 			TCModels TCmodels;

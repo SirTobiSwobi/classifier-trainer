@@ -1,7 +1,5 @@
 package org.SirTobiSwobi.c3.classifiertrainer.api;
 
-import org.SirTobiSwobi.c3.classifiertrainer.db.TCAssignment;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TCTargetFunction {
