@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModel;
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCProgress;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 
@@ -31,9 +32,15 @@ public class ModelResource {
 		}
 		Model model = refHub.getModelManager().getModelByAddress(mod);
 		
-		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog(), model.isIncludeImplicits());
+		if(model.getProgress()<1.0){
+			TCProgress output = new TCProgress("/models/"+mod,model.getProgress());
+			return Response.ok(output).build();
+		}else{
+			TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog(), model.isIncludeImplicits());		
+			return Response.ok(output).build();
+		}
 		
-		return Response.ok(output).build();
+		
 		
 	}
 	
