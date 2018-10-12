@@ -73,9 +73,12 @@ public class Fold extends Thread {
 				appendString = appendString +" Explicitly belongs to category "+explicitAssignments[j].getCategoryId()+", ";
 			}
 			long[] implicitAssignments = refHub.getTargetFunctionManager().getImplicitCatIdsForDocument(evaluationIds[i]);
-			for(int j=0; j<implicitAssignments.length; j++){
-				appendString = appendString +" Implicitly belongs to category "+implicitAssignments[j]+", ";
+			if(implicitAssignments!=null){
+				for(int j=0; j<implicitAssignments.length; j++){
+					appendString = appendString +" Implicitly belongs to category "+implicitAssignments[j]+", ";
+				}
 			}
+			
 			/*
 			 * Here, the actual assignment should take place. This code can be replaced with it.
 			 * Automated assignment: Vector of probabilities of one document belonging to a certain category. 

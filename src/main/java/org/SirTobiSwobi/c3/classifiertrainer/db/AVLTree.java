@@ -58,6 +58,9 @@ public class AVLTree<T> {
 	}
 
 	public T getContent(long id){
+		if(root==null){
+			return null;
+		}
 		return root.getContent(id);
 	}
 	

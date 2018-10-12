@@ -205,12 +205,14 @@ public class TargetFunctionResource {
 			for(int i=0; i<targetFunction.getAssignments().length; i++){
 				TCAssignment ass=targetFunction.getAssignments()[i];
 			
-				
-				if(ass.getId()>=0){
-					refHub.getTargetFunctionManager().setAssignment(ass.getId(), ass.getDocumentId(), ass.getCategoryId());
-				}else{			
-					refHub.getTargetFunctionManager().addAssignmentWithoutId(ass.getDocumentId(), ass.getCategoryId());
+				if(refHub.getCategoryManager().containsCategory(ass.getCategoryId())&&refHub.getDocumentManager().containsDocument(ass.getDocumentId())){
+					if(ass.getId()>=0){
+						refHub.getTargetFunctionManager().setAssignment(ass.getId(), ass.getDocumentId(), ass.getCategoryId());
+					}else{			
+						refHub.getTargetFunctionManager().addAssignmentWithoutId(ass.getDocumentId(), ass.getCategoryId());
+					}
 				}
+				
 			}
 		}
 		
