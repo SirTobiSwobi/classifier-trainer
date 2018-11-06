@@ -61,11 +61,14 @@ public class CategorizationManager {
 					}
 				}
 				ArrayList<Categorization> catIndex=categoryIndex.getContent(czn.getDocumentId());
-				for(int i=0; i<catIndex.size(); i++){
-					if(catIndex.get(i).getId()==possibleExisting.getId()){
-						catIndex.get(i).setProbability(czn.getProbability());
+				if(catIndex!=null){
+					for(int i=0; i<catIndex.size(); i++){
+						if(catIndex.get(i).getId()==possibleExisting.getId()){
+							catIndex.get(i).setProbability(czn.getProbability());
+						}
 					}
 				}
+				
 			}
 		}else{
 			this.assignments.setContent(czn, czn.getId());

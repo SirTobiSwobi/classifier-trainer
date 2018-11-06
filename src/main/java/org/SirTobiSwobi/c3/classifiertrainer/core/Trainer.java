@@ -5,12 +5,12 @@ import java.util.Arrays;
 
 import org.SirTobiSwobi.c3.classifiertrainer.db.Category;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
-import org.SirTobiSwobi.c3.classifiertrainer.db.Document;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Evaluation;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
 import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
 import org.SirTobiSwobi.c3.classifiertrainer.db.TrainingSession;
+import org.SirTobiSwobi.c3.classifiertrainer.db.Assignment;
 
 public class Trainer {
 	private ReferenceHub refHub;
@@ -48,23 +48,42 @@ public class Trainer {
 		int folds = config.getFolds();
 		this.openEvaluations=folds;
 		this.modelId=modelId; // There is always only one active training session per microservice. 
+		Assignment[] assignments = refHub.getTargetFunctionManager().getAssignmentArray();
+		ArrayList<Long> relevantDocIds = new ArrayList<Long>();
+		for(int i=0; i<assignments.length; i++){
+			long id = assignments[i].getDocumentId();
+			if(!relevantDocIds.contains(id)){
+				relevantDocIds.add(id);
+			}
+		}
+		
+		
+		/*
 		Document[] allDocs=refHub.getDocumentManager().getDocumentArray();
 		int overallSteps = allDocs.length*folds;
 		refHub.getModelManager().getModelByAddress(modelId).setSteps(overallSteps);
-		
+		*/
 		trainingSessionId = refHub.getEvaluationManager().addTrainingSessionWithoutId(modelId, "");
 		TrainingSession trainingSession = refHub.getEvaluationManager().getTrainingSessionByAddress(trainingSessionId);
-		
+		/*
 		long[] allIds = new long[allDocs.length];
 		for(int i=0;i<allIds.length;i++){
 			allIds[i]=allDocs[i].getId();
 		}
+		*/
+		long[] allIds = new long[relevantDocIds.size()];
+		int overallSteps = allIds.length*folds;
+		refHub.getModelManager().getModelByAddress(modelId).setSteps(overallSteps);
+		
+		for(int i=0;i<allIds.length;i++){
+			allIds[i]=relevantDocIds.get(i);
+		}
 		
 		for(int i=0; i<folds;i++){
-			int start=(allDocs.length/folds)*i;
-			int end=((allDocs.length/folds)*(i+1));
+			int start=(allIds.length/folds)*i;
+			int end=((allIds.length/folds)*(i+1));
 			if(i==folds-1){
-				end=allDocs.length;
+				end=allIds.length;
 			}
 			
 			long[] evaluationIds = Arrays.copyOfRange(allIds, start, end);

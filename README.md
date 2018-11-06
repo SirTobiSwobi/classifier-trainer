@@ -30,3 +30,4 @@ Version change log:
 - 0.5.1: implementing /categorizations and /retraining. Now functionally complete. 
 - 1.0.0: reworking /metadata mechanism and configuration options implementing trainer/athlete switch
 - 1.0.1: implemented checks for impossible targetfunction assignments from development of implementing microservice
+- 1.0.2: bugfixing and changing trainer to only use documents for which assignments exist within the target function
