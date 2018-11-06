@@ -2,19 +2,16 @@ package org.SirTobiSwobi.c3.classifiertrainer.db;
 
 public class Model {
 	private long id;
-	private long configurationId; //Storing what this model is based on.
 	private double progress; //stores the training progress.
 	private int steps;
 	private int completed;
 	private String trainingLog; //for API development purposed. Optional for actual model. Stores progress of the training.
+	private Configuration configuration;
 	
-	private boolean includeImplicits;
-	
-	public Model(long id, long configurationId, boolean includeImplicits) {
+	public Model(long id, Configuration configuration) {
 		super();
 		this.id = id;
-		this.configurationId = configurationId;
-		this.includeImplicits=includeImplicits;
+		this.configuration = configuration;
 		this.progress = .0;
 		this.trainingLog="";
 		this.steps=0;
@@ -22,11 +19,10 @@ public class Model {
 		
 	}
 	
-	public Model(long id, long configurationId, boolean includeImplicits, String trainingLog) {
+	public Model(long id, Configuration configuration, String trainingLog) {
 		super();
 		this.id = id;
-		this.configurationId = configurationId;
-		this.includeImplicits=includeImplicits;
+		this.configuration = configuration;
 		this.progress = 1.0; //only used for active Model when put there. Training progress is always completed.
 		this.trainingLog=trainingLog;
 		this.steps=10; //only used for active Model when put there. Training progress is always completed.
@@ -43,13 +39,6 @@ public class Model {
 		this.id = id;
 	}
 
-	public long getConfigurationId() {
-		return configurationId;
-	}
-
-	public void setConfigurationId(long configurationId) {
-		this.configurationId = configurationId;
-	}
 
 	public double getProgress() {
 		return progress;
@@ -60,7 +49,7 @@ public class Model {
 	}
 	
 	public String toString(){
-		return ""+id+" "+configurationId+" "+progress;
+		return ""+id+" "+configuration.toString()+" "+progress;
 	}
 
 	public String getTrainingLog() {
@@ -88,14 +77,14 @@ public class Model {
 		this.progress=(double)completed/(double)steps;
 	}
 
-	public boolean isIncludeImplicits() {
-		return includeImplicits;
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 
-	public void setIncludeImplicits(boolean includeImplicits) {
-		this.includeImplicits = includeImplicits;
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
-	
+
 	
 	
 	

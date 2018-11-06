@@ -33,7 +33,7 @@ public class CategorizationThread extends Thread {
 					refHub.getCategorizationManager().addCategorizationWithoutId(document.getId(), categories[i].getId(), 0.8);
 				}
 				
-				if(refHub.getActiveModel().isIncludeImplicits()){ //if implicits are to be assigned
+				if(refHub.getActiveModel().getConfiguration().isIncludeImplicits()){ //if implicits are to be assigned
 					long[] implicitCategorizations=refHub.getTargetFunctionManager().findAllImplicitCatIds(categories[i].getId(), SearchDirection.Ascending);
 					if(implicitCategorizations!=null){
 						for(int k=0; k<implicitCategorizations.length; k++){

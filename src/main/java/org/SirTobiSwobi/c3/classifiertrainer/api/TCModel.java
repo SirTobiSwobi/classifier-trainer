@@ -7,19 +7,19 @@ public class TCModel {
 	private long configurationId;
 	private double progress;
 	private String trainingLog;
-	private boolean includeImplicits;
+	private TCConfiguration configuration;
 	
 	public TCModel(){
 		//Jackson deserialization
 	}
 
-	public TCModel(long id, long configurationId, double progress, String trainingLog, boolean includeImplicits) {
+	public TCModel(long id, long configurationId, double progress, String trainingLog, TCConfiguration configuration) {
 		super();
 		this.id = id;
 		this.configurationId = configurationId;
 		this.progress = progress;
 		this.trainingLog = trainingLog;
-		this.includeImplicits = includeImplicits;
+		this.configuration = configuration;
 	}
 	
 	@JsonProperty
@@ -43,7 +43,8 @@ public class TCModel {
 	}
 
 	@JsonProperty
-	public boolean isIncludeImplicits() {
-		return includeImplicits;
+	public TCConfiguration getConfiguration() {
+		return configuration;
 	}
+	
 }

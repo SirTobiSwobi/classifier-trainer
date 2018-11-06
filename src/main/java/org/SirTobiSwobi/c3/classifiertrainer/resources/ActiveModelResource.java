@@ -18,6 +18,10 @@ import javax.ws.rs.core.Response;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModel;
 import org.SirTobiSwobi.c3.classifiertrainer.db.Model;
 import org.SirTobiSwobi.c3.classifiertrainer.db.ReferenceHub;
+import org.SirTobiSwobi.c3.classifiertrainer.resources.ModelResource;
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCConfiguration;
+import org.SirTobiSwobi.c3.classifiertrainer.db.Configuration;
+import org.SirTobiSwobi.c3.classifiertrainer.db.SelectionPolicy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,8 +45,8 @@ public class ActiveModelResource {
 		Model model = refHub.getActiveModel();
 		if(model==null){
 			return Response.status(Response.Status.NOT_FOUND).build();
-		}	
-		TCModel output = new TCModel(model.getId(), model.getConfigurationId(), model.getProgress(), model.getTrainingLog(), model.isIncludeImplicits());
+		}	 
+		TCModel output = ModelResource.buildTCModel(model,refHub);	
 		
 		return Response.ok(output).build();
 		
@@ -71,7 +75,24 @@ public class ActiveModelResource {
 			ObjectMapper MAPPER = Jackson.newObjectMapper();
 			try{
 				TCModel retrievedModel = MAPPER.readValue(content, TCModel.class);
-				Model activeModel = new Model(retrievedModel.getId(), retrievedModel.getConfigurationId(), retrievedModel.isIncludeImplicits(), retrievedModel.getTrainingLog());
+				TCConfiguration configuration = retrievedModel.getConfiguration();
+				SelectionPolicy selectionPolicy = SelectionPolicy.MicroaverageF1;
+				if(configuration.getSelectionPolicy().equals("MicroaverageF1")){
+					selectionPolicy=SelectionPolicy.MicroaverageF1;
+				}else if(configuration.getSelectionPolicy().equals("MicroaveragePrecision")){
+					selectionPolicy=SelectionPolicy.MicroaveragePrecision;
+				}else if(configuration.getSelectionPolicy().equals("MicroaverageRecall")){
+					selectionPolicy=SelectionPolicy.MicroaverageRecall;
+				}else if(configuration.getSelectionPolicy().equals("MacroaverageF1")){
+					selectionPolicy=SelectionPolicy.MacroaverageF1;
+				}else if(configuration.getSelectionPolicy().equals("MacroaveragePrecision")){
+					selectionPolicy=SelectionPolicy.MacroaveragePrecision;
+				}else if(configuration.getSelectionPolicy().equals("MacroaverageRecall")){
+					selectionPolicy=SelectionPolicy.MacroaverageRecall;
+				}
+				Configuration conf = new Configuration(configuration.getId(), configuration.getFolds(), configuration.isIncludeImplicits(), configuration.getAssignmentThreshold(),
+						selectionPolicy);
+				Model activeModel = new Model(retrievedModel.getId(), conf, retrievedModel.getTrainingLog());
 				refHub.setActiveModel(activeModel);
 			}catch(Exception e){
 				return Response.status(404).build();
@@ -79,7 +100,24 @@ public class ActiveModelResource {
 			refHub.setNeedsRetraining(false);
 			return Response.ok().build();
 		}else if(model!=null){
-			Model activeModel = new Model(model.getId(), model.getConfigurationId(), model.isIncludeImplicits(), model.getTrainingLog());
+			TCConfiguration configuration = model.getConfiguration();
+			SelectionPolicy selectionPolicy = SelectionPolicy.MicroaverageF1;
+			if(configuration.getSelectionPolicy().equals("MicroaverageF1")){
+				selectionPolicy=SelectionPolicy.MicroaverageF1;
+			}else if(configuration.getSelectionPolicy().equals("MicroaveragePrecision")){
+				selectionPolicy=SelectionPolicy.MicroaveragePrecision;
+			}else if(configuration.getSelectionPolicy().equals("MicroaverageRecall")){
+				selectionPolicy=SelectionPolicy.MicroaverageRecall;
+			}else if(configuration.getSelectionPolicy().equals("MacroaverageF1")){
+				selectionPolicy=SelectionPolicy.MacroaverageF1;
+			}else if(configuration.getSelectionPolicy().equals("MacroaveragePrecision")){
+				selectionPolicy=SelectionPolicy.MacroaveragePrecision;
+			}else if(configuration.getSelectionPolicy().equals("MacroaverageRecall")){
+				selectionPolicy=SelectionPolicy.MacroaverageRecall;
+			}
+			Configuration conf = new Configuration(configuration.getId(), configuration.getFolds(), configuration.isIncludeImplicits(), configuration.getAssignmentThreshold(),
+					selectionPolicy);
+			Model activeModel = new Model(model.getId(), conf, model.getTrainingLog());
 			refHub.setActiveModel(activeModel);
 			refHub.setNeedsRetraining(false);
 			return Response.ok().build();

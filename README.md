@@ -31,3 +31,4 @@ Version change log:
 - 1.0.0: reworking /metadata mechanism and configuration options implementing trainer/athlete switch
 - 1.0.1: implemented checks for impossible targetfunction assignments from development of implementing microservice
 - 1.0.2: bugfixing and changing trainer to only use documents for which assignments exist within the target function
+- 1.0.3: adding entire configuration to model. Learning from NTFC implementation.

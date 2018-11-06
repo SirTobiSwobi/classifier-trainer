@@ -1481,6 +1481,11 @@ function renderModel(modId){
 		$("#list").append("Include implicits: "+json.includeImplicits+"<br/>");
 		$("#list").append("Progress:"+json.progress+"<br/>");
 		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
+		$("#list").append("<h4>Configuration:</h4>");
+		$("#list").append("Id:"+json.configuration.id+"<br/>");
+		$("#list").append("Folds:"+json.configuration.folds+"<br/>");
+		$("#list").append("IncludeImplicits:"+json.configuration.includeImplicits+"<br/>");
+		$("#list").append("SelectionPolicy:"+json.configuration.selectionPolicy+"<br/>");
 		
 	}).fail(function(){
 		$("#list").empty();
@@ -1583,6 +1588,11 @@ function renderActiveModel(){
 		$("#list").append("Include implicits: "+json.includeImplicits+"<br/>");
 		$("#list").append("Progress:"+json.progress+"<br/>");
 		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
+		$("#list").append("<h4>Configuration:</h4>");
+		$("#list").append("Id:"+json.configuration.id+"<br/>");
+		$("#list").append("Folds:"+json.configuration.folds+"<br/>");
+		$("#list").append("IncludeImplicits:"+json.configuration.includeImplicits+"<br/>");
+		$("#list").append("SelectionPolicy:"+json.configuration.selectionPolicy+"<br/>");
 		
 	}).fail(function(){
 		$("#list").empty();

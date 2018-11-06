@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.SirTobiSwobi.c3.classifiertrainer.api.TCConfiguration;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCHash;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModel;
 import org.SirTobiSwobi.c3.classifiertrainer.api.TCModels;
@@ -43,7 +44,8 @@ public class ModelsResource {
 			TCModel[] TCmodelArray = new TCModel[models.length];
 			for(int i=0; i<models.length;i++){
 				Model mod = models[i];
-				TCModel TCmod = new TCModel(mod.getId(),mod.getConfigurationId(), mod.getProgress(), mod.getTrainingLog(), mod.isIncludeImplicits());
+				TCConfiguration config = ConfigurationResource.buildTCConfiguration(mod.getConfiguration());
+				TCModel TCmod = new TCModel(mod.getId(),mod.getConfiguration().getId(), mod.getProgress(), mod.getTrainingLog(), config);
 				TCmodelArray[i]=TCmod;
 			}
 			TCModels TCmodels;

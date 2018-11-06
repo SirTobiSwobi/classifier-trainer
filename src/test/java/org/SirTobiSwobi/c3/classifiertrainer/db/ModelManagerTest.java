@@ -16,7 +16,7 @@ public class ModelManagerTest {
 		cfgn = new Configuration(5,5, true, 0.4,SelectionPolicy.MicroaverageRecall);
 		confMan.setConfiguration(cfgn);
 		
-		Model model = new Model(0,0,false);
+		Model model = new Model(0,confMan.getByAddress(0));
 		ModelManager modMan = new ModelManager();
 		
 		ReferenceHub refHub = new ReferenceHub(null, null, null, confMan, modMan, null, null, null);
@@ -28,7 +28,7 @@ public class ModelManagerTest {
 		assertTrue("There are two models",modMan.getSize()==2);
 		modMan.deleteModel(1);
 		assertTrue("There is only one document",modMan.getSize()==1);
-		assertTrue("First model has config-id 0",modMan.getModelByAddress(0).getConfigurationId()==0);
+		assertTrue("First model has config-id 0",modMan.getModelByAddress(0).getConfiguration().getId()==0);
 	}
 
 }

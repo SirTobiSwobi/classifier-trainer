@@ -39,8 +39,8 @@ public class Fold extends Thread {
 	public void run(){
 		Model model=refHub.getModelManager().getModelByAddress(modelId);
 		Configuration config = refHub.getConfigurationManager().getByAddress(configId);
-		boolean includeImplicits = config.isIncludeImplicits(); //ToDo: refactor this into the configuration!
-		double assignmentThreshold = config.getAssignmentThreshold(); //ToDo: refactor this into the configuration!
+		boolean includeImplicits = config.isIncludeImplicits(); 
+		double assignmentThreshold = config.getAssignmentThreshold(); 
 		
 		
 		for(int i=0; i<trainingIds.length; i++){
