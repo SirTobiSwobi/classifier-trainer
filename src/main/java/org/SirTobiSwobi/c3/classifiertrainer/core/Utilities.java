@@ -172,6 +172,15 @@ public class Utilities {
 		}
 			
 		return result;
-	}				
+	}		
+	
+	public static String sanitizeText(String text){
+		text = text.replaceAll("<.*?>",  ""); //removes any xml tags
+		text = text.replaceAll("[^a-zA-Z0-9]", " ").toLowerCase();
+		text = text.replaceAll("\\s"," ");
+		text = text.replaceAll("\\s{2,}", " ").trim();
+		text = text.toLowerCase();
+		return text;
+	}
 	
 }
