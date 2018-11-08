@@ -227,6 +227,14 @@ public class AVLTree<T> {
 		return contentHash;
 	}
 	
-	
+	public ArrayList<Long> getUsedIds(){
+		if(root==null){
+			return null;
+		}else{
+			ArrayList<Long> usedIds = new ArrayList<Long>();
+			root.populateUsedIds(usedIds);
+			return usedIds;
+		}
+	}
 
 }

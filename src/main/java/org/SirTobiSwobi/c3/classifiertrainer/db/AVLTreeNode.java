@@ -286,4 +286,15 @@ public class AVLTreeNode<T> {
 		return minId;
 	}
 
+	protected void populateUsedIds(ArrayList<Long> usedIds){
+		if(left!=null){
+			left.populateUsedIds(usedIds);
+		}
+		if(!usedIds.contains(index)){
+			usedIds.add(index);
+		}
+		if(right!=null){
+			right.populateUsedIds(usedIds);
+		}
+	}
 }
