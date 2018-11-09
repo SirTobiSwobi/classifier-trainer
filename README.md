@@ -34,3 +34,4 @@ Version change log:
 - 1.0.3: adding entire configuration to model. Learning from NTFC implementation.
 - 1.0.4: merged common text sanitization function into the utilities class
 - 1.0.5: merged added AVL tree functionality to return all used indices
+- 1.0.6: added internal FeatureExtractor Interface
