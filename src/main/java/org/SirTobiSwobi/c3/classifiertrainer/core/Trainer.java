@@ -86,12 +86,27 @@ public class Trainer {
 				end=allIds.length;
 			}
 			
-			long[] evaluationIds = Arrays.copyOfRange(allIds, start, end);
+			//long[] evaluationIds = Arrays.copyOfRange(allIds, start, end);
+			long[] evaluationIds = computeModularEvaluationIds(allIds, folds, i);
 			long[] trainingIds = computeTrainingIdsFromEvaluationIds(allIds,evaluationIds);
 			
 			(new Fold(refHub, trainingIds, evaluationIds, i, modelId, trainingSession, this, configId)).start();
 		}	
 		
+	}
+	
+	private long[] computeModularEvaluationIds(long[] allIds, int folds, int fold){
+		ArrayList<Long> relevantIds=new ArrayList<Long>();
+		for(int i=0;i<allIds.length;i++){
+			if(allIds[i]%folds==fold){
+				relevantIds.add(allIds[i]);
+			}
+		}
+		long[] evaluationIds = new long[relevantIds.size()];
+		for(int i=0;i<evaluationIds.length; i++){
+			evaluationIds[i]=relevantIds.get(i);
+		}
+		return evaluationIds;
 	}
 	
 	public synchronized void selectBestEvaluation(){

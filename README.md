@@ -35,3 +35,4 @@ Version change log:
 - 1.0.4: merged common text sanitization function into the utilities class
 - 1.0.5: merged added AVL tree functionality to return all used indices
 - 1.0.6: added internal FeatureExtractor Interface
+- 1.0.7: switched evaluation set generation to modulo-divison. Much increased effectiveness. Merged from tfidf-svm v0.0.5
