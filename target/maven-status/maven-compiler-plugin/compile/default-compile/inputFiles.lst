@@ -3,6 +3,7 @@
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/TrainingSessionResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/resources/MetadataResource.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/ReferenceHub.java
+/Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/core/FeatureExtractor.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/Configuration.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/CategoryManager.java
 /Users/tobias/HomeCoded/Workspace/classifier-trainer/src/main/java/org/SirTobiSwobi/c3/classifiertrainer/db/RelationshipType.java
