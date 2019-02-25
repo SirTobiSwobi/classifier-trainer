@@ -239,3 +239,25 @@ function renderModel(modId){
 		$("#list").append("<h3>There are currently no such model in this microservice. You can add one by starting a training process</h3>");
 	});
 }
+
+function renderActiveModel(){
+	$("#list").empty();
+	$("#list").append("<h2>Active model:</h2>");
+	$.getJSON("../model",function(json){	
+	
+		$("#list").append("Id: "+json.id+"<br/>");
+		$("#list").append("Configuration Id: "+json.configurationId+"<br/>");
+		$("#list").append("Include implicits: "+json.includeImplicits+"<br/>");
+		$("#list").append("Progress:"+json.progress+"<br/>");
+		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
+		$("#list").append("<h4>Configuration:</h4>");
+		$("#list").append("Id:"+json.configuration.id+"<br/>");
+		$("#list").append("Folds:"+json.configuration.folds+"<br/>");
+		$("#list").append("IncludeImplicits:"+json.configuration.includeImplicits+"<br/>");
+		$("#list").append("SelectionPolicy:"+json.configuration.selectionPolicy+"<br/>");
+		
+	}).fail(function(){
+		$("#list").empty();
+		$("#list").append("<h3>There is no active model in this microservice. You can assign one.</h3>");
+	});
+}
