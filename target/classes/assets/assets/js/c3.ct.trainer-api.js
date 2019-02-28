@@ -1209,14 +1209,14 @@ function renderModels(){
 		}else{
 			for (var i=0; i< json.models.length; i++){
 				$("#list").append("<li><a href=\"model.html?modId="+json.models[i].id+"\">/models/"+json.models[i].id+"</a> - " +
-						"<a href=\"evaluation.html?modId="+json.models[i].id+"\">/evaluations/"+json.models[i].id+"</a></li>");
+						"<a href=\"evaluation.html?modId="+json.models[i].id+"\">/evaluations/"+json.models[i].id+
+						"</a> | Progress: "+json.models[i].progress+"</li>");
 				
 			}
 		}
 	});
 
 }
-
 
 function deleteAllModels(){
 	var url="../models";	
@@ -1253,7 +1253,6 @@ function startTraining(confId){
 		}
 	 });
 }
-
 
 function deleteModel(modId){
 	var url="../models/"+modId;
@@ -1338,28 +1337,6 @@ function renderTrainingSession(modId){
 		}
 	});
 	
-}
-
-function renderActiveModel(){
-	$("#list").empty();
-	$("#list").append("<h2>Active model:</h2>");
-	$.getJSON("../model",function(json){	
-	
-		$("#list").append("Id: "+json.id+"<br/>");
-		$("#list").append("Configuration Id: "+json.configurationId+"<br/>");
-		$("#list").append("Include implicits: "+json.includeImplicits+"<br/>");
-		$("#list").append("Progress:"+json.progress+"<br/>");
-		$("#list").append("TrainingLog:<br/> "+json.trainingLog+"<br/>");
-		$("#list").append("<h4>Configuration:</h4>");
-		$("#list").append("Id:"+json.configuration.id+"<br/>");
-		$("#list").append("Folds:"+json.configuration.folds+"<br/>");
-		$("#list").append("IncludeImplicits:"+json.configuration.includeImplicits+"<br/>");
-		$("#list").append("SelectionPolicy:"+json.configuration.selectionPolicy+"<br/>");
-		
-	}).fail(function(){
-		$("#list").empty();
-		$("#list").append("<h3>There is no active model in this microservice. You can assign one.</h3>");
-	});
 }
 
 function retrieveActiveModel(url){
