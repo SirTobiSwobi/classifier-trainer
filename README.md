@@ -1,4 +1,8 @@
-Common microservice sidecar for services implementing the classifier trainer API of the athlete/trainer pattern. 
+# classifier-trainer
+This repository contains a contribution of the PhD Thesis *Bootstrapping Explainable Text Categorization in Emergent Knowledge-Domains* by Tobias Eljasik-Swoboda submitted to the University of Hagen, Germany on November 30th, 2020. Date of oral examiniation: March 2nd, 2021. 
+
+
+This is a common microservice sidecar for services implementing the classifier trainer API of the athlete/trainer pattern. It can be forked to create microservices implementing the same API. Only the core application logic needs to be changes.
 
 See classifier-trainer.yml config file for metadata about the microservice. The same metadata can be accesses by calling /metadata of the running service. 
 
