@@ -30,7 +30,7 @@ function getIdObject(){
 		}
 	}
 	
-	var output = {assId: assId, docId: docId, catId: catId, relId: relId, confId: confId, modId: modId, , weId: weId};
+	var output = {assId: assId, docId: docId, catId: catId, relId: relId, confId: confId, modId: modId, weId: weId};
 	return output;
 	
 }
