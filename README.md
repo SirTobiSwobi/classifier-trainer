@@ -10,7 +10,28 @@ The Dockerfile to see which commands you need to run the service on a Linux mach
 
 Or you can just run the Docker container including everything necessary. 
 
-Version change log:
+## build and start docker container
+
+1. create docker-image:
+
+```bash
+docker build -t classifier .
+```
+
+2. run docker-image:
+
+```bash
+docker run -d -p 8080:8080 -p 8081:8081 --rm -it classifier:latest
+```
+
+*Options:*
+- `-d` Run container in background and print container ID 
+- `-p` Publish a container's port(s) to the host
+- `--rm` Automatically remove the container when it exits
+- `-i` Keep STDIN open even if not attached
+- `-t` Allocate a pseudo-TTY
+
+## change log:
 
 - 0.0.1: implementation of configurable /metadata
 - 0.1.1: implementation of GET /documents/$x

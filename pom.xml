@@ -8,6 +8,8 @@
 </description>
   <properties>
   	<dropwizard.version>1.3.5</dropwizard.version>
+    <maven.compiler.source>7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
   <dependencies>
   	<dependency>
