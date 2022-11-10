@@ -31,6 +31,12 @@ docker run -d -p 8080:8080 -p 8081:8081 --rm -it classifier:latest
 - `-i` Keep STDIN open even if not attached
 - `-t` Allocate a pseudo-TTY
 
+3. display java log
+
+```bash
+docker logs --follow <DOCKER-ID>
+```
+
 ## change log:
 
 - 0.0.1: implementation of configurable /metadata
