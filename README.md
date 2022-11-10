@@ -1,5 +1,5 @@
 # classifier-trainer
-This repository contains a contribution of the PhD Thesis *Bootstrapping Explainable Text Categorization in Emergent Knowledge-Domains* by Tobias Eljasik-Swoboda submitted to the University of Hagen, Germany on November 30th, 2020. Date of oral examiniation: March 2nd, 2021. 
+This repository contains a contribution of the PhD Thesis [*Bootstrapping Explainable Text Categorization in Emergent Knowledge-Domains*](https://ub-deposit.fernuni-hagen.de/receive/mir_mods_00001692) by Tobias Eljasik-Swoboda submitted to the University of Hagen, Germany on November 30th, 2020. Date of oral examiniation: March 2nd, 2021. 
 
 
 This is a common microservice sidecar for services implementing the classifier trainer API of the athlete/trainer pattern. It can be forked to create microservices implementing the same API. Only the core application logic needs to be changes.
